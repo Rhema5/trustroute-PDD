@@ -19,21 +19,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install k6
-        run: |
-          curl -fsSL https://pkg.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://pkg.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-          sudo apt-get update -q && sudo apt-get install -y k6
-          k6 version
+      - name: Setup k6
+        uses: grafana/setup-k6-action@v1
 
       - name: Create Reports Directory
         run: mkdir -p testing/reports
 
       - name: Run k6 Load Test
         run: |
-          k6 run \
-            --summary-export=testing/reports/k6-summary.json \
-            testing/k6-load-test.js || true
+          k6 run testing/k6-load-test.js || true
         timeout-minutes: 5
         env:
           BASE_URL: "https://rhema5.github.io/trustroute-PDD"
