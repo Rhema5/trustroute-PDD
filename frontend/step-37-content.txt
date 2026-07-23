@@ -1,0 +1,116 @@
+Created At: 2026-07-19T12:52:24Z
+Completed At: 2026-07-19T12:52:24Z
+File Path: `file:///c:/Users/HP/OneDrive/Documents/Desktop/TrustRoute/trustroute-logistics-verified-f6658658/frontend/src/store/app-store.ts`
+Total Lines: 908
+Total Bytes: 32153
+Showing lines 801 to 908
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+801:         };
+802: 
+803:         let syncSucceeded = false;
+804:         let failureReason: import("@/lib/offline-queue-store").OfflineFailureReason = "unknown";
+805: 
+806:         try {
+807:           // Update status in Firestore
+808:           await updateStatus(item.id, statusToSet, {
+809:             photoUrl: uploadedPhotoUrl,
+810:             gps: item.proof.gps,
+811:             verifiedAt: item.proof.verifiedAt,
+812:             hash: item.proof.hash,
+813:           });
+814: 
+815:           // Add verification telemetry details and append notes/remarks
+816:           const updates: any = { offlineVerification };
+817:           if (item.proof.remarks) {
+818:             updates.notes = deliveryData?.notes
+819:               ? `${deliveryData.notes}\nRemarks: ${item.proof.remarks}`
+820:               : `Remarks: ${item.proof.remarks}`;
+821:           }
+822:           await updateDoc(deliveryRef, updates);
+823:           syncSucceeded = true;
+824: 
+825:           if (!isOtpCorrect) failureReason = "otp_mismatch";
+826:           else if (photoUploadFailed) failureReason = "storage_upload_failure";
+827:         } catch (syncErr: any) {
+828:           console.error("Sync error for item:", item.id, syncErr);
+829:           const msg = syncErr?.message || "";
+830:           if (msg.includes("Version conflict")) failureReason = "version_conflict";
+831:           else if (msg.includes("already exists")) failureReason = "duplicate_delivery";
+832:           else failureReason = "firestore_rejection";
+833:         }
+834: 
+835:         const syncEndTime = new Date().toISOString();
+836:         const syncDuration = new Date(syncEndTime).getTime() - new Date(syncStartTime).getTime();
+837:         const enterpriseId = deliveryData?.enterpriseId || user?.uid || "";
+838: 
+839:         // Update offlineQueue record with final state
+840:         try {
+841:           const finalAction = syncSucceeded && isOtpCorrect ? "sync_completed" : "sync_failed";
+842:           const finalState = syncSucceeded && isOtpCorrect
+843:             ? "synced"
+844:             : (!isOtpCorrect || !syncSucceeded) ? "failed" : "failed";
+845: 
+846:           await updateOfflineQueueItem(item.id, {
+847:             state: finalState as any,
+848:             syncCompletedTime: syncEndTime,
+849:             syncDuration,
+850:             verificationStatus: isOtpCorrect && syncSucceeded ? "verified" : "failed",
+851:             gpsVerification: !!item.proof.gps,
+852:             otpVerification: isOtpCorrect,
+853:             photoVerification: !!uploadedPhotoUrl,
+854:             proof: {
+855:               photoUrl: uploadedPhotoUrl,
+856:               gps: item.proof.gps,
+857:               verifiedAt: item.proof.verifiedAt,
+858:               hash: item.proof.hash,
+859:               otp: item.proof.otp,
+860:             },
+861:             ...(finalState === "failed" ? { failureReason } : {}),
+862:             auditHistory: [
+863:               makeAuditEntry("sync_started", user?.uid || "", userName || "System"),
+864:               makeAuditEntry(finalAction as any, user?.uid || "", userName || "System"),
+865:             ],
+866:           });
+867:           await writeAuditLog(
+868:             item.id,
+869:             item.id,
+870:             finalAction as any,
+871:             user?.uid || "",
+872:             userName || "System",
+873:             { syncDuration, isOtpCorrect, photoUploadFailed },
+874:           );
+875:         } catch (updateErr) {
+876:           console.warn("Failed to update offlineQueue record:", updateErr);
+877:         }
+878: 
+879:         // Notify the enterprise owner of sync completion
+880:         try {
+881:           await get().addNotification(
+882:             isOtpCorrect && syncSucceeded ? "Delivery Sync Completed" : "Delivery Sync Failed",
+883:             isOtpCorrect && syncSucceeded
+884:               ? `Offline delivery ${item.id} to ${deliveryData?.customer || "recipient"} was synced and verified successfully.`
+885:               : `Offline sync failed for delivery ${item.id}: ${failureReason.replace(/_/g, " ")}.`,
+886:             enterpriseId,
+887:           );
+888:         } catch (notifErr) {
+889:           console.error("Failed to send sync notification:", notifErr);
+890:         }
+891: 
+892:         // Delete from IndexedDB queue
+893:         await removePendingSyncItem(item.id);
+894: 
+895:         completedCount++;
+896:         set({ syncProgress: Math.round((completedCount / totalItems) * 100) });
+897:       }
+898: 
+899:       set({ syncState: "success" });
+900:       setTimeout(() => set({ syncState: "idle", syncProgress: 0 }), 3000);
+901:     } catch (err) {
+902:       console.error("Background auto sync error:", err);
+903:       set({ syncState: "failed" });
+904:       setTimeout(() => set({ syncState: "idle" }), 5000);
+905:     }
+906:   },
+907: }));
+908: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

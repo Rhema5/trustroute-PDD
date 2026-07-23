@@ -1,0 +1,808 @@
+Created At: 2026-07-19T12:52:22Z
+Completed At: 2026-07-19T12:52:22Z
+File Path: `file:///c:/Users/HP/OneDrive/Documents/Desktop/TrustRoute/trustroute-logistics-verified-f6658658/frontend/src/store/app-store.ts`
+Total Lines: 908
+Total Bytes: 32153
+Showing lines 1 to 800
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import { create } from "zustand";
+2: import { type Delivery, type DeliveryStatus, type Agent } from "@/lib/mock-data";
+3: import { db, auth } from "@/lib/firebase";
+4: import {
+5:   collection,
+6:   doc,
+7:   setDoc,
+8:   getDoc,
+9:   updateDoc,
+10:   onSnapshot,
+11:   query,
+12:   orderBy,
+13:   where,
+14:   getDocs,
+15:   serverTimestamp,
+16:   runTransaction,
+17: } from "firebase/firestore";
+18: import { onAuthStateChanged, type User } from "firebase/auth";
+19: import {
+20:   processDeliveries,
+21:   isValidTransition,
+22:   getTransitionError,
+23:   isDuplicate,
+24:   validateDeliveryFields,
+25:   getNextVersion,
+26:   INITIAL_VERSION,
+27:   checkVersionConflict,
+28: } from "@/lib/delivery-integrity";
+29: import {
+30:   type OfflineQueueItem,
+31:   type OfflineFailureReason,
+32:   subscribeToOfflineQueue,
+33:   writeOfflineQueueItem,
+34:   updateOfflineQueueItem,
+35:   deleteOfflineQueueItem,
+36:   writeAuditLog,
+37:   makeAuditEntry,
+38: } from "@/lib/offline-queue-store";
+39: 
+40: function convertTimestamps(obj: any): any {
+41:   if (!obj || typeof obj !== "object") return obj;
+42: 
+43:   if (typeof obj.toDate === "function") {
+44:     try {
+45:       return obj.toDate().toISOString();
+46:     } catch (e) {
+47:       return new Date().toISOString();
+48:     }
+49:   }
+50: 
+51:   if (Array.isArray(obj)) {
+52:     return obj.map(convertTimestamps);
+53:   }
+54: 
+55:   const result: any = {};
+56:   for (const key of Object.keys(obj)) {
+57:     result[key] = convertTimestamps(obj[key]);
+58:   }
+59:   return result;
+60: }
+61: 
+62: interface AppState {
+63:   role: "owner" | "agent" | "pending" | "rejected" | null;
+64:   setRole: (r: "owner" | "agent" | "pending" | "rejected" | null) => void;
+65:   user: User | null;
+66:   userName: string | null;
+67:   userProfile: any | null;
+68:   authLoading: boolean;
+69:   deliveries: Delivery[];
+70:   agents: Agent[];
+71:   setDeliveries: (deliveries: Delivery[]) => void;
+72:   setAgents: (agents: Agent[]) => void;
+73:   addDelivery: (d: Delivery) => Promise<void>;
+74:   updateStatus: (id: string, status: DeliveryStatus, proof?: Delivery["proof"]) => Promise<void>;
+75:   subscribeToDeliveries: () => () => void;
+76:   subscribeToAgents: () => () => void;
+77:   fetchAgents: () => Promise<void>;
+78:   initializeAuth: () => () => void;
+79:   syncState: "idle" | "syncing" | "success" | "failed";
+80:   syncProgress: number;
+81:   triggerAutoSync: () => Promise<void>;
+82:   pendingUsers: any[];
+83:   fetchPendingUsers: () => Promise<void>;
+84:   approveUser: (uid: string, roleToAssign?: "agent" | "owner") => Promise<void>;
+85:   rejectUser: (uid: string) => Promise<void>;
+86:   searchQuery: string;
+87:   setSearchQuery: (q: string) => void;
+88:   notifications: any[];
+89:   subscribeToNotifications: () => () => void;
+90:   markNotificationAsRead: (id: string) => Promise<void>;
+91:   addNotification: (title: string, message: string, targetUserId: string) => Promise<void>;
+92:   reassignDelivery: (deliveryId: string, agentId: string, agentName: string) => Promise<void>;
+93:   // ─── Offline Queue ───────────────────────────────────────────
+94:   offlineQueue: OfflineQueueItem[];
+95:   subscribeToOfflineQueue: () => () => void;
+96:   retryOfflineSync: (id: string) => Promise<void>;
+97:   cancelOfflineSync: (id: string) => Promise<void>;
+98:   deleteOfflineQueueEntry: (id: string) => Promise<void>;
+99:   approveManualReview: (id: string) => Promise<void>;
+100:   rejectManualReview: (id: string) => Promise<void>;
+101:   requestResubmission: (id: string) => Promise<void>;
+102:   escalateManualReview: (id: string) => Promise<void>;
+103:   reassignOfflineDelivery: (id: string, agentId: string, agentName: string) => Promise<void>;
+104:   markForManualReview: (id: string) => Promise<void>;
+105:   downloadEvidence: (id: string) => void;
+106: }
+107: 
+108: export const useApp = create<AppState>((set, get) => ({
+109:   role: null,
+110:   setRole: (r) => set({ role: r }),
+111:   user: null,
+112:   userName: null,
+113:   userProfile: null,
+114:   authLoading: true,
+115:   deliveries: [],
+116:   agents: [],
+117:   syncState: "idle",
+118:   syncProgress: 0,
+119:   pendingUsers: [],
+120:   searchQuery: "",
+121:   setSearchQuery: (q) => set({ searchQuery: q }),
+122:   notifications: [],
+123:   offlineQueue: [],
+124:   setDeliveries: (deliveries) => set({ deliveries }),
+125:   setAgents: (agents) => set({ agents }),
+126:   reassignDelivery: async (deliveryId, agentId, agentName) => {
+127:     try {
+128:       const docRef = doc(db, "deliveries", deliveryId);
+129:       await runTransaction(db, async (transaction) => {
+130:         const snap = await transaction.get(docRef);
+131:         if (!snap.exists()) throw new Error("Delivery not found.");
+132:         const data = snap.data();
+133:         const nextVersion = getNextVersion(data.version);
+134:         transaction.update(docRef, {
+135:           agentId,
+136:           agentName,
+137:           version: nextVersion,
+138:           updatedAt: serverTimestamp(),
+139:         });
+140:       });
+141:       await get().addNotification(
+142:         "New Mission Reassigned",
+143:         `Delivery ${deliveryId} has been reassigned to you.`,
+144:         agentId
+145:       );
+146:     } catch (err) {
+147:       console.error("Error reassigning delivery:", err);
+148:       throw err;
+149:     }
+150:   },
+151:   addDelivery: async (d) => {
+152:     // Data integrity: validate required fields
+153:     const fieldErrors = validateDeliveryFields(d);
+154:     if (fieldErrors.length > 0) {
+155:       throw new Error(`Delivery validation failed: ${fieldErrors.join(" ")}`);
+156:     }
+157: 
+158:     // Data integrity: prevent duplicate IDs
+159:     if (isDuplicate(get().deliveries, d.id)) {
+160:       throw new Error(`Delivery with ID "${d.id}" already exists. Duplicate creation prevented.`);
+161:     }
+162: 
+163:     try {
+164:       const docRef = doc(db, "deliveries", d.id);
+165:       await runTransaction(db, async (transaction) => {
+166:         const existing = await transaction.get(docRef);
+167:         if (existing.exists()) {
+168:           throw new Error(`Delivery with ID "${d.id}" already exists in Firestore.`);
+169:         }
+170:         transaction.set(docRef, {
+171:           ...d,
+172:           version: INITIAL_VERSION,
+173:           createdAt: serverTimestamp(),
+174:         });
+175:       });
+176:     } catch (err) {
+177:       console.error("Error adding delivery: ", err);
+178:       throw err;
+179:     }
+180:   },
+181:   updateStatus: async (id, status, proof) => {
+182:     // Pre-validate on client side for fast feedback
+183:     const currentDelivery = get().deliveries.find((d) => d.id === id);
+184:     if (currentDelivery) {
+185:       if (!isValidTransition(currentDelivery.status, status)) {
+186:         const errorMsg = getTransitionError(currentDelivery.status, status);
+187:         console.error(`Status transition blocked: ${errorMsg}`);
+188:         throw new Error(errorMsg);
+189:       }
+190:     }
+191: 
+192:     try {
+193:       const docRef = doc(db, "deliveries", id);
+194:       await runTransaction(db, async (transaction) => {
+195:         const snap = await transaction.get(docRef);
+196:         if (!snap.exists()) throw new Error(`Delivery ${id} not found.`);
+197:         const data = snap.data();
+198: 
+199:         // Transaction-level: re-validate status transition against live Firestore data
+200:         if (!isValidTransition(data.status as DeliveryStatus, status)) {
+201:           throw new Error(getTransitionError(data.status as DeliveryStatus, status));
+202:         }
+203: 
+204:         // Transaction-level: version conflict detection
+205:         const clientVersion = currentDelivery?.version;
+206:         if (checkVersionConflict(data.version, clientVersion)) {
+207:           throw new Error(`Version conflict: delivery ${id} was modified by another user. Please refresh and retry.`);
+208:         }
+209: 
+210:         const nextVersion = getNextVersion(data.version);
+211:         const updates: any = {
+212:           status,
+213:           eta: status === "delivered" ? "Delivered" : "In Transit",
+214:           version: nextVersion,
+215:           updatedAt: serverTimestamp(),
+216:         };
+217:         if (proof) {
+218:           updates.proof = {
+219:             ...proof,
+220:             verifiedAt: serverTimestamp(),
+221:           };
+222:         }
+223:         transaction.update(docRef, updates);
+224:       });
+225:     } catch (err) {
+226:       console.error("Error updating delivery status: ", err);
+227:       throw err;
+228:     }
+229:   },
+230:   subscribeToDeliveries: () => {
+231:     const { user, role } = get();
+232:     if (!user || !role) return () => {};
+233: 
+234:     let q;
+235:     if (role === "owner") {
+236:       q = query(
+237:         collection(db, "deliveries"),
+238:         where("enterpriseId", "==", user.uid),
+239:         orderBy("createdAt", "desc"),
+240:       );
+241:     } else if (role === "agent") {
+242:       q = query(
+243:         collection(db, "deliveries"),
+244:         where("agentId", "==", user.uid),
+245:         orderBy("createdAt", "desc"),
+246:       );
+247:     } else {
+248:       return () => {};
+249:     }
+250: 
+251:     const unsubscribe = onSnapshot(
+252:       q,
+253:       (snapshot) => {
+254:         const items: Delivery[] = [];
+255:         snapshot.forEach((doc) => {
+256:           const data = doc.data({ serverTimestamps: "estimate" });
+257:           items.push(convertTimestamps(data) as Delivery);
+258:         });
+259:         // Data integrity: auto-sort by status priority + deduplicate
+260:         const processed = processDeliveries(items);
+261:         set({ deliveries: processed });
+262:       },
+263:       (error) => {
+264:         console.error("Error subscribing to deliveries:", error);
+265:       },
+266:     );
+267:     return unsubscribe;
+268:   },
+269:   subscribeToAgents: () => {
+270:     const { user, role } = get();
+271:     if (!user || !role) return () => {};
+272: 
+273:     const q = query(collection(db, "users"), where("role", "==", "agent"));
+274:     const unsubscribe = onSnapshot(
+275:       q,
+276:       (snapshot) => {
+277:         const list: Agent[] = [];
+278:         snapshot.forEach((doc) => {
+279:           const data = doc.data();
+280:           list.push({
+281:             id: doc.id,
+282:             name: data.name || "Agent",
+283:             avatarColor: data.avatarColor || "from-violet-500 to-blue-500",
+284:             online: data.online ?? true,
+285:             rating: data.rating ?? 5.0,
+286:           });
+287:         });
+288:         set({ agents: list });
+289:       },
+290:       (error) => {
+291:         console.error("Error subscribing to agents:", error);
+292:       },
+293:     );
+294:     return unsubscribe;
+295:   },
+296:   fetchAgents: async () => {
+297:     try {
+298:       const q = query(collection(db, "users"), where("role", "==", "agent"));
+299:       const snapshot = await getDocs(q);
+300:       const list: Agent[] = [];
+301:       snapshot.forEach((doc) => {
+302:         const data = doc.data();
+303:         list.push({
+304:           id: doc.id,
+305:           name: data.name || "Agent",
+306:           avatarColor: data.avatarColor || "from-violet-500 to-blue-500",
+307:           online: data.online ?? true,
+308:           rating: data.rating ?? 5.0,
+309:         });
+310:       });
+311:       set({ agents: list });
+312:     } catch (err) {
+313:       console.error("Error fetching agents:", err);
+314:     }
+315:   },
+316:   fetchPendingUsers: async () => {
+317:     try {
+318:       const q = query(collection(db, "users"), where("role", "==", "pending"));
+319:       const snapshot = await getDocs(q);
+320:       const list: any[] = [];
+321:       snapshot.forEach((doc) => {
+322:         const data = doc.data();
+323:         list.push({
+324:           id: doc.id,
+325:           name: data.name || "Pending User",
+326:           email: data.email || "",
+327:           createdAt: data.createdAt || new Date().toISOString(),
+328:         });
+329:       });
+330:       set({ pendingUsers: list });
+331:     } catch (err) {
+332:       console.error("Error fetching pending users:", err);
+333:     }
+334:   },
+335:   approveUser: async (uid, roleToAssign = "agent") => {
+336:     try {
+337:       await updateDoc(doc(db, "users", uid), {
+338:         role: roleToAssign,
+339:       });
+340:       set((s) => ({
+341:         pendingUsers: s.pendingUsers.filter((u) => u.id !== uid),
+342:       }));
+343:     } catch (err) {
+344:       console.error("Error approving user:", err);
+345:       throw err;
+346:     }
+347:   },
+348:   rejectUser: async (uid) => {
+349:     try {
+350:       await updateDoc(doc(db, "users", uid), {
+351:         role: "rejected",
+352:       });
+353:       set((s) => ({
+354:         pendingUsers: s.pendingUsers.filter((u) => u.id !== uid),
+355:       }));
+356:     } catch (err) {
+357:       console.error("Error rejecting user:", err);
+358:       throw err;
+359:     }
+360:   },
+361:   subscribeToNotifications: () => {
+362:     const { user } = get();
+363:     if (!user) return () => {};
+364: 
+365:     const q = query(
+366:       collection(db, "notifications"),
+367:       where("userId", "==", user.uid),
+368:       orderBy("createdAt", "desc"),
+369:     );
+370: 
+371:     const unsubscribe = onSnapshot(
+372:       q,
+373:       (snapshot) => {
+374:         const items: any[] = [];
+375:         snapshot.forEach((doc) => {
+376:           const data = doc.data({ serverTimestamps: "estimate" });
+377:           items.push({ id: doc.id, ...convertTimestamps(data) });
+378:         });
+379:         set({ notifications: items });
+380:       },
+381:       (error) => {
+382:         console.error("Error subscribing to notifications:", error);
+383:       },
+384:     );
+385:     return unsubscribe;
+386:   },
+387:   markNotificationAsRead: async (id) => {
+388:     try {
+389:       await updateDoc(doc(db, "notifications", id), {
+390:         read: true,
+391:       });
+392:     } catch (err) {
+393:       console.error("Error marking notification as read:", err);
+394:     }
+395:   },
+396:   // ─── Offline Queue Actions ───────────────────────────────────
+397:   subscribeToOfflineQueue: () => {
+398:     const { user } = get();
+399:     if (!user) return () => {};
+400:     const unsubscribe = subscribeToOfflineQueue(
+401:       user.uid,
+402:       (items) => set({ offlineQueue: items }),
+403:     );
+404:     return unsubscribe;
+405:   },
+406: 
+407:   retryOfflineSync: async (id) => {
+408:     const { user, userName, addNotification } = get();
+409:     if (!user) return;
+410:     try {
+411:       const item = get().offlineQueue.find((q) => q.id === id);
+412:       if (!item) return;
+413:       const auditEntry = makeAuditEntry("retry_attempted", user.uid, userName || "Owner");
+414:       const newHistory = [...(item.auditHistory || []), auditEntry];
+415:       await updateOfflineQueueItem(id, {
+416:         state: "syncing",
+417:         syncAttempts: (item.syncAttempts || 0) + 1,
+418:         auditHistory: newHistory,
+419:       });
+420:       await writeAuditLog(id, id, "retry_attempted", user.uid, userName || "Owner");
+421:       // Trigger actual sync
+422:       await get().triggerAutoSync();
+423:     } catch (err) {
+424:       console.error("retryOfflineSync error:", err);
+425:       throw err;
+426:     }
+427:   },
+428: 
+429:   cancelOfflineSync: async (id) => {
+430:     const { user, userName } = get();
+431:     if (!user) return;
+432:     try {
+433:       const item = get().offlineQueue.find((q) => q.id === id);
+434:       if (!item) return;
+435:       const auditEntry = makeAuditEntry("cancelled", user.uid, userName || "Owner");
+436:       const newHistory = [...(item.auditHistory || []), auditEntry];
+437:       await updateOfflineQueueItem(id, {
+438:         state: "cancelled",
+439:         auditHistory: newHistory,
+440:       });
+441:       await writeAuditLog(id, id, "cancelled", user.uid, userName || "Owner");
+442:     } catch (err) {
+443:       console.error("cancelOfflineSync error:", err);
+444:       throw err;
+445:     }
+446:   },
+447: 
+448:   deleteOfflineQueueEntry: async (id) => {
+449:     const { user, userName } = get();
+450:     if (!user) return;
+451:     try {
+452:       await deleteOfflineQueueItem(id);
+453:       await writeAuditLog(id, id, "cancelled", user.uid, userName || "Owner", { deleted: true });
+454:     } catch (err) {
+455:       console.error("deleteOfflineQueueEntry error:", err);
+456:       throw err;
+457:     }
+458:   },
+459: 
+460:   approveManualReview: async (id) => {
+461:     const { user, userName, addNotification } = get();
+462:     if (!user) return;
+463:     try {
+464:       const item = get().offlineQueue.find((q) => q.id === id);
+465:       if (!item) return;
+466:       const auditEntry = makeAuditEntry("manual_approved", user.uid, userName || "Owner");
+467:       const newHistory = [...(item.auditHistory || []), auditEntry];
+468:       await updateOfflineQueueItem(id, {
+469:         state: "synced",
+470:         verificationStatus: "verified",
+471:         syncCompletedTime: new Date().toISOString(),
+472:         auditHistory: newHistory,
+473:       });
+474:       await writeAuditLog(id, id, "manual_approved", user.uid, userName || "Owner");
+475:       await addNotification(
+476:         "Manual Review Approved",
+477:         `Delivery ${id} has been manually approved and marked as verified.`,
+478:         item.agentId,
+479:       );
+480:     } catch (err) {
+481:       console.error("approveManualReview error:", err);
+482:       throw err;
+483:     }
+484:   },
+485: 
+486:   rejectManualReview: async (id) => {
+487:     const { user, userName, addNotification } = get();
+488:     if (!user) return;
+489:     try {
+490:       const item = get().offlineQueue.find((q) => q.id === id);
+491:       if (!item) return;
+492:       const auditEntry = makeAuditEntry("manual_rejected", user.uid, userName || "Owner");
+493:       const newHistory = [...(item.auditHistory || []), auditEntry];
+494:       await updateOfflineQueueItem(id, {
+495:         state: "failed",
+496:         failureReason: "corrupted_proof",
+497:         verificationStatus: "failed",
+498:         auditHistory: newHistory,
+499:       });
+500:       await writeAuditLog(id, id, "manual_rejected", user.uid, userName || "Owner");
+501:       await addNotification(
+502:         "Manual Review Rejected",
+503:         `Delivery ${id} manual review has been rejected by the owner.`,
+504:         item.agentId,
+505:       );
+506:     } catch (err) {
+507:       console.error("rejectManualReview error:", err);
+508:       throw err;
+509:     }
+510:   },
+511: 
+512:   requestResubmission: async (id) => {
+513:     const { user, userName, addNotification } = get();
+514:     if (!user) return;
+515:     try {
+516:       const item = get().offlineQueue.find((q) => q.id === id);
+517:       if (!item) return;
+518:       const auditEntry = makeAuditEntry("resubmission_requested", user.uid, userName || "Owner");
+519:       const newHistory = [...(item.auditHistory || []), auditEntry];
+520:       await updateOfflineQueueItem(id, {
+521:         state: "failed",
+522:         failureReason: "missing_image",
+523:         auditHistory: newHistory,
+524:       });
+525:       await writeAuditLog(id, id, "resubmission_requested", user.uid, userName || "Owner");
+526:       await addNotification(
+527:         "Resubmission Required",
+528:         `Delivery ${id} requires resubmission. Please re-capture proof and sync again.`,
+529:         item.agentId,
+530:       );
+531:     } catch (err) {
+532:       console.error("requestResubmission error:", err);
+533:       throw err;
+534:     }
+535:   },
+536: 
+537:   escalateManualReview: async (id) => {
+538:     const { user, userName, addNotification } = get();
+539:     if (!user) return;
+540:     try {
+541:       const item = get().offlineQueue.find((q) => q.id === id);
+542:       if (!item) return;
+543:       const auditEntry = makeAuditEntry("escalated", user.uid, userName || "Owner");
+544:       const newHistory = [...(item.auditHistory || []), auditEntry];
+545:       await updateOfflineQueueItem(id, {
+546:         auditHistory: newHistory,
+547:       });
+548:       await writeAuditLog(id, id, "escalated", user.uid, userName || "Owner");
+549:       await addNotification(
+550:         "Delivery Escalated",
+551:         `Delivery ${id} has been escalated for senior review.`,
+552:         user.uid,
+553:       );
+554:     } catch (err) {
+555:       console.error("escalateManualReview error:", err);
+556:       throw err;
+557:     }
+558:   },
+559: 
+560:   reassignOfflineDelivery: async (id, agentId, agentName) => {
+561:     const { user, userName, addNotification } = get();
+562:     if (!user) return;
+563:     try {
+564:       const item = get().offlineQueue.find((q) => q.id === id);
+565:       if (!item) return;
+566:       const auditEntry = makeAuditEntry("reassigned", user.uid, userName || "Owner", { agentId, agentName });
+567:       const newHistory = [...(item.auditHistory || []), auditEntry];
+568:       await updateOfflineQueueItem(id, {
+569:         agentId,
+570:         agentName,
+571:         state: "pending",
+572:         auditHistory: newHistory,
+573:       });
+574:       await writeAuditLog(id, id, "reassigned", user.uid, userName || "Owner", { agentId, agentName });
+575:       await addNotification(
+576:         "Delivery Reassigned",
+577:         `Offline delivery ${id} has been reassigned to you.`,
+578:         agentId,
+579:       );
+580:     } catch (err) {
+581:       console.error("reassignOfflineDelivery error:", err);
+582:       throw err;
+583:     }
+584:   },
+585: 
+586:   markForManualReview: async (id) => {
+587:     const { user, userName, addNotification } = get();
+588:     if (!user) return;
+589:     try {
+590:       const item = get().offlineQueue.find((q) => q.id === id);
+591:       if (!item) return;
+592:       const auditEntry = makeAuditEntry("manual_review_requested", user.uid, userName || "Owner");
+593:       const newHistory = [...(item.auditHistory || []), auditEntry];
+594:       await updateOfflineQueueItem(id, {
+595:         state: "manual_review",
+596:         auditHistory: newHistory,
+597:       });
+598:       await writeAuditLog(id, id, "manual_review_requested", user.uid, userName || "Owner");
+599:       await addNotification(
+600:         "Manual Review Required",
+601:         `Offline delivery ${id} has been flagged for manual review.`,
+602:         user.uid,
+603:       );
+604:     } catch (err) {
+605:       console.error("markForManualReview error:", err);
+606:       throw err;
+607:     }
+608:   },
+609: 
+610:   downloadEvidence: (id) => {
+611:     const item = get().offlineQueue.find((q) => q.id === id);
+612:     if (!item) return;
+613:     const evidence = {
+614:       deliveryId: item.id,
+615:       agent: item.agentName,
+616:       customer: item.customer,
+617:       offlineCaptureTime: item.offlineCaptureTime,
+618:       gps: item.proof?.gps,
+619:       otp: item.proof?.otp,
+620:       hash: item.proof?.hash,
+621:       failureReason: item.failureReason,
+622:       auditHistory: item.auditHistory,
+623:       exportedAt: new Date().toISOString(),
+624:     };
+625:     const blob = new Blob([JSON.stringify(evidence, null, 2)], { type: "application/json" });
+626:     const url = URL.createObjectURL(blob);
+627:     const a = document.createElement("a");
+628:     a.href = url;
+629:     a.download = `evidence-${id}-${Date.now()}.json`;
+630:     a.click();
+631:     URL.revokeObjectURL(url);
+632:   },
+633: 
+634:   addNotification: async (title, message, targetUserId) => {
+635:     try {
+636:       const newDocRef = doc(collection(db, "notifications"));
+637:       await setDoc(newDocRef, {
+638:         userId: targetUserId,
+639:         title,
+640:         message,
+641:         read: false,
+642:         createdAt: serverTimestamp(),
+643:       });
+644:     } catch (err) {
+645:       console.error("Error adding notification:", err);
+646:     }
+647:   },
+648:   initializeAuth: () => {
+649:     let unsubscribeUserDoc: (() => void) | null = null;
+650:     const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
+651:       if (unsubscribeUserDoc) {
+652:         unsubscribeUserDoc();
+653:         unsubscribeUserDoc = null;
+654:       }
+655:       try {
+656:         if (firebaseUser) {
+657:           const userDocRef = doc(db, "users", firebaseUser.uid);
+658:           unsubscribeUserDoc = onSnapshot(
+659:             userDocRef,
+660:             async (snapshot) => {
+661:               if (snapshot.exists()) {
+662:                 const data = convertTimestamps(snapshot.data({ serverTimestamps: "estimate" }));
+663:                  const role = data.role as "owner" | "agent" | "pending";
+664:                  const userName = data.name || null;
+665:                  set({ user: firebaseUser, role, userName, userProfile: data, authLoading: false });
+666:                  // Auto sync online pending queue items
+667:                  if (navigator.onLine && (role === "owner" || role === "agent")) {
+668:                    get().triggerAutoSync();
+669:                  }
+670:                } else {
+671:                  // If user doc doesn't exist yet (signup race condition), wait for login.tsx's setDoc.
+672:                  set({
+673:                    user: firebaseUser,
+674:                    role: null,
+675:                    userName: firebaseUser.displayName || "New User",
+676:                    userProfile: null,
+677:                    authLoading: false,
+678:                  });
+679:  
+680:                  // Fallback creation after 2 seconds if still missing
+681:                  setTimeout(async () => {
+682:                    const latestSnapshot = await getDoc(userDocRef);
+683:                    if (!latestSnapshot.exists() && auth.currentUser?.uid === firebaseUser.uid) {
+684:                      await setDoc(userDocRef, {
+685:                        email: firebaseUser.email,
+686:                        role: "pending",
+687:                        name: firebaseUser.displayName || "New User",
+688:                        createdAt: serverTimestamp(),
+689:                      });
+690:                    }
+691:                  }, 2000);
+692:                }
+693:              },
+694:              (err) => {
+695:                console.error("Error listening to user document:", err);
+696:                set({ user: firebaseUser, role: "pending", userName: null, userProfile: null, authLoading: false });
+697:              },
+698:            );
+699:          } else {
+700:            set({ user: null, role: null, userName: null, userProfile: null, authLoading: false });
+701:          }
+702:        } catch (error) {
+703:          console.error("Error during auth initialization:", error);
+704:          set({ user: null, role: null, userName: null, userProfile: null, authLoading: false });
+705:       }
+706:     });
+707:     return () => {
+708:       unsubscribeAuth();
+709:       if (unsubscribeUserDoc) {
+710:         unsubscribeUserDoc();
+711:       }
+712:     };
+713:   },
+714:   triggerAutoSync: async () => {
+715:     const { syncState, updateStatus, user, userName } = get();
+716:     if (syncState === "syncing") return;
+717:     if (!navigator.onLine) return;
+718: 
+719:     try {
+720:       const { getPendingSyncItems, removePendingSyncItem } = await import("@/lib/offline-store");
+721:       const items = await getPendingSyncItems();
+722:       if (items.length === 0) return;
+723: 
+724:       set({ syncState: "syncing", syncProgress: 0 });
+725:       const totalItems = items.length;
+726:       let completedCount = 0;
+727: 
+728:       for (const item of items) {
+729:         const syncStartTime = new Date().toISOString();
+730: 
+731:         // Write initial offlineQueue record (state: syncing) so owner can see it live
+732:         try {
+733:           const queueEntry: import("@/lib/offline-queue-store").OfflineQueueItem = {
+734:             id: item.id,
+735:             enterpriseId: item.enterpriseId || user?.uid || "",
+736:             agentId: item.agentId || user?.uid || "",
+737:             agentName: item.agentName || userName || "Agent",
+738:             customer: item.customer || "",
+739:             deviceName: item.deviceName || navigator.userAgent.split("(")[0].trim() || "Unknown Device",
+740:             networkStatus: navigator.onLine ? "online" : "offline",
+741:             queuePosition: completedCount + 1,
+742:             offlineCaptureTime: item.offlineCaptureTime || item.proof.verifiedAt,
+743:             createdTime: item.offlineCaptureTime || new Date().toISOString(),
+744:             gpsStatus: item.proof.gps ? "captured" : "missing",
+745:             photoStatus: item.proof.photoBase64 ? "captured" : "missing",
+746:             otpStatus: item.proof.otp ? "captured" : "missing",
+747:             syncAttempts: 1,
+748:             estimatedSyncTime: new Date(Date.now() + 30000).toISOString(),
+749:             state: "syncing",
+750:             retryCount: 0,
+751:             syncStartTime,
+752:             browserInfo: item.browserInfo || item.proof.userAgent || navigator.userAgent,
+753:             offlineDurationMs: item.offlineDurationMs,
+754:             proof: {
+755:               gps: item.proof.gps,
+756:               verifiedAt: item.proof.verifiedAt,
+757:               hash: item.proof.hash,
+758:               otp: item.proof.otp,
+759:             },
+760:             auditHistory: [
+761:               makeAuditEntry("sync_started", user?.uid || "", userName || "System"),
+762:             ],
+763:           };
+764:           await writeOfflineQueueItem(queueEntry);
+765:           await writeAuditLog(item.id, item.id, "sync_started", user?.uid || "", userName || "System");
+766:         } catch (queueErr) {
+767:           console.warn("Failed to write offlineQueue record:", queueErr);
+768:         }
+769: 
+770:         // Fetch actual delivery document from Firestore
+771:         const deliveryRef = doc(db, "deliveries", item.id);
+772:         const deliverySnap = await getDoc(deliveryRef);
+773:         const deliveryData = deliverySnap.exists() ? deliverySnap.data() : null;
+774:         const originalOtp = deliveryData?.otp || "";
+775:         const isOtpCorrect = item.proof.otp === originalOtp;
+776: 
+777:         let uploadedPhotoUrl = "";
+778:         let photoUploadFailed = false;
+779: 
+780:         // Upload photo base64 to Storage if exists
+781:         if (item.proof.photoBase64) {
+782:           try {
+783:             const { ref, uploadString, getDownloadURL } = await import("firebase/storage");
+784:             const { storage } = await import("@/lib/firebase");
+785:             const imageRef = ref(storage, `proofs/${item.id}_${Date.now()}.jpg`);
+786:             await uploadString(imageRef, item.proof.photoBase64, "data_url");
+787:             uploadedPhotoUrl = await getDownloadURL(imageRef);
+788:           } catch (photoErr) {
+789:             console.warn("Photo upload failed:", photoErr);
+790:             photoUploadFailed = true;
+791:           }
+792:         }
+793: 
+794:         const statusToSet: DeliveryStatus = isOtpCorrect ? "delivered" : "failed";
+795:         const offlineVerification = {
+796:           verifiedOtp: item.proof.otp,
+797:           actualOtp: originalOtp,
+798:           status: isOtpCorrect ? "success" : "failed",
+799:           userAgent: item.proof.userAgent || "unknown",
+800:           checkedAt: serverTimestamp(),
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

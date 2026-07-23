@@ -1,0 +1,14 @@
+{
+  "name": "mobile-app",
+  "private": true,
+  "scripts": {
+    "sync": "cap sync",
+    "open:android": "cap open android"
+  },
+  "dependencies": {
+    "@capacitor-firebase/authentication": "^8.3.0",
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/cli": "^8.3.4",
+    "@capacitor/core": "^8.3.4"
+  }
+}

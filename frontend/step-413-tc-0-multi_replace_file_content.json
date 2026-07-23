@@ -1,0 +1,33 @@
+{
+  "ArtifactMetadata": {
+    "RequestFeedback": false,
+    "Summary": "Extended store settlement methods to accept third-party transaction reference IDs in app-store.ts.",
+    "UserFacing": false
+  },
+  "Description": "Add support for razorpay reference IDs in app-store.ts completeOnlinePayment method.",
+  "Instruction": "Extend completeOnlinePayment signature and database write parameters in app-store.ts.",
+  "ReplacementChunks": [
+    {
+      "AllowMultiple": false,
+      "EndLine": 111,
+      "ReplacementContent": "  completeOnlinePayment: (deliveryId: string, paymentMethod: string, amount: number, gatewayReference?: string) => Promise<void>;",
+      "StartLine": 110,
+      "TargetContent": "  completeOnlinePayment: (deliveryId: string, paymentMethod: string, amount: number) => Promise<void>;"
+    },
+    {
+      "AllowMultiple": false,
+      "EndLine": 863,
+      "ReplacementContent": "  completeOnlinePayment: async (deliveryId, paymentMethod, amount, gatewayReference) => {",
+      "StartLine": 861,
+      "TargetContent": "  completeOnlinePayment: async (deliveryId, paymentMethod, amount) => {"
+    },
+    {
+      "AllowMultiple": false,
+      "EndLine": 914,
+      "ReplacementContent": "        transaction.set(transactionRef, {\n          transactionId,\n          paymentId,\n          deliveryId,\n          amount,\n          status: \"success\",\n          paymentMethod,\n          gatewayReference: gatewayReference || `SIMULATED_${paymentMethod.toUpperCase()}_GATEWAY`,\n          createdAt: serverTimestamp(),\n          performedBy: \"customer\",\n        });",
+      "StartLine": 903,
+      "TargetContent": "        transaction.set(transactionRef, {\n          transactionId,\n          paymentId,\n          deliveryId,\n          amount,\n          status: \"success\",\n          paymentMethod,\n          gatewayReference: `SIMULATED_${paymentMethod.toUpperCase()}_GATEWAY`,\n          createdAt: serverTimestamp(),\n          performedBy: \"customer\",\n        });"
+    }
+  ],
+  "TargetFile": "c:\\Users\\HP\\OneDrive\\Documents\\Desktop\\TrustRoute\\trustroute-logistics-verified-f6658658\\frontend\\src\\store\\app-store.ts"
+}

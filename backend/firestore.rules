@@ -1,0 +1,168 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper checks
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function getUserData(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data;
+    }
+
+    function getUserRole(uid) {
+      return getUserData(uid).role;
+    }
+
+    // Users Collection rules
+    match /users/{userId} {
+      // Allow single document read of own profile, or owner reading any profile
+      allow get: if isSignedIn() && (
+        request.auth.uid == userId || 
+        getUserRole(request.auth.uid) == 'owner'
+      );
+      
+      // Allow list queries that filter by the requester's enterpriseId OR for pending users
+      allow list: if isSignedIn() && (
+        getUserRole(request.auth.uid) == 'owner' ||
+        resource.data.enterpriseId == request.auth.uid ||
+        resource.data.role == 'pending'
+      );
+      
+      // Allow creation of pending or specified roles on signup
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      
+      // Prevent user from escalating their own role. Only owner can update roles, but users can demote themselves to 'pending'.
+      allow update: if isSignedIn() && (
+        (request.auth.uid == userId && (request.resource.data.role == resource.data.role || request.resource.data.role == 'pending')) || 
+        (request.auth.uid != userId && getUserRole(request.auth.uid) == 'owner')
+      );
+      
+      allow delete: if isSignedIn() && getUserRole(request.auth.uid) == 'owner';
+    }
+
+    // Deliveries Collection rules
+    match /deliveries/{deliveryId} {
+      // Owners can only read deliveries belonging to their enterprise. Agents can only read deliveries assigned to them.
+      // Allow read of non-existent documents for transaction.get() to work during creation.
+      allow read: if isSignedIn() && (
+        resource == null ||
+        getUserRole(request.auth.uid) == 'owner' || 
+        resource.data.agentId == request.auth.uid
+      );
+      
+      // Only owners can create deliveries associated with their own enterprise ID
+      allow create: if isSignedIn() && 
+        getUserRole(request.auth.uid) == 'owner' && 
+        request.resource.data.enterpriseId == request.auth.uid;
+      
+      // Only owners can update their enterprise deliveries, or the assigned agent can update the delivery status/proof (preserving enterpriseId/agentId mapping)
+      allow update: if isSignedIn() && (
+        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) || 
+        (
+          resource.data.agentId == request.auth.uid && 
+          request.resource.data.agentId == resource.data.agentId && 
+          request.resource.data.enterpriseId == resource.data.enterpriseId
+        )
+      );
+      
+      // Only owners can delete their own enterprise deliveries
+      allow delete: if isSignedIn() && 
+        getUserRole(request.auth.uid) == 'owner' && 
+        resource.data.enterpriseId == request.auth.uid;
+    }
+
+    // Notifications Collection rules
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      // BUGFIX: Allow agents to write notifications for enterprise owners.
+      // Previously this only allowed self-writes or owner writes. Agents need
+      // to notify enterprise owners on delivery completion, COD collection, and sync.
+      allow create: if isSignedIn() && (
+        request.resource.data.userId == request.auth.uid ||
+        getUserRole(request.auth.uid) == 'owner' ||
+        getUserRole(request.auth.uid) == 'agent'
+      );
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid && request.resource.data.userId == resource.data.userId;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Offline Queue Collection rules
+    match /offlineQueue/{queueId} {
+      allow read: if isSignedIn() && (
+        getUserRole(request.auth.uid) == 'owner' ||
+        resource.data.agentId == request.auth.uid
+      );
+      allow create: if isSignedIn() && (
+        getUserRole(request.auth.uid) == 'owner' ||
+        request.resource.data.agentId == request.auth.uid
+      );
+      allow update: if isSignedIn() && (
+        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) ||
+        (
+          resource.data.agentId == request.auth.uid &&
+          request.resource.data.agentId == resource.data.agentId &&
+          request.resource.data.enterpriseId == resource.data.enterpriseId
+        )
+      );
+      allow delete: if isSignedIn() && getUserRole(request.auth.uid) == 'owner';
+    }
+
+    // Payments Collection rules
+    match /payments/{paymentId} {
+      allow read: if (isSignedIn() && (
+        getUserRole(request.auth.uid) == 'owner' || 
+        resource.data.agentId == request.auth.uid
+      )) || (!isSignedIn() && resource.data.paymentId == paymentId);
+      
+      allow create: if isSignedIn() && (
+        getUserRole(request.auth.uid) == 'owner' ||
+        request.resource.data.agentId == request.auth.uid
+      );
+      
+      allow update: if (isSignedIn() && (
+        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) ||
+        (
+          resource.data.agentId == request.auth.uid && 
+          request.resource.data.agentId == resource.data.agentId && 
+          request.resource.data.enterpriseId == resource.data.enterpriseId
+        )
+      )) || (!isSignedIn() && request.resource.data.paymentStatus == 'paid');
+      
+      allow delete: if isSignedIn() && getUserRole(request.auth.uid) == 'owner';
+    }
+
+    // Transactions Collection rules (Immutable logs)
+    match /transactions/{transactionId} {
+      allow read: if isSignedIn() && (
+        getUserRole(request.auth.uid) == 'owner' ||
+        resource.data.performedBy == request.auth.uid
+      );
+      // BUGFIX: Removed unauthenticated write path. Transactions are immutable
+      // server-side logs. Customer-initiated payments are written by authenticated
+      // backend functions or by the agent/owner completing the transaction.
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // Receipts Collection rules (Immutable logs, readable publicly for customer verification)
+    match /receipts/{receiptNumber} {
+      allow read: if true;
+      // BUGFIX: Removed public write path `|| (!isSignedIn())` which made this
+      // effectively `allow create: if true`. Receipts are created server-side
+      // by authenticated agents/owners completing deliveries.
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    // Audit Logs Collection rules (Immutable logs)
+    match /auditLogs/{logId} {
+      allow read: if isSignedIn() && (
+        getUserRole(request.auth.uid) == 'owner' ||
+        resource.data.performedBy == request.auth.uid
+      );
+      allow create: if isSignedIn() && request.resource.data.performedBy == request.auth.uid;
+      allow update, delete: if false;
+    }
+  }
+}

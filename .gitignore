@@ -1,0 +1,57 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+.output
+.vinxi
+.tanstack/**
+.nitro
+*.local
+
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vercel
+
+# Local Netlify folder
+.netlify
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env
+
+# Automation — ignore runtime artifacts but keep reports
+automation/logs/
+automation/screenshots/
+automation/__pycache__/
+automation/**/__pycache__/
+automation/**/*.pyc
+automation/config/__pycache__/
+
+# k6 local results (CI will generate and upload as artifacts)
+testing/load-results.json
+
+# Keep Test Results/ tracked in git
+!Test Results/
+!Test Results/**

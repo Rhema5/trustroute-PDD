@@ -1,0 +1,70 @@
+config:
+  target: "https://rhema5.github.io/trustroute-PDD"
+  phases:
+    - duration: 10
+      arrivalRate: 10
+      name: "Ramp-up phase (10s → 100 VUs)"
+    - duration: 10
+      arrivalRate: 100
+      name: "Full load (100 VUs)"
+    - duration: 30
+      arrivalRate: 100
+      name: "Sustained load (30s @ 100 VUs)"
+    - duration: 10
+      arrivalRate: 10
+      name: "Ramp-down"
+  defaults:
+    headers:
+      User-Agent: "artillery-load-test/1.0 TrustRoute-QA"
+      Accept: "text/html"
+  ensure:
+    maxErrorRate: 5
+    p95: 2000
+  plugins:
+    ensure: {}
+
+scenarios:
+  - name: "SPA Page Loads"
+    flow:
+      - get:
+          url: "/"
+          name: "Landing Page"
+      - think: 1
+      - get:
+          url: "/login"
+          name: "Login Page"
+      - think: 1
+      - get:
+          url: "/forgot-password"
+          name: "Forgot Password"
+      - think: 0.5
+
+  - name: "Dashboard Routes"
+    weight: 30
+    flow:
+      - get:
+          url: "/dashboard"
+          name: "Dashboard Home"
+      - think: 1
+      - get:
+          url: "/dashboard/analytics"
+          name: "Analytics"
+      - think: 1
+      - get:
+          url: "/dashboard/payments"
+          name: "Payments"
+
+  - name: "Agent Portal Routes"
+    weight: 20
+    flow:
+      - get:
+          url: "/agent"
+          name: "Agent Home"
+      - think: 1
+      - get:
+          url: "/agent/deliveries"
+          name: "Deliveries"
+
+reporting:
+  - type: json
+    filename: testing/reports/artillery-results.json

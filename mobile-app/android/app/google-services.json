@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "612268243801",
+    "firebase_url": "https://trustroute-c1698-default-rtdb.firebaseio.com",
+    "project_id": "trustroute-c1698",
+    "storage_bucket": "trustroute-c1698.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612268243801:android:c57a474ed7b8ccf26dea48",
+        "android_client_info": {
+          "package_name": "com.trustroute.logistics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612268243801-42k9b8cajd1maqt5eh90iqq6rltu39je.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trustroute.logistics",
+            "certificate_hash": "01073d78b43e26ba0bbf42b8f181d11189771ac1"
+          }
+        },
+        {
+          "client_id": "612268243801-n9l5t8ifgiltruscrmet84rs79nn0rcl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trustroute.logistics",
+            "certificate_hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        },
+        {
+          "client_id": "612268243801-akp0jra7smn4k11djvgffv6203e781t7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxlW-sTvM9yZbaWnTNFnsqPo6cpWiaKC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612268243801-akp0jra7smn4k11djvgffv6203e781t7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

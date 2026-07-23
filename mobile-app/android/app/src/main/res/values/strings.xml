@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TrustRoute Agent</string>
+    <string name="title_activity_main">TrustRoute Agent</string>
+    <string name="package_name">com.trustroute.logistics</string>
+    <string name="custom_url_scheme">com.trustroute.logistics</string>
+    <string name="server_client_id">612268243801-akp0jra7smn4k11djvgffv6203e781t7.apps.googleusercontent.com</string>
+</resources>

@@ -1,0 +1,33 @@
+{
+  "ArtifactMetadata": {
+    "RequestFeedback": false,
+    "Summary": "Removed query-level orderBy constraints on deliveries, payments, and notifications collections to bypass the Firestore composite indexes requirement. Replaced them with client-side in-memory sorting.",
+    "UserFacing": false
+  },
+  "Description": "Bypass the Firestore composite index requirements by removing orderBy from queries and sorting notifications and payments in-memory in app-store.ts.",
+  "Instruction": "Remove orderBy calls from queries in app-store.ts and add client-side sorting.",
+  "ReplacementChunks": [
+    {
+      "AllowMultiple": false,
+      "EndLine": 278,
+      "ReplacementContent": "    let q;\n    if (role === \"owner\") {\n      q = query(\n        collection(db, \"deliveries\"),\n        where(\"enterpriseId\", \"==\", user.uid),\n      );\n    } else if (role === \"agent\") {\n      q = query(\n        collection(db, \"deliveries\"),\n        where(\"agentId\", \"==\", user.uid),\n      );\n    } else {\n      return () => {};\n    }",
+      "StartLine": 262,
+      "TargetContent": "    let q;\n    if (role === \"owner\") {\n      q = query(\n        collection(db, \"deliveries\"),\n        where(\"enterpriseId\", \"==\", user.uid),\n        orderBy(\"createdAt\", \"desc\"),\n      );\n    } else if (role === \"agent\") {\n      q = query(\n        collection(db, \"deliveries\"),\n        where(\"agentId\", \"==\", user.uid),\n        orderBy(\"createdAt\", \"desc\"),\n      );\n    } else {\n      return () => {};\n    }"
+    },
+    {
+      "AllowMultiple": false,
+      "EndLine": 408,
+      "ReplacementContent": "    const q = query(\n      collection(db, \"notifications\"),\n      where(\"userId\", \"==\", user.uid),\n    );\n\n    const unsubscribe = onSnapshot(\n      q,\n      (snapshot) => {\n        const items: any[] = [];\n        snapshot.forEach((doc) => {\n          const data = doc.data({ serverTimestamps: \"estimate\" });\n          items.push({ id: doc.id, ...convertTimestamps(data) });\n        });\n        // In-memory sort by createdAt desc\n        items.sort((a, b) => {\n          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;\n          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;\n          return dateB - dateA;\n        });\n        set({ notifications: items });\n      },",
+      "StartLine": 393,
+      "TargetContent": "    const q = query(\n      collection(db, \"notifications\"),\n      where(\"userId\", \"==\", user.uid),\n      orderBy(\"createdAt\", \"desc\"),\n    );\n\n    const unsubscribe = onSnapshot(\n      q,\n      (snapshot) => {\n        const items: any[] = [];\n        snapshot.forEach((doc) => {\n          const data = doc.data({ serverTimestamps: \"estimate\" });\n          items.push({ id: doc.id, ...convertTimestamps(data) });\n        });\n        set({ notifications: items });\n      },"
+    },
+    {
+      "AllowMultiple": false,
+      "EndLine": 773,
+      "ReplacementContent": "    let q;\n    if (role === \"owner\") {\n      q = query(\n        collection(db, \"payments\"),\n        where(\"enterpriseId\", \"==\", user.uid),\n      );\n    } else if (role === \"agent\") {\n      q = query(\n        collection(db, \"payments\"),\n        where(\"agentId\", \"==\", user.uid),\n      );\n    } else {\n      return () => {};\n    }\n\n    const unsubscribe = onSnapshot(\n      q,\n      (snapshot) => {\n        const items: Payment[] = [];\n        snapshot.forEach((doc) => {\n          const data = doc.data({ serverTimestamps: \"estimate\" });\n          items.push(convertTimestamps(data) as Payment);\n        });\n        // In-memory sort by createdAt desc\n        items.sort((a, b) => {\n          const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;\n          const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;\n          return dateB - dateA;\n        });\n        set({ payments: items });\n      },",
+      "StartLine": 746,
+      "TargetContent": "    let q;\n    if (role === \"owner\") {\n      q = query(\n        collection(db, \"payments\"),\n        where(\"enterpriseId\", \"==\", user.uid),\n        orderBy(\"createdAt\", \"desc\"),\n      );\n    } else if (role === \"agent\") {\n      q = query(\n        collection(db, \"payments\"),\n        where(\"agentId\", \"==\", user.uid),\n        orderBy(\"createdAt\", \"desc\"),\n      );\n    } else {\n      return () => {};\n    }\n\n    const unsubscribe = onSnapshot(\n      q,\n      (snapshot) => {\n        const items: Payment[] = [];\n        snapshot.forEach((doc) => {\n          const data = doc.data({ serverTimestamps: \"estimate\" });\n          items.push(convertTimestamps(data) as Payment);\n        });\n        set({ payments: items });\n      },"
+    }
+  ],
+  "TargetFile": "c:\\Users\\HP\\OneDrive\\Documents\\Desktop\\TrustRoute\\trustroute-logistics-verified-f6658658\\frontend\\src\\store\\app-store.ts"
+}
