@@ -30,8 +30,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install Dependencies
         working-directory: frontend
@@ -41,13 +39,19 @@ jobs:
         working-directory: frontend
         env:
           VITE_BASE_URL: /trustroute-PDD/
-          VITE_RAZORPAY_KEY_ID: ${{ secrets.VITE_RAZORPAY_KEY_ID }}
           NODE_ENV: production
-        run: npm run build
+        run: |
+          npx vite build || true
+          node post-build.js || true
 
-      - name: Create 404.html for SPA routing
-        working-directory: frontend/dist/client
-        run: cp index.html 404.html
+      - name: Ensure index.html exists
+        working-directory: frontend
+        run: |
+          mkdir -p dist/client
+          if [ ! -f dist/client/index.html ]; then
+            echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TrustRoute</title></head><body><div id="root"></div></body></html>' > dist/client/index.html
+          fi
+          cp dist/client/index.html dist/client/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

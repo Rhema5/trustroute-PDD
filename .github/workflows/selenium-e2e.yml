@@ -1,22 +1,19 @@
 name: "Selenium E2E Tests"
 
 on:
-  workflow_run:
-    workflows: ["Deploy to GitHub Pages"]
-    types: [completed]
+  push:
+    branches: [master, main]
   workflow_dispatch:
   schedule:
-    - cron: "0 3 * * *"   # Daily at 3 AM UTC
+    - cron: "0 3 * * *"
 
 permissions:
   contents: write
-  actions: read
 
 jobs:
   selenium-e2e:
-    name: "Selenium E2E vs Live Site"
+    name: "Selenium E2E — 500 Tests vs Live Site"
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
 
     env:
       BASE_URL: "https://rhema5.github.io/trustroute-PDD/"
@@ -24,7 +21,7 @@ jobs:
       PYTHONUNBUFFERED: "1"
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Python 3.11
@@ -32,11 +29,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Chrome Browser
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y google-chrome-stable
-          google-chrome --version
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
 
       - name: Install Python Dependencies
         run: |
@@ -47,33 +41,28 @@ jobs:
             jinja2==3.1.4 \
             requests==2.31.0
 
-      - name: Wait for live site to be available
+      - name: Wait for Live Site (max 60s)
         run: |
-          echo "Waiting for https://rhema5.github.io/trustroute-PDD/ ..."
-          for i in $(seq 1 10); do
-            STATUS=$(curl -o /dev/null -s -w "%{http_code}" "https://rhema5.github.io/trustroute-PDD/")
-            echo "Attempt $i: HTTP $STATUS"
-            if [ "$STATUS" = "200" ]; then
-              echo "Site is live!"
-              break
-            fi
-            sleep 15
+          for i in $(seq 1 6); do
+            STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
+              "https://rhema5.github.io/trustroute-PDD/" --max-time 10 || echo "000")
+            echo "Check $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then echo "Site is live!"; break; fi
+            sleep 10
           done
 
-      - name: Run Selenium Test Suite (500 tests)
+      - name: Run Selenium Test Suite
         run: python automation/run_tests.py
         continue-on-error: true
-        timeout-minutes: 30
+        timeout-minutes: 25
 
-      - name: Generate Excel Report
-        run: python automation/generate_excel_report.py
+      - name: Generate Excel + HTML Reports
         if: always()
+        run: |
+          python automation/generate_excel_report.py
+          python automation/generate_html_report.py
 
-      - name: Generate HTML Report
-        run: python automation/generate_html_report.py
-        if: always()
-
-      - name: Commit Reports to Repository
+      - name: Commit Reports
         if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -82,31 +71,29 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git pull --rebase origin master || true
           git add "Test Results/" || true
-          git diff --staged --quiet || git commit -m "ci: Update Selenium E2E reports [skip ci]"
+          git diff --staged --quiet || git commit -m "ci: Selenium E2E report — run ${{ github.run_number }} [skip ci]"
           git push origin master || true
 
-      - name: Upload Selenium Artifacts
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: selenium-e2e-results-${{ github.run_number }}
+          name: selenium-e2e-${{ github.run_number }}
           path: |
             Test Results/Excel/
             Test Results/HTML/
             Test Results/JSON/
-            automation/screenshots/
-            automation/logs/
           retention-days: 30
 
-      - name: Post Results Summary
+      - name: Summary
         if: always()
         run: |
           echo "## Selenium E2E Test Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Target URL | https://rhema5.github.io/trustroute-PDD/ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Target | https://rhema5.github.io/trustroute-PDD/ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests | 500 (10 modules) |" >> $GITHUB_STEP_SUMMARY
           echo "| Framework | Selenium 4.18 + Python 3.11 |" >> $GITHUB_STEP_SUMMARY
-          echo "| Test Modules | Landing, Auth, Navigation, UI, Dashboard, Agent, Payment, Forms, Performance |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Reports:** Download from Artifacts section above" >> $GITHUB_STEP_SUMMARY
+          echo "Download Excel/HTML reports from Artifacts above." >> $GITHUB_STEP_SUMMARY

@@ -71,6 +71,6 @@ mobile-app/android/app/src/main/res/mipmap-xhdpi/
 mobile-app/android/app/src/main/res/mipmap-xxhdpi/
 mobile-app/android/app/src/main/res/mipmap-xxxhdpi/
 
-# Exclude large lock files from root
-package-lock.json
-bun.lock
+# Exclude large lock files from root (not frontend — CI needs it)
+/package-lock.json
+/bun.lock
