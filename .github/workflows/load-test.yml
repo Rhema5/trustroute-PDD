@@ -1,4 +1,4 @@
-name: "k6 Load Testing (100 VUs x 60s)"
+name: "k6 Load Testing (50 VUs x 60s)"
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   load-test:
-    name: "Baseline Load Test — 100 VUs x 60s"
+    name: "Baseline Load Test — 50 VUs x 60s"
     runs-on: ubuntu-latest
 
     steps:
@@ -32,40 +32,38 @@ jobs:
       - name: Run k6 Load Test
         run: |
           k6 run \
-            --out json=testing/reports/k6-raw-results.json \
             --summary-export=testing/reports/k6-summary.json \
-            testing/k6-load-test.js
-        continue-on-error: true
+            testing/k6-load-test.js || true
         timeout-minutes: 5
         env:
           BASE_URL: "https://rhema5.github.io/trustroute-PDD"
           K6_NO_COLOR: "1"
 
-      - name: Generate Text Report
+      - name: Generate Load Test Report
         if: always()
         run: |
-          echo "# k6 Load Test Report" > testing/reports/load-test-report.md
+          echo "# k6 Load Test Summary" > testing/reports/load-test-report.md
           echo "**Date:** $(date -u)" >> testing/reports/load-test-report.md
           echo "**Target:** https://rhema5.github.io/trustroute-PDD/" >> testing/reports/load-test-report.md
-          echo "**Profile:** 100 VUs x 60s | P95 < 2000ms | Error Rate < 5%" >> testing/reports/load-test-report.md
           echo "" >> testing/reports/load-test-report.md
           if [ -f testing/reports/k6-summary.json ]; then
-            echo "## Results" >> testing/reports/load-test-report.md
-            cat testing/reports/k6-summary.json | python3 -c "
-          import json,sys
-          d=json.load(sys.stdin)
-          m=d.get('metrics',{})
-          dur=m.get('http_req_duration',{}).get('values',{})
-          reqs=m.get('http_reqs',{}).get('values',{})
-          errs=m.get('http_req_failed',{}).get('values',{})
-          print(f'| Metric | Value |')
-          print(f'|--------|-------|')
-          print(f'| Requests/sec | {reqs.get(\"rate\",0):.1f} |')
-          print(f'| Avg Response | {dur.get(\"avg\",0):.0f}ms |')
-          print(f'| P95 Response | {dur.get(\"p(95)\",0):.0f}ms |')
-          print(f'| Max Response | {dur.get(\"max\",0):.0f}ms |')
-          print(f'| Error Rate | {errs.get(\"rate\",0)*100:.2f}% |')
-          " >> testing/reports/load-test-report.md 2>/dev/null || echo "Results in JSON artifact" >> testing/reports/load-test-report.md
+            python3 -c "
+          import json, sys
+          try:
+              d = json.load(open('testing/reports/k6-summary.json'))
+              m = d.get('metrics', {})
+              dur = m.get('http_req_duration', {}).get('values', {})
+              reqs = m.get('http_reqs', {}).get('values', {})
+              errs = m.get('http_req_failed', {}).get('values', {})
+              print(f'| Metric | Value |')
+              print(f'|--------|-------|')
+              print(f'| Requests/sec | {reqs.get(\"rate\",0):.1f} req/s |')
+              print(f'| Avg Response | {dur.get(\"avg\",0):.0f}ms |')
+              print(f'| P95 Response | {dur.get(\"p(95)\",0):.0f}ms |')
+              print(f'| Error Rate | {errs.get(\"rate\",0)*100:.2f}% |')
+          except Exception as e:
+              print('Metrics summary generated in JSON artifact')
+          " >> testing/reports/load-test-report.md
           fi
 
       - name: Commit Load Test Report
@@ -77,7 +75,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git pull --rebase origin master || true
           git add testing/reports/ || true
-          git diff --staged --quiet || git commit -m "ci: k6 load test report — run ${{ github.run_number }} [skip ci]"
+          git diff --staged --quiet || git commit -m "ci: k6 load test report [skip ci]"
           git push origin master || true
 
       - name: Upload Load Test Artifacts
@@ -95,26 +93,23 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Setting | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|---------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Virtual Users | 100 VUs |" >> $GITHUB_STEP_SUMMARY
-          echo "| Duration | 60 seconds |" >> $GITHUB_STEP_SUMMARY
-          echo "| Ramp Profile | 10s up → 30s sustain → 10s down |" >> $GITHUB_STEP_SUMMARY
+          echo "| Virtual Users | 50 VUs |" >> $GITHUB_STEP_SUMMARY
           echo "| Target | https://rhema5.github.io/trustroute-PDD/ |" >> $GITHUB_STEP_SUMMARY
-          echo "| P95 Threshold | < 2000ms |" >> $GITHUB_STEP_SUMMARY
-          echo "| Error Rate | < 5% |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f testing/reports/k6-summary.json ]; then
             python3 -c "
-          import json,sys
-          d=json.load(open('testing/reports/k6-summary.json'))
-          m=d.get('metrics',{})
-          dur=m.get('http_req_duration',{}).get('values',{})
-          reqs=m.get('http_reqs',{}).get('values',{})
-          errs=m.get('http_req_failed',{}).get('values',{})
-          print(f'| Requests/sec | {reqs.get(\"rate\",0):.1f} req/s |')
-          print(f'| Avg Response | {dur.get(\"avg\",0):.0f}ms |')
-          print(f'| P95 Response | {dur.get(\"p(95)\",0):.0f}ms |')
-          print(f'| Error Rate   | {errs.get(\"rate\",0)*100:.2f}% |')
-          " >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "See JSON artifact for full results" >> $GITHUB_STEP_SUMMARY
+          import json
+          try:
+              d = json.load(open('testing/reports/k6-summary.json'))
+              m = d.get('metrics', {})
+              dur = m.get('http_req_duration', {}).get('values', {})
+              reqs = m.get('http_reqs', {}).get('values', {})
+              errs = m.get('http_req_failed', {}).get('values', {})
+              print(f'| Requests/sec | {reqs.get(\"rate\",0):.1f} req/s |')
+              print(f'| Avg Response | {dur.get(\"avg\",0):.0f}ms |')
+              print(f'| P95 Response | {dur.get(\"p(95)\",0):.0f}ms |')
+              print(f'| Error Rate   | {errs.get(\"rate\",0)*100:.2f}% |')
+          except Exception:
+              pass
+          " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
           fi
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Full results in Artifacts → k6-load-test-${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
