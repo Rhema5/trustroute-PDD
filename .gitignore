@@ -55,3 +55,22 @@ testing/load-results.json
 # Keep Test Results/ tracked in git
 !Test Results/
 !Test Results/**
+
+# Mobile app — exclude large binary build artifacts
+mobile-app/android/gradle/wrapper/gradle-wrapper.jar
+mobile-app/android/.gradle/
+mobile-app/android/build/
+mobile-app/android/app/build/
+mobile-app/node_modules/
+
+# Exclude large splash/icon PNGs that bloat the push
+mobile-app/android/app/src/main/res/drawable*/splash.png
+mobile-app/android/app/src/main/res/mipmap-hdpi/
+mobile-app/android/app/src/main/res/mipmap-mdpi/
+mobile-app/android/app/src/main/res/mipmap-xhdpi/
+mobile-app/android/app/src/main/res/mipmap-xxhdpi/
+mobile-app/android/app/src/main/res/mipmap-xxxhdpi/
+
+# Exclude large lock files from root
+package-lock.json
+bun.lock
