@@ -154,14 +154,17 @@ function filterTable(status, btn) {
 """
 
 
+SCRIPT_DIR = Path(__file__).parent
+REPO_ROOT  = SCRIPT_DIR.parent
+
+
 def load_results():
-    json_path = Path("Test Results/JSON/execution-results.json")
+    json_path = REPO_ROOT / "Test Results" / "JSON" / "execution-results.json"
     if json_path.exists():
         with open(json_path, encoding="utf-8") as f:
             return json.load(f)
-    # Import sample generator
     import sys
-    sys.path.insert(0, str(Path(__file__).parent))
+    sys.path.insert(0, str(SCRIPT_DIR))
     from generate_excel_report import _generate_sample_results
     return _generate_sample_results()
 
@@ -181,7 +184,7 @@ def main():
         results     = data["results"],
     )
 
-    out_dir = Path("Test Results/HTML")
+    out_dir = REPO_ROOT / "Test Results" / "HTML"
     out_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     out_path = out_dir / f"TrustRoute_Report_{ts}.html"

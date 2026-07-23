@@ -1,0 +1,126 @@
+name: "k6 Load Testing (100 VUs x 60s)"
+
+on:
+  workflow_run:
+    workflows: ["Deploy to GitHub Pages"]
+    types: [completed]
+  workflow_dispatch:
+  schedule:
+    - cron: "30 3 * * *"  # Daily at 3:30 AM UTC
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  load-test:
+    name: "Baseline Load Test — 100 VUs x 60s"
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo gpg --no-default-keyring \
+            --keyring /usr/share/keyrings/k6-archive-keyring.gpg \
+            --keyserver hkp://keyserver.ubuntu.com:80 \
+            --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" \
+            | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update -q
+          sudo apt-get install -y k6
+          k6 version
+
+      - name: Create results directory
+        run: mkdir -p testing/reports
+
+      - name: Run k6 Baseline Load Test
+        run: |
+          k6 run \
+            --out json=testing/reports/k6-raw-results.json \
+            --summary-export=testing/reports/k6-summary.json \
+            testing/k6-load-test.js
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          BASE_URL: "https://rhema5.github.io/trustroute-PDD"
+
+      - name: Generate Load Test Markdown Report
+        if: always()
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          cat > testing/reports/load-test-report.md << 'EOF'
+          # k6 Load Test Report — TrustRoute
+
+          **Run Date:** TIMESTAMP_PLACEHOLDER
+          **Target:** https://rhema5.github.io/trustroute-PDD/
+          **Profile:** 100 Virtual Users × 60 seconds
+
+          ## Test Profile
+          | Phase | Duration | VUs |
+          |-------|----------|-----|
+          | Ramp-up | 10s | 0 → 100 |
+          | Sustain | 30s | 100 |
+          | Ramp-down | 10s | 100 → 0 |
+
+          ## Thresholds
+          | Metric | Threshold | Result |
+          |--------|-----------|--------|
+          | P95 Response Time | < 2000ms | See artifacts |
+          | Error Rate | < 5% | See artifacts |
+          | Min RPS | > 10 req/s | See artifacts |
+
+          ## Pages Tested
+          - Landing Page (/)
+          - Login Page (/login)
+          - Forgot Password (/forgot-password)
+          - Dashboard (/dashboard)
+          - Agent Portal (/agent)
+          - Firebase Auth REST API
+
+          ## Full Results
+          Download the JSON artifacts for complete metrics including RPS, percentiles, and error breakdown.
+          EOF
+          sed -i "s/TIMESTAMP_PLACEHOLDER/$TIMESTAMP/" testing/reports/load-test-report.md
+
+      - name: Commit Load Test Report
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git pull --rebase origin master || true
+          git add testing/reports/ || true
+          git diff --staged --quiet || git commit -m "ci: k6 load test report [skip ci]"
+          git push origin master || true
+
+      - name: Upload Load Test Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k6-load-test-results-${{ github.run_number }}
+          path: |
+            testing/reports/
+          retention-days: 30
+
+      - name: Post k6 Summary
+        if: always()
+        run: |
+          echo "## k6 Load Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Setting | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Virtual Users | 100 VUs |" >> $GITHUB_STEP_SUMMARY
+          echo "| Duration | 60 seconds |" >> $GITHUB_STEP_SUMMARY
+          echo "| Profile | 10s ramp + 30s sustain + 10s ramp-down |" >> $GITHUB_STEP_SUMMARY
+          echo "| Target | https://rhema5.github.io/trustroute-PDD/ |" >> $GITHUB_STEP_SUMMARY
+          echo "| P95 Threshold | < 2000ms |" >> $GITHUB_STEP_SUMMARY
+          echo "| Error Rate Threshold | < 5% |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f "testing/reports/k6-summary.json" ]; then
+            echo "**Full results:** Download artifacts above" >> $GITHUB_STEP_SUMMARY
+          fi

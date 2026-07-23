@@ -1,11 +1,16 @@
 """
 TrustRoute Android Appium Report Generator
-Generates Excel + HTML reports for 400+ Android test cases.
+Generates Excel + HTML reports for 400 Android test cases.
+Run from repo root: python automation/android/generate_android_report.py
 """
-import os, json
+import os, json, sys
 from datetime import datetime
 from pathlib import Path
 from collections import defaultdict
+
+# Always resolve paths relative to THIS script file
+SCRIPT_DIR = Path(__file__).parent          # automation/android/
+REPO_ROOT  = SCRIPT_DIR.parent.parent       # repo root
 
 try:
     import openpyxl
@@ -240,7 +245,7 @@ def create_excel_report(results):
 
     ws.auto_filter.ref = f"A3:J{len(results)+3}"
 
-    out_dir = Path("Test Results/Android")
+    out_dir = REPO_ROOT / "Test Results" / "Android"
     out_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     path = out_dir / f"Android_Appium_Report_{ts}.xlsx"
@@ -261,7 +266,7 @@ def main():
     create_excel_report(results)
 
     # Save JSON
-    out_dir = Path("Test Results/Android")
+    out_dir = REPO_ROOT / "Test Results" / "Android"
     out_dir.mkdir(parents=True, exist_ok=True)
     with open(out_dir / "android-results.json", "w") as f:
         json.dump({

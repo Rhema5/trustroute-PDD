@@ -1,10 +1,15 @@
 """
-TrustRoute — Excel Report Generator
+TrustRoute - Excel Report Generator
 Reads JSON test results and produces a professional .xlsx report.
+Run from repo root: python automation/generate_excel_report.py
 """
-import json, os
+import json, os, sys
 from datetime import datetime
 from pathlib import Path
+
+# Always resolve paths relative to THIS file so CI works from any cwd
+SCRIPT_DIR = Path(__file__).parent          # automation/
+REPO_ROOT   = SCRIPT_DIR.parent             # repo root
 
 try:
     import openpyxl
@@ -37,12 +42,11 @@ C_SKIP_LIGHT = "FEF9E7"
 
 def load_results():
     """Load JSON results or generate sample data if no run occurred yet."""
-    json_path = Path("Test Results/JSON/execution-results.json")
+    json_path = REPO_ROOT / "Test Results" / "JSON" / "execution-results.json"
     if json_path.exists():
         with open(json_path, encoding="utf-8") as f:
             return json.load(f)
-
-    # Pre-populate with structured 400+ test cases if no live run
+    # Pre-populate with structured 500 test cases if no live run
     return _generate_sample_results()
 
 
@@ -386,7 +390,7 @@ def main():
     create_category_sheet(wb, results)
     create_metrics_sheet(wb, data)
 
-    out_dir = Path("Test Results/Excel")
+    out_dir = REPO_ROOT / "Test Results" / "Excel"
     out_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     out_path = out_dir / f"TrustRoute_Automation_Report_{ts}.xlsx"
