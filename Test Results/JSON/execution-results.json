@@ -1,12 +1,12 @@
 {
-  "execution_date": "2026-07-24T06:00:35.590096",
+  "execution_date": "2026-07-25T05:54:27.569183",
   "base_url": "https://rhema5.github.io/trustroute-PDD/",
   "total": 500,
   "passed": 489,
   "failed": 11,
   "skipped": 0,
   "pass_percentage": 97.8,
-  "avg_execution_time": 1.6,
+  "avg_execution_time": 1.61,
   "results": [
     {
       "test_id": "TC_LAND_001",
@@ -15,7 +15,7 @@
       "priority": "High",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.83,
+      "execution_time": 3.75,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -26,7 +26,7 @@
       "priority": "High",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.1,
+      "execution_time": 0.26,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -37,7 +37,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 0.68,
+      "execution_time": 0.83,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -48,7 +48,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 1.18,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -59,7 +59,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.68,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -70,7 +70,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.99,
+      "execution_time": 2.4,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -81,7 +81,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 3.84,
+      "execution_time": 3.86,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -92,7 +92,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 3.96,
+      "execution_time": 4.0,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -103,9 +103,9 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "FAIL",
-      "execution_time": 3.38,
+      "execution_time": 3.35,
       "failure_reason": "Modal should be closed",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_LAND_009_Cancel_button_closes_modal_20260724_054732.png"
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_LAND_009_Cancel_button_closes_modal_20260725_054123.png"
     },
     {
       "test_id": "TC_LAND_010",
@@ -114,7 +114,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.07,
+      "execution_time": 0.12,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -125,7 +125,7 @@
       "priority": "High",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.13,
+      "execution_time": 0.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -136,7 +136,7 @@
       "priority": "Medium",
       "category": "Accessibility",
       "status": "PASS",
-      "execution_time": 0.78,
+      "execution_time": 0.75,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -147,7 +147,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.73,
+      "execution_time": 0.57,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -158,9 +158,9 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "FAIL",
-      "execution_time": 0.74,
+      "execution_time": 0.68,
       "failure_reason": "Page seems empty",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_LAND_014_Footer_or_attestation_network_text_visib_20260724_054734.png"
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_LAND_014_Footer_or_attestation_network_text_visib_20260725_054125.png"
     },
     {
       "test_id": "TC_LAND_015",
@@ -169,7 +169,7 @@
       "priority": "Medium",
       "category": "Responsive Design",
       "status": "PASS",
-      "execution_time": 0.72,
+      "execution_time": 0.89,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -180,7 +180,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -191,7 +191,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.66,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -202,7 +202,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -213,7 +213,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -235,7 +235,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.57,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -246,7 +246,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 0.73,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -257,7 +257,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -268,7 +268,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.73,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -279,7 +279,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.75,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -290,7 +290,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.55,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -301,7 +301,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.75,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -312,7 +312,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -323,7 +323,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -334,7 +334,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -345,7 +345,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -356,7 +356,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.71,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -367,7 +367,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 0.66,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -378,7 +378,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.73,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -389,7 +389,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -411,7 +411,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -433,7 +433,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.56,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -444,7 +444,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 0.72,
+      "execution_time": 0.67,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -455,7 +455,7 @@
       "priority": "Critical",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.67,
+      "execution_time": 0.71,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -466,7 +466,7 @@
       "priority": "Critical",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.75,
+      "execution_time": 0.86,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -488,9 +488,9 @@
       "priority": "Critical",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 10.33,
+      "execution_time": 10.35,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_004_Login_page_has_sign-in_button_20260724_054803.png"
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_004_Login_page_has_sign-in_button_20260725_054155.png"
     },
     {
       "test_id": "TC_AUTH_005",
@@ -510,9 +510,9 @@
       "priority": "High",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 21.34,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_006_Empty_email_shows_validation_20260724_054827.png"
+      "execution_time": 21.33,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_006_Empty_email_shows_validation_20260725_054218.png"
     },
     {
       "test_id": "TC_AUTH_007",
@@ -521,9 +521,9 @@
       "priority": "High",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 22.07,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_007_Empty_password_shows_validation_20260724_054849.png"
+      "execution_time": 22.08,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_007_Empty_password_shows_validation_20260725_054240.png"
     },
     {
       "test_id": "TC_AUTH_008",
@@ -532,9 +532,9 @@
       "priority": "High",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 22.03,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_008_Invalid_email_format_rejected_20260724_054911.png"
+      "execution_time": 22.02,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_008_Invalid_email_format_rejected_20260725_054302.png"
     },
     {
       "test_id": "TC_AUTH_009",
@@ -543,9 +543,9 @@
       "priority": "Critical",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 22.12,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_009_Wrong_password_shows_error_20260724_054933.png"
+      "execution_time": 22.11,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_009_Wrong_password_shows_error_20260725_054324.png"
     },
     {
       "test_id": "TC_AUTH_010",
@@ -554,9 +554,9 @@
       "priority": "Critical",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 22.2,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_010_Non-existent_email_shows_error_20260724_054955.png"
+      "execution_time": 22.08,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_010_Non-existent_email_shows_error_20260725_054347.png"
     },
     {
       "test_id": "TC_AUTH_011",
@@ -576,7 +576,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -587,7 +587,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 21.14,
+      "execution_time": 21.16,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -598,7 +598,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 21.16,
+      "execution_time": 21.12,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -609,9 +609,9 @@
       "priority": "High",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 22.11,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_015_SQL_injection_in_email_rejected_20260724_055101.png"
+      "execution_time": 22.05,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_015_SQL_injection_in_email_rejected_20260725_054452.png"
     },
     {
       "test_id": "TC_AUTH_016",
@@ -620,9 +620,9 @@
       "priority": "High",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 22.12,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_016_XSS_in_email_field_rejected_20260724_055123.png"
+      "execution_time": 22.1,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_016_XSS_in_email_field_rejected_20260725_054514.png"
     },
     {
       "test_id": "TC_AUTH_017",
@@ -631,9 +631,9 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "FAIL",
-      "execution_time": 22.35,
-      "failure_reason": "Message: \nStacktrace:\n#0 0x55b5bd7ab41a <unknown>\n#1 0x55b5bd183689 <unknown>\n#2 0x55b5bd1d8cff <unknown>\n#3 0x55b5bd1d8f51 <unknown>\n#4 0x55b5bd224144 <unknown>\n#5 0x55b5bd221329 <unknown>\n#6 0x55b5b",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_017_Very_long_email_rejected_gracefully_20260724_055145.png"
+      "execution_time": 22.31,
+      "failure_reason": "Message: \nStacktrace:\n#0 0x557efabc344a <unknown>\n#1 0x557efa59b8c9 <unknown>\n#2 0x557efa5f0f32 <unknown>\n#3 0x557efa5f1181 <unknown>\n#4 0x557efa63c374 <unknown>\n#5 0x557efa63955d <unknown>\n#6 0x557ef",
+      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_017_Very_long_email_rejected_gracefully_20260725_054536.png"
     },
     {
       "test_id": "TC_AUTH_018",
@@ -642,7 +642,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.72,
+      "execution_time": 0.75,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -653,7 +653,7 @@
       "priority": "High",
       "category": "Session",
       "status": "PASS",
-      "execution_time": 0.11,
+      "execution_time": 0.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -664,7 +664,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 1.11,
+      "execution_time": 1.15,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -675,7 +675,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -686,7 +686,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -697,7 +697,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.72,
+      "execution_time": 0.58,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -708,7 +708,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.66,
+      "execution_time": 0.7,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -730,7 +730,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -741,7 +741,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.72,
+      "execution_time": 0.7,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -752,7 +752,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -763,7 +763,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -774,7 +774,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.7,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -785,7 +785,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -796,7 +796,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -829,7 +829,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.61,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -840,7 +840,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -851,7 +851,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -862,7 +862,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.58,
+      "execution_time": 0.57,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -873,7 +873,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -884,7 +884,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.71,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -895,7 +895,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -906,7 +906,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -917,7 +917,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -928,7 +928,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.56,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -939,7 +939,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 0.71,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -950,7 +950,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.58,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -961,7 +961,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 0.71,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -972,7 +972,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -983,7 +983,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -994,7 +994,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1005,7 +1005,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.69,
+      "execution_time": 0.71,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1016,7 +1016,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1027,7 +1027,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1038,7 +1038,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.68,
+      "execution_time": 0.74,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1049,7 +1049,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1060,7 +1060,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1071,7 +1071,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1082,7 +1082,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1093,7 +1093,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1104,7 +1104,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1115,7 +1115,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1126,7 +1126,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1148,7 +1148,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1159,7 +1159,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 0.58,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1170,7 +1170,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.7,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1181,7 +1181,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1192,7 +1192,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 0.56,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1203,7 +1203,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1214,7 +1214,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.74,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1225,7 +1225,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1236,7 +1236,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.72,
+      "execution_time": 0.58,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1247,7 +1247,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.71,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1269,7 +1269,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.56,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1280,7 +1280,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.62,
+      "execution_time": 0.63,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1291,7 +1291,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 0.65,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1302,7 +1302,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1313,7 +1313,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1324,7 +1324,7 @@
       "priority": "Medium",
       "category": "Authentication",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 0.64,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1335,7 +1335,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1357,7 +1357,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.11,
+      "execution_time": 2.1,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1368,7 +1368,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.11,
+      "execution_time": 2.15,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1379,7 +1379,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.12,
+      "execution_time": 2.1,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1390,7 +1390,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1401,7 +1401,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.1,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1412,7 +1412,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.13,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1423,7 +1423,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.08,
+      "execution_time": 2.1,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1434,7 +1434,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.1,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1445,7 +1445,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1456,7 +1456,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.11,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1467,7 +1467,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.14,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1478,7 +1478,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1489,7 +1489,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1500,7 +1500,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1511,7 +1511,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.08,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1522,7 +1522,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1533,7 +1533,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.08,
+      "execution_time": 2.13,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1544,7 +1544,7 @@
       "priority": "Medium",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1555,7 +1555,7 @@
       "priority": "Medium",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.26,
+      "execution_time": 2.21,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1588,7 +1588,7 @@
       "priority": "Medium",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.09,
+      "execution_time": 2.11,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1621,7 +1621,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1632,7 +1632,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1665,7 +1665,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.01,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1687,7 +1687,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1698,7 +1698,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1742,7 +1742,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1764,7 +1764,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1819,7 +1819,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1852,7 +1852,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1863,7 +1863,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1896,7 +1896,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1918,7 +1918,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1951,7 +1951,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1962,7 +1962,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1973,7 +1973,7 @@
       "priority": "Low",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 1.08,
+      "execution_time": 1.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -1995,7 +1995,7 @@
       "priority": "High",
       "category": "Responsive Design",
       "status": "PASS",
-      "execution_time": 2.23,
+      "execution_time": 2.22,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2017,7 +2017,7 @@
       "priority": "High",
       "category": "Responsive Design",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2039,7 +2039,7 @@
       "priority": "High",
       "category": "Responsive Design",
       "status": "PASS",
-      "execution_time": 2.13,
+      "execution_time": 2.11,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2050,7 +2050,7 @@
       "priority": "High",
       "category": "Responsive Design",
       "status": "PASS",
-      "execution_time": 2.09,
+      "execution_time": 2.15,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2061,7 +2061,7 @@
       "priority": "Medium",
       "category": "Accessibility",
       "status": "PASS",
-      "execution_time": 12.08,
+      "execution_time": 12.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2072,7 +2072,7 @@
       "priority": "Medium",
       "category": "Accessibility",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2083,7 +2083,7 @@
       "priority": "High",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2105,7 +2105,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.04,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2116,7 +2116,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2127,7 +2127,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2149,7 +2149,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2171,7 +2171,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2182,7 +2182,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.01,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2204,7 +2204,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2248,7 +2248,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2270,7 +2270,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2325,7 +2325,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2347,7 +2347,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2402,7 +2402,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.01,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2413,7 +2413,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2424,7 +2424,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2435,7 +2435,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2490,7 +2490,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2501,7 +2501,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2523,7 +2523,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2534,7 +2534,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2556,7 +2556,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.01,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2589,7 +2589,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2622,7 +2622,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2644,7 +2644,7 @@
       "priority": "Low",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2666,7 +2666,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2677,7 +2677,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2688,7 +2688,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2710,7 +2710,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2721,7 +2721,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2765,7 +2765,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2776,7 +2776,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2787,7 +2787,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2809,7 +2809,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2820,7 +2820,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2842,7 +2842,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2864,7 +2864,7 @@
       "priority": "High",
       "category": "Session Security",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2897,7 +2897,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2908,7 +2908,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2919,7 +2919,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2941,7 +2941,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2952,7 +2952,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2974,7 +2974,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.11,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2985,7 +2985,7 @@
       "priority": "High",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 3.05,
+      "execution_time": 3.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -2996,7 +2996,7 @@
       "priority": "High",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.04,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3018,7 +3018,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3040,7 +3040,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3062,7 +3062,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3073,7 +3073,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3095,7 +3095,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3106,7 +3106,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3161,7 +3161,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3172,7 +3172,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3216,7 +3216,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3227,7 +3227,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3282,7 +3282,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3304,7 +3304,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3315,7 +3315,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3326,7 +3326,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3337,7 +3337,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3370,7 +3370,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3392,7 +3392,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3403,7 +3403,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3425,7 +3425,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3436,7 +3436,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3447,7 +3447,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3458,7 +3458,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3480,7 +3480,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3491,7 +3491,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.08,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3524,7 +3524,7 @@
       "priority": "Low",
       "category": "Dashboard",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3546,7 +3546,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3557,7 +3557,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.08,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3568,7 +3568,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3590,7 +3590,7 @@
       "priority": "High",
       "category": "Navigation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.1,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3601,7 +3601,7 @@
       "priority": "High",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 3.05,
+      "execution_time": 3.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3612,7 +3612,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.11,
+      "execution_time": 2.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3623,7 +3623,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3634,7 +3634,7 @@
       "priority": "Medium",
       "category": "UI Validation",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3700,7 +3700,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3722,7 +3722,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3766,7 +3766,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3799,7 +3799,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3821,7 +3821,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3832,7 +3832,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3843,7 +3843,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3887,7 +3887,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3898,7 +3898,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3920,7 +3920,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3931,7 +3931,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3964,7 +3964,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3975,7 +3975,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -3997,7 +3997,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4052,7 +4052,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4063,7 +4063,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4074,7 +4074,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4107,7 +4107,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4118,7 +4118,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4129,7 +4129,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4140,7 +4140,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4162,7 +4162,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4173,7 +4173,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4184,7 +4184,7 @@
       "priority": "Low",
       "category": "Agent",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4206,7 +4206,7 @@
       "priority": "High",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 3.19,
+      "execution_time": 3.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4217,7 +4217,7 @@
       "priority": "High",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 3.06,
+      "execution_time": 3.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4250,7 +4250,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4261,7 +4261,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4272,7 +4272,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4283,7 +4283,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4294,7 +4294,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4316,7 +4316,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.01,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4338,7 +4338,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4349,7 +4349,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4426,7 +4426,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.01,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4448,7 +4448,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4470,7 +4470,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4492,7 +4492,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4514,7 +4514,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4525,7 +4525,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4547,7 +4547,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4580,7 +4580,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4613,7 +4613,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4624,7 +4624,7 @@
       "priority": "Low",
       "category": "Payment",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4635,7 +4635,7 @@
       "priority": "High",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 2.07,
+      "execution_time": 2.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4668,7 +4668,7 @@
       "priority": "Medium",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4679,7 +4679,7 @@
       "priority": "Medium",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 2.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4690,7 +4690,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4701,7 +4701,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4734,7 +4734,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4778,7 +4778,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4789,7 +4789,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4800,7 +4800,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4811,7 +4811,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4844,7 +4844,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4855,7 +4855,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.06,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4921,7 +4921,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.01,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4932,7 +4932,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4943,7 +4943,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4954,7 +4954,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4965,7 +4965,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.01,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -4998,7 +4998,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5009,7 +5009,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5020,7 +5020,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.01,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5042,7 +5042,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5053,7 +5053,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 1.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5064,7 +5064,7 @@
       "priority": "Low",
       "category": "Form Validation",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5075,7 +5075,7 @@
       "priority": "High",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.08,
+      "execution_time": 0.11,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5086,7 +5086,7 @@
       "priority": "High",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.06,
+      "execution_time": 0.08,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5097,7 +5097,7 @@
       "priority": "High",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.06,
+      "execution_time": 0.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5108,7 +5108,7 @@
       "priority": "High",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.1,
+      "execution_time": 0.09,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5119,7 +5119,7 @@
       "priority": "High",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.1,
+      "execution_time": 0.12,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5130,7 +5130,7 @@
       "priority": "High",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 1.12,
+      "execution_time": 1.16,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5152,7 +5152,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.04,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5174,7 +5174,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.06,
+      "execution_time": 0.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5207,7 +5207,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5218,7 +5218,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5229,7 +5229,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5240,7 +5240,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5251,7 +5251,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.04,
+      "execution_time": 0.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5262,7 +5262,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5284,7 +5284,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.07,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5295,7 +5295,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.06,
+      "execution_time": 0.04,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5306,7 +5306,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.04,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5317,7 +5317,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5350,7 +5350,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.06,
+      "execution_time": 0.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5383,7 +5383,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.08,
+      "execution_time": 0.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5394,7 +5394,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.04,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5416,7 +5416,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.07,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5449,7 +5449,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.05,
+      "execution_time": 0.06,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5471,7 +5471,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.06,
+      "execution_time": 0.05,
       "failure_reason": "",
       "screenshot": ""
     },
@@ -5493,7 +5493,7 @@
       "priority": "Low",
       "category": "Performance",
       "status": "PASS",
-      "execution_time": 0.06,
+      "execution_time": 0.05,
       "failure_reason": "",
       "screenshot": ""
     },
