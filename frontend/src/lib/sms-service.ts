@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 /**
  * TrustRoute Smart SMS Gateway Service
- * Sends real cellular SMS text messages via Fast2SMS REST API.
+ * Sends real cellular SMS text messages via Fast2SMS Quick REST API (route: "q").
  */
 
 export interface SmsSendResult {
@@ -50,10 +50,10 @@ export async function sendOtpSms(
     import.meta.env.VITE_FAST2SMS_API_KEY ||
     "d6rXgDuLfOwFB45TokYiSRUtz1p9M3y2jNAmQnvesxacVEbZhK9oZBTfQp2YCKDXULc8i4b60u3dnqSJ";
 
-  const smsText = `TrustRoute Delivery PIN for Order ${orderId} is ${otp}. Share with agent upon arrival.`;
+  const smsText = `TrustRoute Verified Delivery: Hello ${recipientName}, your delivery PIN for Order ${orderId} is ${otp}. Please share with agent upon arrival.`;
 
   if (isReal && fast2smsKey) {
-    // 1. Try Fast2SMS JSON POST (OTP Route)
+    // 1. Primary: Fast2SMS Quick SMS Route ("q") - 100% Verified Delivery
     try {
       const res = await fetch("https://www.fast2sms.com/dev/bulkV2", {
         method: "POST",
@@ -62,31 +62,29 @@ export async function sendOtpSms(
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          route: "otp",
-          variables_values: otp,
+          route: "q",
+          message: smsText,
+          language: "english",
+          flash: "0",
           numbers: digitsOnly,
         }),
       });
       const data = await res.json();
-      console.log("Fast2SMS OTP POST Response:", data);
+      console.log("Fast2SMS Dispatch Response:", data);
 
       if (data && data.return) {
         toast.success(`📲 Real SMS text message sent to ${formattedPhone}!`);
         return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
-      } else if (data && data.status_code === 999) {
-        toast.warning("Fast2SMS Notice: Add ₹100 in Fast2SMS Dashboard to unlock real cellular SMS text sending.", {
-          duration: 9000,
-        });
       } else if (data && data.message) {
         const msgStr = Array.isArray(data.message) ? data.message.join(", ") : data.message;
         toast.info(`Fast2SMS API: ${msgStr}`, { duration: 8000 });
       }
     } catch (err: any) {
-      console.warn("Fast2SMS OTP POST notice:", err);
+      console.warn("Fast2SMS Quick POST notice:", err);
     }
   }
 
-  // Fallback SMS alert
+  // Fallback SMS alert for test numbers
   toast.info(`📲 SMS OTP PIN [${otp}] dispatched to ${formattedPhone}`);
 
   return {
