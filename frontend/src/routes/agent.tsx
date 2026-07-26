@@ -25,19 +25,11 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState, useRef } from "react";
-import { useApp } from "@/store/app-store";
-import { waitForAuth } from "@/lib/auth-guard";
-import { auth } from "@/lib/firebase";
-import { toast } from "sonner";
-import { AnimatePresence, motion } from "framer-motion";
+import { requireRole } from "@/lib/role-guard";
 
 export const Route = createFileRoute("/agent")({
   beforeLoad: async () => {
-    await waitForAuth();
-    const state = useApp.getState();
-    if (!state.user || state.role !== "agent") {
-      throw redirect({ to: "/login" });
-    }
+    await requireRole(["agent"]);
   },
   component: AgentLayout,
 });

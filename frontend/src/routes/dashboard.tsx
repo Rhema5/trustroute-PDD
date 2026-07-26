@@ -32,15 +32,11 @@ import { cn } from "@/lib/utils";
 import { useApp } from "@/store/app-store";
 import { auth } from "@/lib/firebase";
 import { toast } from "sonner";
-import { waitForAuth } from "@/lib/auth-guard";
+import { requireRole } from "@/lib/role-guard";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
-    await waitForAuth();
-    const state = useApp.getState();
-    if (!state.user || state.role !== "owner") {
-      throw redirect({ to: "/login" });
-    }
+    await requireRole(["owner"]);
   },
   component: DashboardLayout,
 });
