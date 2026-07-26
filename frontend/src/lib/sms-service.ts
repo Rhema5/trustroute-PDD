@@ -73,39 +73,16 @@ export async function sendOtpSms(
       if (data && data.return) {
         toast.success(`📲 Real SMS text message sent to ${formattedPhone}!`);
         return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
+      } else if (data && data.status_code === 999) {
+        toast.warning("Fast2SMS Notice: Add ₹100 in Fast2SMS Dashboard to unlock real cellular SMS text sending.", {
+          duration: 9000,
+        });
+      } else if (data && data.message) {
+        const msgStr = Array.isArray(data.message) ? data.message.join(", ") : data.message;
+        toast.info(`Fast2SMS API: ${msgStr}`, { duration: 8000 });
       }
     } catch (err: any) {
       console.warn("Fast2SMS OTP POST notice:", err);
-    }
-
-    // 2. Try Fast2SMS JSON POST (Quick SMS Route "q")
-    try {
-      const res = await fetch("https://www.fast2sms.com/dev/bulkV2", {
-        method: "POST",
-        headers: {
-          "authorization": fast2smsKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          route: "q",
-          message: smsText,
-          language: "english",
-          flash: "0",
-          numbers: digitsOnly,
-        }),
-      });
-      const data = await res.json();
-      console.log("Fast2SMS Quick SMS Response:", data);
-
-      if (data && data.return) {
-        toast.success(`📲 Real SMS text message sent to ${formattedPhone}!`);
-        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS Quick Route" };
-      } else if (data && data.message) {
-        const msgStr = Array.isArray(data.message) ? data.message.join(", ") : data.message;
-        toast.warning(`Fast2SMS Response: ${msgStr}`, { duration: 8000 });
-      }
-    } catch (err: any) {
-      console.warn("Fast2SMS Quick POST notice:", err);
     }
   }
 
