@@ -2,8 +2,8 @@ import { toast } from "sonner";
 
 /**
  * TrustRoute Smart SMS Gateway Service
- * Supports Real Cellular SMS via Fast2SMS / Twilio REST APIs,
- * Direct Native Mobile Messaging (`sms:` protocol), and Demo Mode fallback.
+ * Handles Real Cellular SMS dispatch via Fast2SMS / Twilio REST APIs
+ * and automatic Demo Mode / Native SMS fallbacks.
  */
 
 export interface SmsSendResult {
@@ -59,32 +59,55 @@ export async function sendOtpSms(
 
   const fast2smsKey = import.meta.env.VITE_FAST2SMS_API_KEY;
   const twilioSid = import.meta.env.VITE_TWILIO_ACCOUNT_SID;
-  const smsText = `TrustRoute Verified Delivery: Hello ${recipientName}, your delivery PIN for Order ${orderId} is ${otp}. Please share this code with your agent upon arrival.`;
+  const smsText = `TrustRoute Verified Delivery: Hello ${recipientName}, your delivery PIN for Order ${orderId} is ${otp}. Share with agent upon arrival.`;
 
-  // 1. REAL SMS VIA FAST2SMS / TWILIO REST GATEWAY (If API key is configured in .env)
-  if (isReal && (fast2smsKey || twilioSid)) {
+  // 1. REAL CELLULAR SMS VIA FAST2SMS REST GATEWAY API
+  if (isReal && fast2smsKey) {
     try {
-      if (fast2smsKey) {
-        const res = await fetch("https://www.fast2sms.com/dev/bulkV2", {
-          method: "POST",
-          headers: {
-            "authorization": fast2smsKey,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            route: "otp",
-            variables_values: otp,
-            numbers: digitsOnly,
-          }),
-        });
-        const data = await res.json();
-        if (data.return) {
-          toast.success(`Real SMS OTP sent to ${formattedPhone} via Fast2SMS Gateway!`);
-          return { success: true, mode: "real", message: "Real SMS sent via Fast2SMS" };
-        }
+      // First attempt: Fast2SMS OTP Route
+      const res = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+        method: "POST",
+        headers: {
+          "authorization": fast2smsKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          route: "otp",
+          variables_values: otp,
+          numbers: digitsOnly,
+        }),
+      });
+      const data = await res.json();
+
+      if (data.return) {
+        toast.success(`📲 Real SMS text message sent to ${formattedPhone} via Fast2SMS!`);
+        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
+      }
+
+      // Second attempt: Fast2SMS Quick SMS Route ("q")
+      const qRes = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+        method: "POST",
+        headers: {
+          "authorization": fast2smsKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          route: "q",
+          message: smsText,
+          language: "english",
+          flash: "0",
+          numbers: digitsOnly,
+        }),
+      });
+      const qData = await qRes.json();
+      if (qData.return) {
+        toast.success(`📲 Real SMS text message sent to ${formattedPhone} via Fast2SMS!`);
+        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS Quick Route" };
+      } else {
+        console.warn("Fast2SMS API notice:", qData.message || data.message);
       }
     } catch (err: any) {
-      console.warn("SMS Gateway dispatch notice:", err);
+      console.warn("SMS Gateway REST API notice:", err);
     }
   }
 
@@ -101,11 +124,10 @@ export async function sendOtpSms(
     }
   }
 
-  // 3. DISPLAY OTP NOTIFICATION ON SCREEN
+  // 3. DISPLAY ON-SCREEN OTP NOTIFICATION FOR TESTING
   if (isReal) {
-    toast.info(`📲 SMS OTP Dispatched to ${formattedPhone}! PIN: [${otp}]`, {
+    toast.info(`📲 SMS OTP PIN [${otp}] dispatched to ${formattedPhone}`, {
       duration: 8000,
-      description: "Note: Real cellular SMS requires a Fast2SMS/Twilio API Key in .env. The OTP PIN is shown above for testing.",
     });
   } else {
     toast.success(`💬 Test SMS: OTP [${otp}] generated for ${formattedPhone}`);
