@@ -304,15 +304,14 @@ function AgentDeliveries() {
                       </td>
                       <td className="px-5 py-4 whitespace-nowrap">
                         <StatusBadge status={d.status} />
-                      </td>
-                      <td className="px-5 py-4 whitespace-nowrap">
+                      </td                      <td className="px-5 py-4 whitespace-nowrap">
                         <span className={cn(
                           "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold border uppercase tracking-wider",
-                          d.paymentStatus === "paid" || d.paymentStatus === "cod_collected"
-                            ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/10"
+                          d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered"
+                            ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/20"
                             : "bg-red-950/30 text-[#FF4D4D] border-red-500/10"
                         )}>
-                          {d.paymentType === "cod" ? "COD" : "Prepaid"} · ₹{d.paymentAmount || 0} · {(d.paymentStatus || "pending").replace(/_/g, " ")}
+                          {d.paymentType === "cod" ? "COD" : "Prepaid"} · ₹{d.paymentAmount || 0} · {d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered" ? (d.paymentType === "cod" ? "COD COLLECTED" : "PAID") : (d.paymentStatus || "pending").replace(/_/g, " ")}
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right whitespace-nowrap">
@@ -349,7 +348,7 @@ function AgentDeliveries() {
                               params={{ id: d.id }}
                               className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#B71C1C] to-red-600 hover:opacity-90 text-[10px] font-bold px-3 py-1.5 text-white shadow-glow transition cursor-pointer"
                             >
-                              Verify Parcel
+                              Verify Route
                             </Link>
                           </div>
                         )}
@@ -396,13 +395,13 @@ function AgentDeliveries() {
                     <span
                       className={cn(
                         "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold border uppercase tracking-wider",
-                        d.paymentStatus === "paid" || d.paymentStatus === "cod_collected"
-                          ? "bg-emerald-950/30 text-emerald-450 border-emerald-500/10"
+                        d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered"
+                          ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/20"
                           : "bg-red-950/30 text-[#FF4D4D] border-red-500/10"
                       )}
                     >
-                      {d.paymentType === "cod" ? "COD" : "Prepaid"} · ${d.paymentAmount || 0}
-                    </span>
+                      {d.paymentType === "cod" ? "COD" : "Prepaid"} · ₹{d.paymentAmount || 0} · {d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered" ? (d.paymentType === "cod" ? "COD COLLECTED" : "PAID") : (d.paymentStatus || "pending").replace(/_/g, " ")}
+                    </span>  </span>
 
                     {d.status === "delivered" ? (
                       <Link
