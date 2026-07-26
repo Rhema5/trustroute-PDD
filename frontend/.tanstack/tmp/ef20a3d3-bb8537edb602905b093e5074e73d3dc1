@@ -23,6 +23,7 @@ import { Route as DashboardTestingRouteImport } from './routes/dashboard.testing
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
 import { Route as DashboardPendingRouteImport } from './routes/dashboard.pending'
 import { Route as DashboardPaymentsRouteImport } from './routes/dashboard.payments'
+import { Route as DashboardOrdersRouteImport } from './routes/dashboard.orders'
 import { Route as DashboardOfflineRouteImport } from './routes/dashboard.offline'
 import { Route as DashboardNewRouteImport } from './routes/dashboard.new'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard.history'
@@ -106,6 +107,11 @@ const DashboardPendingRoute = DashboardPendingRouteImport.update({
 const DashboardPaymentsRoute = DashboardPaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardOrdersRoute = DashboardOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardOfflineRoute = DashboardOfflineRouteImport.update({
@@ -197,6 +203,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/new': typeof DashboardNewRoute
   '/dashboard/offline': typeof DashboardOfflineRoute
+  '/dashboard/orders': typeof DashboardOrdersRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
   '/dashboard/pending': typeof DashboardPendingRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
@@ -225,6 +232,7 @@ export interface FileRoutesByTo {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/new': typeof DashboardNewRoute
   '/dashboard/offline': typeof DashboardOfflineRoute
+  '/dashboard/orders': typeof DashboardOrdersRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
   '/dashboard/pending': typeof DashboardPendingRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
@@ -256,6 +264,7 @@ export interface FileRoutesById {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/new': typeof DashboardNewRoute
   '/dashboard/offline': typeof DashboardOfflineRoute
+  '/dashboard/orders': typeof DashboardOrdersRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
   '/dashboard/pending': typeof DashboardPendingRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
@@ -288,6 +297,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/new'
     | '/dashboard/offline'
+    | '/dashboard/orders'
     | '/dashboard/payments'
     | '/dashboard/pending'
     | '/dashboard/settings'
@@ -316,6 +326,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/new'
     | '/dashboard/offline'
+    | '/dashboard/orders'
     | '/dashboard/payments'
     | '/dashboard/pending'
     | '/dashboard/settings'
@@ -346,6 +357,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/new'
     | '/dashboard/offline'
+    | '/dashboard/orders'
     | '/dashboard/payments'
     | '/dashboard/pending'
     | '/dashboard/settings'
@@ -468,6 +480,13 @@ declare module '@tanstack/react-router' {
       path: '/payments'
       fullPath: '/dashboard/payments'
       preLoaderRoute: typeof DashboardPaymentsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/orders': {
+      id: '/dashboard/orders'
+      path: '/orders'
+      fullPath: '/dashboard/orders'
+      preLoaderRoute: typeof DashboardOrdersRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/offline': {
@@ -599,6 +618,7 @@ interface DashboardRouteChildren {
   DashboardHistoryRoute: typeof DashboardHistoryRoute
   DashboardNewRoute: typeof DashboardNewRoute
   DashboardOfflineRoute: typeof DashboardOfflineRoute
+  DashboardOrdersRoute: typeof DashboardOrdersRoute
   DashboardPaymentsRoute: typeof DashboardPaymentsRoute
   DashboardPendingRoute: typeof DashboardPendingRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
@@ -615,6 +635,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardHistoryRoute: DashboardHistoryRoute,
   DashboardNewRoute: DashboardNewRoute,
   DashboardOfflineRoute: DashboardOfflineRoute,
+  DashboardOrdersRoute: DashboardOrdersRoute,
   DashboardPaymentsRoute: DashboardPaymentsRoute,
   DashboardPendingRoute: DashboardPendingRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,

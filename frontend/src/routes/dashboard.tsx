@@ -24,6 +24,7 @@ import {
   Check,
   WifiOff,
   CreditCard,
+  ShoppingCart,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Logo } from "@/components/trust/Logo";
@@ -51,6 +52,7 @@ const navItems: {
   exact?: boolean;
 }[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { to: "/dashboard/orders", label: "Incoming Orders", icon: ShoppingCart },
   { to: "/dashboard/new", label: "New Delivery", icon: Plus },
   { to: "/dashboard/history", label: "History", icon: History },
   { to: "/dashboard/proofs", label: "Proof Records", icon: FileCheck2 },

@@ -400,7 +400,7 @@ function CustomerPortalPage() {
 
           <Link
             to="/login"
-            search={{ redirect: "/customer" }}
+            search={{ mode: "owner" }}
             className="hidden sm:inline-flex rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 transition"
           >
             Portal Login
