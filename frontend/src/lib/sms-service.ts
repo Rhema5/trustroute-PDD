@@ -75,7 +75,7 @@ export async function sendOtpSms(
       const res = await fetch(otpUrl, { method: "GET" });
       const data = await res.json();
 
-      if (data.return) {
+      if (data && data.return) {
         toast.success(`📲 Real SMS OTP sent to ${formattedPhone} via Fast2SMS!`);
         return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
       }
@@ -88,15 +88,19 @@ export async function sendOtpSms(
       const qRes = await fetch(qUrl, { method: "GET" });
       const qData = await qRes.json();
 
-      if (qData.return) {
+      if (qData && qData.return) {
         toast.success(`📲 Real SMS text message sent to ${formattedPhone} via Fast2SMS!`);
         return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS Quick Route" };
-      } else {
-        // Show exact Fast2SMS server response feedback
-        const responseMsg = qData.message || data.message || "Fast2SMS dispatch failed";
-        toast.warning(`Fast2SMS Response: ${responseMsg}`);
-        console.warn("Fast2SMS API Response:", qData || data);
       }
+
+      // Extract Fast2SMS Server Response Error Message
+      const serverMsg =
+        (Array.isArray(data?.message) ? data.message.join(", ") : data?.message) ||
+        (Array.isArray(qData?.message) ? qData.message.join(", ") : qData?.message) ||
+        "Fast2SMS API Response: Check Wallet Balance or DLT Template";
+
+      toast.warning(`Fast2SMS Response: ${serverMsg}`, { duration: 8000 });
+      console.warn("Fast2SMS API Responses:", { otpData: data, qData: qData });
     } catch (err: any) {
       console.warn("Fast2SMS REST API notice:", err);
       toast.info(`📲 Fast2SMS Dispatch (OTP: ${otp}): ${err.message || "CORS/Network notice"}`);
