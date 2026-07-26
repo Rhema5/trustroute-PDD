@@ -724,13 +724,13 @@ function CustomerPortalPage() {
                     <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Total Bill & Status</span>
                       <span className="font-extrabold text-slate-900 text-sm block">₹{d.paymentAmount || 100}</span>
-                      {d.paymentStatus === "paid" ? (
-                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full inline-block mt-0.5">
-                          ✓ Razorpay Paid
+                      {d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered" ? (
+                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full inline-block mt-0.5">
+                          ✓ {d.paymentType === "cod" ? "Paid (COD Cash Received)" : "Paid"}
                         </span>
                       ) : (
-                        <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full inline-block mt-0.5">
-                          Pending Payment
+                        <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full inline-block mt-0.5">
+                          Pending Payment ({d.paymentType === "cod" ? "Pay Cash to Agent" : "Online"})
                         </span>
                       )}
                     </div>
