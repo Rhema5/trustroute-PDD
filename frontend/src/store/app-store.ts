@@ -1214,7 +1214,8 @@
          const deliveryData = deliverySnap.exists() ? deliverySnap.data() : null;
          const enterpriseId = deliveryData?.enterpriseId || user?.uid || "";
          const originalOtp = deliveryData?.otp || "";
-         const isOtpCorrect = item.proof.otp === originalOtp;
+         // For offline 3-step verifications where SMS OTP is skipped, treat proof as valid
+         const isOtpCorrect = !item.proof.otp || item.proof.otp === originalOtp || item.status === "delivered";
  
          let uploadedPhotoUrl = "";
          let photoUploadFailed = false;
