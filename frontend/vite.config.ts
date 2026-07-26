@@ -11,6 +11,14 @@ export default defineConfig({
     base: process.env.VITE_BASE_URL || "/",
     server: {
       allowedHosts: true,
+      proxy: {
+        "/api/fast2sms": {
+          target: "https://www.fast2sms.com/dev/bulkV2",
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api\/fast2sms/, ""),
+        },
+      },
     },
   },
 });

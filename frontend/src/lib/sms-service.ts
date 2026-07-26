@@ -2,8 +2,8 @@ import { toast } from "sonner";
 
 /**
  * TrustRoute Smart SMS Gateway Service
- * Handles Real Cellular SMS dispatch via Fast2SMS GET/POST REST APIs
- * and displays direct gateway feedback.
+ * Handles Real Cellular SMS dispatch via Fast2SMS REST API
+ * (Proxied via Vite dev server to bypass browser CORS preflight blocks).
  */
 
 export interface SmsSendResult {
@@ -21,7 +21,7 @@ export function isRealPhoneNumber(phone: string): boolean {
   const digitsOnly = phone.replace(/\D/g, "");
   
   const isDummyPattern = 
-    /^(\d)\1{7,}/.test(digitsOnly) || // Repeated digits like 9999999999
+    /^(\d)\1{7,}/.test(digitsOnly) ||
     digitsOnly.startsWith("12345") ||
     digitsOnly.startsWith("555") ||
     digitsOnly.length < 10 ||
@@ -64,46 +64,44 @@ export async function sendOtpSms(
 
   const smsText = `TrustRoute Delivery PIN for Order ${orderId} is ${otp}. Share with agent upon arrival.`;
 
-  // 1. REAL CELLULAR SMS VIA FAST2SMS GET REST API (Bypasses CORS preflight restrictions)
+  // 1. REAL CELLULAR SMS VIA PROXIED FAST2SMS REST GATEWAY (Bypasses CORS restrictions)
   if (isReal && fast2smsKey) {
     try {
-      // Fast2SMS Route 1: OTP Route GET Request
-      const otpUrl = `https://www.fast2sms.com/dev/bulkV2?authorization=${encodeURIComponent(
+      // Endpoint target (Vite dev proxy or direct fallback)
+      const baseUrl = typeof window !== "undefined" ? "/api/fast2sms" : "https://www.fast2sms.com/dev/bulkV2";
+
+      // Attempt 1: Fast2SMS OTP Route
+      const otpUrl = `${baseUrl}?authorization=${encodeURIComponent(
         fast2smsKey
       )}&route=otp&variables_values=${encodeURIComponent(otp)}&flash=0&numbers=${digitsOnly}`;
 
       const res = await fetch(otpUrl, { method: "GET" });
-      const data = await res.json();
-
-      if (data && data.return) {
-        toast.success(`📲 Real SMS OTP sent to ${formattedPhone} via Fast2SMS!`);
-        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.return) {
+          toast.success(`📲 Real Cellular SMS sent to ${formattedPhone} via Fast2SMS!`);
+          return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
+        }
       }
 
-      // Fast2SMS Route 2: Quick SMS Route ("q") GET Request
-      const qUrl = `https://www.fast2sms.com/dev/bulkV2?authorization=${encodeURIComponent(
+      // Attempt 2: Fast2SMS Quick SMS Route ("q")
+      const qUrl = `${baseUrl}?authorization=${encodeURIComponent(
         fast2smsKey
       )}&route=q&message=${encodeURIComponent(smsText)}&language=english&flash=0&numbers=${digitsOnly}`;
 
       const qRes = await fetch(qUrl, { method: "GET" });
-      const qData = await qRes.json();
-
-      if (qData && qData.return) {
-        toast.success(`📲 Real SMS text message sent to ${formattedPhone} via Fast2SMS!`);
-        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS Quick Route" };
+      if (qRes.ok) {
+        const qData = await qRes.json();
+        if (qData && qData.return) {
+          toast.success(`📲 Real Cellular SMS text sent to ${formattedPhone} via Fast2SMS!`);
+          return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS Quick Route" };
+        } else if (qData && qData.message) {
+          const msgStr = Array.isArray(qData.message) ? qData.message.join(", ") : qData.message;
+          toast.warning(`Fast2SMS Response: ${msgStr}`, { duration: 8000 });
+        }
       }
-
-      // Extract Fast2SMS Server Response Error Message
-      const serverMsg =
-        (Array.isArray(data?.message) ? data.message.join(", ") : data?.message) ||
-        (Array.isArray(qData?.message) ? qData.message.join(", ") : qData?.message) ||
-        "Fast2SMS API Response: Check Wallet Balance or DLT Template";
-
-      toast.warning(`Fast2SMS Response: ${serverMsg}`, { duration: 8000 });
-      console.warn("Fast2SMS API Responses:", { otpData: data, qData: qData });
     } catch (err: any) {
-      console.warn("Fast2SMS REST API notice:", err);
-      toast.info(`📲 Fast2SMS Dispatch (OTP: ${otp}): ${err.message || "CORS/Network notice"}`);
+      console.warn("Fast2SMS REST proxy notice:", err);
     }
   }
 
