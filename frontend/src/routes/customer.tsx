@@ -414,8 +414,7 @@ function CustomerPortalPage() {
 
       if (paymentType === "cod") {
         setActiveTab("orders");
-        toast.success(`Order ${deliveryId} placed via Cash on Delivery (₹${calculatedBill})! Sent to Enterprise.`);
-        await sendOtpSms(recipientPhone.trim(), secretOtp, deliveryId, recipientName.trim());
+        toast.success(`Order ${deliveryId} placed via Cash on Delivery (₹${calculatedBill})! Sent to Enterprise for acceptance.`);
       } else {
         // OPEN RAZORPAY DRAWER IMMEDIATELY
         setPendingPrepaidDelivery(newDeliveryObj);
@@ -493,8 +492,7 @@ function CustomerPortalPage() {
       setShowRazorpayDrawer(false);
       setProcessingRzp(false);
       setActiveTab("orders");
-      toast.success(`Razorpay Payment ₹${amountVal} verified successfully!`);
-      await sendOtpSms(deliveryObj.phone, deliveryObj.otp, deliveryObj.id, deliveryObj.customer);
+      toast.success(`Razorpay Payment ₹${amountVal} verified successfully! Order sent to Enterprise.`);
     }
   };
 
@@ -706,10 +704,6 @@ function CustomerPortalPage() {
                       <span className="font-bold text-slate-800">{d.customer} ({d.phone})</span>
                     </div>
                     <div>
-                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Delivery PIN / OTP</span>
-                      <span className="font-mono font-extrabold text-red-600 text-sm tracking-wider">{d.otp}</span>
-                    </div>
-                    <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Pickup Location</span>
                       <span className="font-medium text-slate-700">{d.pickupLocation}</span>
                     </div>
@@ -736,14 +730,8 @@ function CustomerPortalPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                    <button
-                      onClick={() => sendOtpSms(d.phone, d.otp, d.id, d.customer)}
-                      className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 font-bold cursor-pointer"
-                    >
-                      <Send className="h-3.5 w-3.5" /> Resend SMS OTP
-                    </button>
-                    {d.paymentType === "prepaid" && d.paymentStatus !== "paid" && (
+                  {d.paymentType === "prepaid" && d.paymentStatus !== "paid" && (
+                    <div className="flex items-center justify-end pt-2 border-t border-slate-100 text-xs">
                       <button
                         onClick={() => {
                           setPendingPrepaidDelivery(d);
@@ -754,8 +742,8 @@ function CustomerPortalPage() {
                       >
                         <CreditCard className="h-3.5 w-3.5" /> Pay ₹{d.paymentAmount || 100} via Razorpay
                       </button>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               ))
             )}
