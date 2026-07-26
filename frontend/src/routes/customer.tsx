@@ -582,9 +582,9 @@ function CustomerPortalPage() {
           <Link
             to="/login"
             search={{ mode: "owner" }}
-            className="hidden sm:inline-flex rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 transition"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3.5 py-1.5 text-xs font-bold text-slate-700 transition cursor-pointer shadow-xs"
           >
-            Portal Login
+            <Building2 className="h-3.5 w-3.5 text-slate-500" /> Enterprise Portal Login
           </Link>
         </div>
       </header>
