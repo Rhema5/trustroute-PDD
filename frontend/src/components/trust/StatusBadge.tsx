@@ -18,7 +18,7 @@ const map: Record<DeliveryStatus, { label: string; cls: string; pulse?: boolean 
   },
   assigned: { label: "Assigned", cls: "bg-orange-500/15 text-orange-300 border-orange-500/30" },
   failed: {
-    label: "Attention",
+    label: "Needs Verification",
     cls: "bg-red-500/15 text-red-300 border-red-500/30 animate-pulse-glow",
   },
   cancelled: {

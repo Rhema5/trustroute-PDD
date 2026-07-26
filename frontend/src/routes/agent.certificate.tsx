@@ -30,6 +30,15 @@ function PDFCertificate() {
 
   const certRef = React.useRef<HTMLDivElement>(null);
 
+  // Subscribe to deliveries on mount so live store data is loaded
+  const subscribeToDeliveries = useApp((s) => s.subscribeToDeliveries);
+  React.useEffect(() => {
+    const unsub = subscribeToDeliveries();
+    return () => {
+      if (typeof unsub === "function") unsub();
+    };
+  }, [subscribeToDeliveries]);
+
   // Retrieve deliveries from the global store
   const deliveries = useApp((s) => s.deliveries);
   const deliveredList = React.useMemo(
@@ -130,9 +139,9 @@ function PDFCertificate() {
       {deliveredList.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-zinc-800 p-16 text-center bg-[#0F1424]">
           <FileText className="mx-auto h-12 w-12 text-[#B71C1C] animate-pulse mb-3" />
-          <p className="text-sm font-semibold text-zinc-300">No Attested Receipts Available</p>
+          <p className="text-sm font-semibold text-zinc-300">No Verified Delivery Receipts Available</p>
           <p className="text-xs text-zinc-550 mt-1.5 leading-relaxed max-w-sm mx-auto">
-            Once you complete route delivery verifications, they will appear in this hub for attestation downloads.
+            Once you complete route delivery verifications, they will appear in this hub for certificate downloads.
           </p>
         </div>
       ) : (
@@ -158,67 +167,76 @@ function PDFCertificate() {
             {/* List */}
             <div className="space-y-2 max-h-[480px] overflow-y-auto pr-1">
               {filteredList.length === 0 ? (
-                <div className="p-8 text-center text-xs text-zinc-500 font-semibold bg-zinc-950/20 border border-zinc-850 rounded-xl">
-                  No matches found.
+                <div className="p-4 text-center text-xs text-zinc-550">
+                  No receipts match search query.
                 </div>
               ) : (
-                filteredList.map((d) => (
-                  <div
-                    key={d.id}
-                    onClick={() => {
-                      setSelectedId(d.id);
-                      setDownloaded(false);
-                    }}
-                    className={cn(
-                      "p-3 rounded-xl border transition cursor-pointer text-left flex items-center justify-between gap-3",
-                      activeDelivery && activeDelivery.id === d.id
-                        ? "bg-red-950/20 border-[#B71C1C]/40 text-white"
-                        : "bg-[#0F1424] border-zinc-850 text-zinc-400 hover:border-zinc-800",
-                    )}
-                  >
-                    <div className="min-w-0 flex-1 space-y-1">
-                      <div className="font-bold text-xs truncate text-white">{d.customer}</div>
-                      <div className="font-mono text-[9px] text-zinc-500 font-semibold">ID: {d.id}</div>
-                      <div className="text-[10px] text-zinc-400 truncate flex items-center gap-1.5">
-                        <MapPin className="h-3 w-3 text-rose-500 shrink-0" />
-                        <span className="truncate">{d.destination}</span>
+                filteredList.map((item) => {
+                  const isSelected = activeDelivery?.id === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        setSelectedId(item.id);
+                        setDownloaded(false);
+                      }}
+                      className={cn(
+                        "w-full text-left p-3.5 rounded-xl border transition flex items-center justify-between cursor-pointer",
+                        isSelected
+                          ? "bg-gradient-to-r from-red-950/40 to-zinc-900 border-[#B71C1C]/50 text-white shadow-sm"
+                          : "bg-[#0F1424] border-zinc-850 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200",
+                      )}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-xs font-bold text-white">
+                            {item.id}
+                          </span>
+                          <span className="text-[10px] bg-emerald-950/40 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">
+                            Verified
+                          </span>
+                        </div>
+                        <p className="text-xs font-semibold text-zinc-300">{item.customer}</p>
+                        <p className="text-[10px] text-zinc-500 line-clamp-1">{item.destination}</p>
                       </div>
-                    </div>
-                    <div className="h-7 w-7 rounded bg-zinc-900 border border-zinc-850 grid place-items-center text-zinc-400 shrink-0">
-                      <Eye className="h-3.5 w-3.5" />
-                    </div>
-                  </div>
-                ))
+                      <ArrowRight
+                        className={cn(
+                          "h-4 w-4 transition-transform",
+                          isSelected ? "text-[#FF4D4D] translate-x-1" : "text-zinc-600",
+                        )}
+                      />
+                    </button>
+                  );
+                })
               )}
             </div>
           </div>
 
-          {/* Right Column: Certificate Attestation Preview & Download */}
+          {/* Right Column: PDF Preview Workspace */}
           <div className="lg:col-span-3 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs uppercase font-bold text-zinc-400 tracking-wider">
-                Cryptographic Attestation Receipt
+              <h3 className="text-xs uppercase font-bold text-zinc-400 tracking-wider flex items-center gap-2">
+                <FileText className="h-4 w-4 text-[#FF4D4D]" /> Verification Certificate Preview
               </h3>
-              <button
-                onClick={handleDownload}
-                disabled={downloading}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#B71C1C] hover:opacity-90 px-3 py-1.5 text-[10px] font-bold text-white shadow-glow disabled:opacity-40 transition cursor-pointer"
-              >
-                {downloading ? (
-                  <>
-                    <RefreshCw className="h-3 w-3 animate-spin" /> Compiling...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-3 w-3" /> Save PDF Receipt
-                  </>
-                )}
-              </button>
+
+              {activeDelivery && (
+                <button
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  className="inline-flex items-center gap-2 bg-[#B71C1C] hover:bg-[#961717] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-glow transition cursor-pointer disabled:opacity-50"
+                >
+
+                    <>
+                      <Download className="h-4 w-4" /> Download A4 PDF
+                    </>
+
+                </button>
+              )}
             </div>
 
             {activeDelivery && (
               <div className="space-y-4">
-                {/* Attestation PDF White Sheet Container */}
+                {/* PDF White Sheet Container */}
                 <div
                   ref={certRef}
                   className="border border-slate-200 rounded-3xl overflow-hidden shadow-elevated bg-white text-slate-900 p-6 relative"
@@ -230,9 +248,9 @@ function PDFCertificate() {
                         <span className="text-xs font-bold text-white font-mono">TR</span>
                       </div>
                       <div>
-                        <p className="text-slate-950 font-extrabold text-sm block">TrustRoute Attestation</p>
+                        <p className="text-slate-950 font-extrabold text-sm block">TrustRoute Verification</p>
                         <p className="text-slate-400 text-[8px] uppercase tracking-wider font-bold block">
-                          Official handoff attest
+                          Official handoff verification receipt
                         </p>
                       </div>
                     </div>
@@ -279,7 +297,7 @@ function PDFCertificate() {
                       </div>
                       <div className="rounded-xl bg-slate-50 p-2.5">
                         <span className="text-[8px] uppercase tracking-wider text-slate-400 block font-bold">
-                          Attested date
+                          Verified Date
                         </span>
                         <span className="text-slate-950 font-semibold">
                           {activeDelivery.proof?.verifiedAt
@@ -302,7 +320,7 @@ function PDFCertificate() {
 
                     <div className="rounded-xl bg-slate-50 p-2.5">
                       <span className="text-[8px] uppercase tracking-wider text-slate-400 block font-bold">
-                        Cryptographic Hash Attest signature
+                        Cryptographic Hash Verification Signature
                       </span>
                       <span className="font-mono text-[9px] break-all text-slate-700 block leading-tight">
                         {activeDelivery.proof?.hash ?? "Unavailable"}
@@ -311,7 +329,7 @@ function PDFCertificate() {
 
                     <div className="rounded-xl bg-slate-50 p-2.5">
                       <span className="text-[8px] uppercase tracking-wider text-slate-400 block font-bold">
-                        Assigned terminal Agent
+                        Assigned Terminal Agent
                       </span>
                       <span className="text-slate-950 font-semibold">{activeDelivery.agentName}</span>
                     </div>
@@ -321,9 +339,9 @@ function PDFCertificate() {
                   <div className="border-t border-slate-200 mt-6 pt-4 flex items-center justify-between text-left">
                     <div>
                       <p className="text-[8px] uppercase tracking-wider text-slate-400 font-bold">
-                        attestation flow
+                        Verification Audit
                       </p>
-                      <p className="text-xs font-black text-[#B71C1C]">TrustRoute secured Attestation</p>
+                      <p className="text-xs font-black text-[#B71C1C]">TrustRoute Secured Verification</p>
                     </div>
                     <div className="h-12 w-12 border-[3px] border-emerald-500 rounded-full grid place-items-center text-emerald-600 font-black text-[8px] rotate-[-10deg] shadow-sm select-none shrink-0">
                       VERIFIED
@@ -336,7 +354,7 @@ function PDFCertificate() {
                   <div className="bg-emerald-950/20 border border-emerald-500/25 rounded-2xl p-4 flex gap-3 text-emerald-400 text-xs">
                     <CheckCircle className="h-5 w-5 text-emerald-400 shrink-0" />
                     <p className="font-semibold leading-normal">
-                      A4 Attestation Receipt downloaded to local file manager.
+                      A4 Verification Receipt downloaded to local file manager.
                     </p>
                   </div>
                 )}
