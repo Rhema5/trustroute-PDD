@@ -27,6 +27,9 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState, useRef } from "react";
 import { useApp } from "@/store/app-store";
 import { requireRole } from "@/lib/role-guard";
+import { auth } from "@/lib/firebase";
+import { toast } from "sonner";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const Route = createFileRoute("/agent")({
   beforeLoad: async () => {
