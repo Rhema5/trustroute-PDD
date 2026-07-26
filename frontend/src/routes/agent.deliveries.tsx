@@ -312,7 +312,7 @@ function AgentDeliveries() {
                             ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/10"
                             : "bg-red-950/30 text-[#FF4D4D] border-red-500/10"
                         )}>
-                          {d.paymentType === "cod" ? "COD" : "Prepaid"} · ${d.paymentAmount || 0} · {(d.paymentStatus || "pending").replace(/_/g, " ")}
+                          {d.paymentType === "cod" ? "COD" : "Prepaid"} · ₹{d.paymentAmount || 0} · {(d.paymentStatus || "pending").replace(/_/g, " ")}
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right whitespace-nowrap">

@@ -266,6 +266,13 @@ function DeliveryFlow() {
   const [downloading, setDownloading] = useState(false);
   const certRef = useRef<HTMLDivElement>(null);
 
+  // Auto-activate GPS when reaching Step 1
+  useEffect(() => {
+    if (step === 1 && gpsState === "idle") {
+      startGps();
+    }
+  }, [step, gpsState]);
+
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);

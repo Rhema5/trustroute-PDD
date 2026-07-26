@@ -161,6 +161,10 @@ function IncomingOrdersPage() {
               {/* Bottom Metadata Bar: Category | Package | Estimated Price | Distance (Matching Screenshot 2) */}
               <div className="border-t border-zinc-150 pt-3 flex flex-wrap items-center justify-between gap-4 text-xs text-zinc-500">
                 <div>
+                  <span className="text-zinc-400 font-semibold">Delivery PIN / OTP: </span>
+                  <span className="font-mono font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md">{d.otp}</span>
+                </div>
+                <div>
                   <span className="text-zinc-400 font-semibold">Category: </span>
                   <span className="font-bold text-zinc-900">{d.packageType || "Food & Groceries"}</span>
                 </div>

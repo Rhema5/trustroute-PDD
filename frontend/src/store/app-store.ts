@@ -343,7 +343,7 @@
         where("agentId", "==", user.uid),
       );
     } else {
-      return () => {};
+      q = query(collection(db, "deliveries"));
     }const unsubscribe = onSnapshot(
        q,
        (snapshot) => {
