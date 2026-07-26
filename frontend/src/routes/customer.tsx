@@ -36,13 +36,12 @@ import {
   Landmark,
   Wallet,
   ExternalLink,
-  Smartphone,
 } from "lucide-react";
 import { Logo } from "@/components/trust/Logo";
 import { useApp } from "@/store/app-store";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { sendOtpSms, formatPhoneNumber } from "@/lib/sms-service";
+import { sendOtpSms } from "@/lib/sms-service";
 import { auth, db } from "@/lib/firebase";
 
 export const Route = createFileRoute("/customer")({
@@ -158,9 +157,9 @@ function CustomerPortalPage() {
   const [paymentType, setPaymentType] = useState<"prepaid" | "cod">("cod");
   const [notes, setNotes] = useState("");
 
-  // Calculated distance & bill (RATE: ₹20 per 1 km)
-  const [distanceKm, setDistanceKm] = useState<number>(5.0);
-  const [totalBill, setTotalBill] = useState<number>(100);
+  // INITIAL BILL STATE: STARTS AT 0 UNTIL DESTINATION IS SELECTED!
+  const [distanceKm, setDistanceKm] = useState<number>(0);
+  const [totalBill, setTotalBill] = useState<number>(0);
   const [calculatingDist, setCalculatingDist] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
@@ -183,7 +182,7 @@ function CustomerPortalPage() {
     c.label.toLowerCase().includes(searchCategory.toLowerCase())
   );
 
-  // Recalculate driving distance & bill whenever coordinates update (Rate: ₹20/km)
+  // Recalculate driving distance & bill ONLY when destCoords is selected!
   useEffect(() => {
     if (pickupCoords && destCoords) {
       setCalculatingDist(true);
@@ -194,6 +193,9 @@ function CustomerPortalPage() {
           setTotalBill(calculatedFee);
         })
         .finally(() => setCalculatingDist(false));
+    } else {
+      setDistanceKm(0);
+      setTotalBill(0);
     }
   }, [pickupCoords, destCoords]);
 
@@ -345,6 +347,12 @@ function CustomerPortalPage() {
     setSelectedCategory(cat);
     setPickupAddress(currentLocation);
     setPickupQuery(currentLocation);
+    // Reset destination & bill until user searches a destination!
+    setDestinationQuery("");
+    setDestinationAddress("");
+    setDestCoords(null);
+    setDistanceKm(0);
+    setTotalBill(0);
   };
 
   const handleOrderSubmit = async (e: React.FormEvent) => {
@@ -370,6 +378,8 @@ function CustomerPortalPage() {
       return;
     }
 
+    const calculatedBill = totalBill > 0 ? totalBill : 100;
+
     setSubmitting(true);
     try {
       const deliveryId = `TR-${Math.floor(10000 + Math.random() * 90000)}`;
@@ -391,11 +401,11 @@ function CustomerPortalPage() {
         eta: "Pending Acceptance",
         status: "pending" as const,
         otp: secretOtp,
-        distanceKm: distanceKm,
+        distanceKm: distanceKm || 5.0,
         createdAt: new Date().toISOString(),
         paymentType: paymentType,
         paymentStatus: paymentType === "cod" ? ("cod_pending" as const) : ("pending" as const),
-        paymentAmount: totalBill,
+        paymentAmount: calculatedBill,
       };
 
       await addDelivery(newDeliveryObj as any);
@@ -404,13 +414,14 @@ function CustomerPortalPage() {
 
       if (paymentType === "cod") {
         setActiveTab("orders");
-        toast.success(`Order ${deliveryId} placed via Cash on Delivery (₹${totalBill})! Sent to Enterprise.`);
+        toast.success(`Order ${deliveryId} placed via Cash on Delivery (₹${calculatedBill})! Sent to Enterprise.`);
         await sendOtpSms(recipientPhone.trim(), secretOtp, deliveryId, recipientName.trim());
       } else {
         // OPEN RAZORPAY DRAWER IMMEDIATELY
         setPendingPrepaidDelivery(newDeliveryObj);
         setShowRazorpayDrawer(true);
-        toast.info("Please complete Razorpay payment below.");
+        // Automatically attempt to launch official Razorpay Checkout SDK
+        triggerOfficialRazorpayPopup(newDeliveryObj);
       }
     } catch (err: any) {
       console.error("Order creation failed:", err);
@@ -420,10 +431,12 @@ function CustomerPortalPage() {
     }
   };
 
-  // Direct synchronous popup launcher for Razorpay SDK (prevents browser popup blockers!)
+  // Direct Razorpay SDK Launcher with Sanitized Contact Number
   const triggerOfficialRazorpayPopup = (deliveryObj: any) => {
     const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TI8WTa75JlJz66";
-    const amountVal = deliveryObj.paymentAmount || totalBill;
+    const amountVal = deliveryObj.paymentAmount || totalBill || 100;
+    // Razorpay SDK requires clean 10-digit phone numbers without '+' or spaces!
+    const cleanPhoneDigits = (deliveryObj.phone || "").replace(/\D/g, "").slice(-10) || "9876543210";
 
     if (typeof window !== "undefined" && window.Razorpay) {
       try {
@@ -438,9 +451,15 @@ function CustomerPortalPage() {
           },
           prefill: {
             name: deliveryObj.customer,
-            contact: deliveryObj.phone,
+            contact: cleanPhoneDigits,
+            email: user?.email || "customer@trustroute.com",
           },
           theme: { color: "#2563EB" },
+          modal: {
+            ondismiss: function () {
+              toast.info("Razorpay window closed. You can complete payment using the options below.");
+            },
+          },
         });
         rzp.open();
       } catch (err) {
@@ -451,7 +470,7 @@ function CustomerPortalPage() {
 
   const confirmRazorpayPaymentSuccess = async (deliveryObj: any, paymentIdStr: string) => {
     setProcessingRzp(true);
-    const amountVal = deliveryObj.paymentAmount || totalBill;
+    const amountVal = deliveryObj.paymentAmount || totalBill || 100;
     try {
       await completeOnlinePayment(
         deliveryObj.id,
@@ -729,6 +748,7 @@ function CustomerPortalPage() {
                         onClick={() => {
                           setPendingPrepaidDelivery(d);
                           setShowRazorpayDrawer(true);
+                          triggerOfficialRazorpayPopup(d);
                         }}
                         className="rounded-xl bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 text-xs font-bold text-white transition cursor-pointer shadow-xs flex items-center gap-1.5"
                       >
@@ -1036,11 +1056,11 @@ function CustomerPortalPage() {
                     )}
                   </div>
 
-                  {/* DYNAMIC DELIVERY BILL BREAKDOWN */}
+                  {/* DYNAMIC DELIVERY BILL BREAKDOWN (STARTS AT 0 UNTIL DESTINATION IS SELECTED!) */}
                   <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-red-50/50 to-amber-50/50 p-4 space-y-2 text-xs">
                     <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
                       <span className="font-bold text-slate-700 flex items-center gap-1.5 text-xs">
-                        <Receipt className="h-4 w-4 text-red-600" /> Delivery Bill Estimate (Road Distance)
+                        <Receipt className="h-4 w-4 text-red-600" /> Delivery Bill Estimate
                       </span>
                       <span className="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">
                         ₹20 / km Rate
@@ -1054,14 +1074,16 @@ function CustomerPortalPage() {
                           <>
                             <Loader2 className="h-3 w-3 animate-spin text-red-500" /> Calculating...
                           </>
-                        ) : (
+                        ) : distanceKm > 0 ? (
                           `${distanceKm} km`
+                        ) : (
+                          <span className="text-slate-400 italic">Select Destination</span>
                         )}
                       </span>
                     </div>
                     <div className="flex justify-between text-slate-600">
                       <span>Distance Fare ({distanceKm} km × ₹20):</span>
-                      <span className="font-bold text-slate-900">₹{Math.round(distanceKm * 20)}</span>
+                      <span className="font-bold text-slate-900">₹{totalBill > 0 ? Math.round(distanceKm * 20) : 0}</span>
                     </div>
 
                     <div className="flex justify-between pt-1 border-t border-slate-200/80 text-sm font-extrabold text-slate-900">
@@ -1123,7 +1145,7 @@ function CustomerPortalPage() {
         )}
       </AnimatePresence>
 
-      {/* RAZORPAY PAYMENT GATEWAY DRAWER (UNBLOCKABLE OVERLAY) */}
+      {/* RAZORPAY PAYMENT GATEWAY DRAWER */}
       <AnimatePresence>
         {showRazorpayDrawer && pendingPrepaidDelivery && (
           <>
@@ -1171,7 +1193,7 @@ function CustomerPortalPage() {
                       Amount to Pay
                     </span>
                     <span className="text-2xl font-extrabold">
-                      ₹{pendingPrepaidDelivery.paymentAmount || totalBill}.00
+                      ₹{pendingPrepaidDelivery.paymentAmount || 100}.00
                     </span>
                   </div>
                   <div className="text-right text-xs text-blue-100 font-medium">
@@ -1228,13 +1250,13 @@ function CustomerPortalPage() {
                   <div className="text-center space-y-3 py-1">
                     <div className="p-3 bg-white border border-slate-200 rounded-2xl inline-block shadow-sm">
                       <img
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=trustroute.rzp@icici%26pn=TrustRoute%20Logistics%26am=${pendingPrepaidDelivery.paymentAmount || totalBill}%26cu=INR`}
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=trustroute.rzp@icici%26pn=TrustRoute%20Logistics%26am=${pendingPrepaidDelivery.paymentAmount || 100}%26cu=INR`}
                         alt="UPI Payment QR"
                         className="h-36 w-36 mx-auto rounded-lg"
                       />
                     </div>
                     <p className="text-xs font-semibold text-slate-700">
-                      Scan QR code with GPay / PhonePe / Paytm to Pay ₹{pendingPrepaidDelivery.paymentAmount || totalBill}
+                      Scan QR code with GPay / PhonePe / Paytm to Pay ₹{pendingPrepaidDelivery.paymentAmount || 100}
                     </p>
                     <div className="flex justify-center gap-2">
                       <button
@@ -1310,7 +1332,7 @@ function CustomerPortalPage() {
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        <Check className="h-4 w-4" /> Verify & Complete Razorpay Payment (₹{pendingPrepaidDelivery.paymentAmount || totalBill})
+                        <Check className="h-4 w-4" /> Verify & Complete Razorpay Payment (₹{pendingPrepaidDelivery.paymentAmount || 100})
                       </>
                     )}
                   </button>
