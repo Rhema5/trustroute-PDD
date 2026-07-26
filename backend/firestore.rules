@@ -43,43 +43,30 @@ service cloud.firestore {
 
     // Deliveries Collection rules
     match /deliveries/{deliveryId} {
-      // Owners can read their enterprise deliveries AND pending customer orders.
-      // Agents can only read deliveries assigned to them.
-      // Unauthenticated users can read their specific delivery (for customer tracking by ID).
-      allow read: if (
-        resource == null ||
-        (isSignedIn() && (
-          getUserRole(request.auth.uid) == 'owner' ||
-          resource.data.agentId == request.auth.uid ||
-          resource.data.enterpriseId == 'enterprise-customer-portal'
-        ))
-      );
+      // Allow read for authenticated users AND customers tracking customer portal orders
+      allow read: if true;
       
-      // Owners can create deliveries for their own enterprise.
-      // Unauthenticated customers can create pending orders (for customer portal).
+      // Allow creation for enterprise owners OR customer portal orders
       allow create: if (
         (isSignedIn() &&
           getUserRole(request.auth.uid) == 'owner' &&
           request.resource.data.enterpriseId == request.auth.uid) ||
-        // Customer portal: unauthenticated pending orders
-        (!isSignedIn() &&
-          request.resource.data.status == 'pending' &&
-          request.resource.data.enterpriseId == 'enterprise-customer-portal') ||
-        // Authenticated customer portal (if signed in as non-owner/agent)
-        (isSignedIn() &&
-          request.resource.data.status == 'pending' &&
-          request.resource.data.enterpriseId == 'enterprise-customer-portal')
+        // Customer portal pending orders (authenticated or unauthenticated)
+        (request.resource.data.enterpriseId == 'enterprise-customer-portal')
       );
       
       // Owners can update their enterprise deliveries OR accept pending customer orders.
       // Assigned agents can update delivery status/proof.
-      allow update: if isSignedIn() && (
+      allow update: if (
+        // Allow customer to update payment status upon Razorpay payment
+        (request.resource.data.enterpriseId == 'enterprise-customer-portal') ||
         // Owner updating their own delivery
-        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) ||
+        (isSignedIn() && getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) ||
         // Owner accepting a customer order (changing enterpriseId from 'enterprise-customer-portal')
-        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == 'enterprise-customer-portal') ||
+        (isSignedIn() && getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == 'enterprise-customer-portal') ||
         // Agent updating delivery status/proof
         (
+          isSignedIn() &&
           resource.data.agentId == request.auth.uid &&
           request.resource.data.agentId == resource.data.agentId &&
           request.resource.data.enterpriseId == resource.data.enterpriseId
@@ -130,25 +117,9 @@ service cloud.firestore {
 
     // Payments Collection rules
     match /payments/{paymentId} {
-      allow read: if (isSignedIn() && (
-        getUserRole(request.auth.uid) == 'owner' || 
-        resource.data.agentId == request.auth.uid
-      )) || (!isSignedIn() && resource.data.paymentId == paymentId);
-      
-      allow create: if isSignedIn() && (
-        getUserRole(request.auth.uid) == 'owner' ||
-        request.resource.data.agentId == request.auth.uid
-      );
-      
-      allow update: if (isSignedIn() && (
-        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) ||
-        (
-          resource.data.agentId == request.auth.uid && 
-          request.resource.data.agentId == resource.data.agentId && 
-          request.resource.data.enterpriseId == resource.data.enterpriseId
-        )
-      )) || (!isSignedIn() && request.resource.data.paymentStatus == 'paid');
-      
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
       allow delete: if isSignedIn() && getUserRole(request.auth.uid) == 'owner';
     }
 

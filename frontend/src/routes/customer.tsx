@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Package,
   MapPin,
@@ -30,6 +30,8 @@ import {
   LogOut,
   Mail,
   X,
+  Receipt,
+  Check,
 } from "lucide-react";
 import { Logo } from "@/components/trust/Logo";
 import { useApp } from "@/store/app-store";
@@ -72,6 +74,27 @@ const loadRazorpayScript = (): Promise<boolean> => {
   });
 };
 
+// Haversine formula to compute exact distance between two lat/lng points in kilometers
+function calculateHaversineDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371; // Earth's radius in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  return Math.max(1, Math.round(distance * 10) / 10);
+}
+
 // 6 Delivery Categories matching Customer App Screenshot 2
 const CATEGORIES = [
   { id: "food", label: "Food & Groceries", icon: ShoppingBag, color: "bg-amber-50 text-amber-600 border-amber-150 hover:bg-amber-100/80", iconBg: "bg-amber-100 text-amber-600" },
@@ -91,8 +114,9 @@ function CustomerPortalPage() {
   // Active Bottom Nav Tab: 'home' | 'orders' | 'profile'
   const [activeTab, setActiveTab] = useState<"home" | "orders" | "profile">("home");
 
-  // Location State
+  // Location State (Default: Thandalam, Chennai)
   const [currentLocation, setCurrentLocation] = useState("Thandalam, Chennai");
+  const [pickupCoords, setPickupCoords] = useState<{ lat: number; lng: number }>({ lat: 13.0298, lng: 79.9721 }); // Default Thandalam lat/lng
   const [detectingLocation, setDetectingLocation] = useState(false);
 
   // Category Search
@@ -103,12 +127,24 @@ function CustomerPortalPage() {
 
   // Form State
   const [pickupAddress, setPickupAddress] = useState("Thandalam, Chennai");
+  const [doorNo, setDoorNo] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [recipientPhone, setRecipientPhone] = useState("");
+  
+  // Destination Autocomplete Search State
+  const [destinationQuery, setDestinationQuery] = useState("");
   const [destinationAddress, setDestinationAddress] = useState("");
-  const [paymentType, setPaymentType] = useState<"prepaid" | "cod">("prepaid");
-  const [amount, setAmount] = useState<string>("499.00");
+  const [destCoords, setDestCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [destSuggestions, setDestSuggestions] = useState<any[]>([]);
+  const [searchingDest, setSearchingDest] = useState(false);
+  const [showDestDropdown, setShowDestDropdown] = useState(false);
+
+  const [paymentType, setPaymentType] = useState<"prepaid" | "cod">("cod");
   const [notes, setNotes] = useState("");
+
+  // Calculated distance & bill
+  const [distanceKm, setDistanceKm] = useState<number>(5.0);
+  const [totalBill, setTotalBill] = useState<number>(75); // Rate: ₹15/km (5km * 15 = 75)
 
   const [submitting, setSubmitting] = useState(false);
   const [createdDelivery, setCreatedDelivery] = useState<any>(null);
@@ -121,14 +157,73 @@ function CustomerPortalPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
 
-  // Real-time listener for created delivery status updates
-  const activeDelivery = createdDelivery
-    ? deliveries.find((d) => d.id === createdDelivery.id) || createdDelivery
-    : null;
-
   const filteredCategories = CATEGORIES.filter((c) =>
     c.label.toLowerCase().includes(searchCategory.toLowerCase())
   );
+
+  // Recalculate distance & bill whenever coordinates update
+  useEffect(() => {
+    if (pickupCoords && destCoords) {
+      const dist = calculateHaversineDistance(
+        pickupCoords.lat,
+        pickupCoords.lng,
+        destCoords.lat,
+        destCoords.lng
+      );
+      setDistanceKm(dist);
+      const calculatedFee = Math.max(50, Math.round(dist * 15)); // ₹15 per km (min ₹50)
+      setTotalBill(calculatedFee);
+    }
+  }, [pickupCoords, destCoords]);
+
+  // Live OpenStreetMap Nominatim Autocomplete for Destination Search
+  useEffect(() => {
+    if (!destinationQuery || destinationQuery.trim().length < 3) {
+      setDestSuggestions([]);
+      setShowDestDropdown(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setSearchingDest(true);
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+            destinationQuery
+          )}&format=json&countrycodes=in&limit=5&addressdetails=1`,
+          { headers: { "Accept-Language": "en" } }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setDestSuggestions(data);
+          setShowDestDropdown(true);
+        }
+      } catch (err) {
+        console.error("Destination search failed:", err);
+      } finally {
+        setSearchingDest(false);
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [destinationQuery]);
+
+  const handleSelectDestination = (item: any) => {
+    const lat = parseFloat(item.lat);
+    const lng = parseFloat(item.lon);
+    const addr = item.display_name;
+
+    setDestinationAddress(addr);
+    setDestinationQuery(item.name || addr.split(",")[0]);
+    setDestCoords({ lat, lng });
+    setShowDestDropdown(false);
+
+    // Calculate distance
+    const dist = calculateHaversineDistance(pickupCoords.lat, pickupCoords.lng, lat, lng);
+    setDistanceKm(dist);
+    setTotalBill(Math.max(50, Math.round(dist * 15)));
+    toast.success(`Destination set: ${item.name || addr.split(",")[0]} (${dist} km)`);
+  };
 
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
@@ -140,6 +235,7 @@ function CustomerPortalPage() {
       async (pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
+        setPickupCoords({ lat, lng });
         try {
           const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
@@ -167,7 +263,7 @@ function CustomerPortalPage() {
           setPickupAddress(`GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
         }
         setDetectingLocation(false);
-        toast.success("Location set from GPS!");
+        toast.success("Pickup location updated from GPS!");
       },
       (err) => {
         setDetectingLocation(false);
@@ -194,8 +290,9 @@ function CustomerPortalPage() {
       toast.error("A valid Recipient Phone number is mandatory.");
       return;
     }
-    if (!destinationAddress.trim()) {
-      toast.error("Destination Address is mandatory.");
+    const finalDest = destinationAddress.trim() || destinationQuery.trim();
+    if (!finalDest) {
+      toast.error("Destination Address is mandatory. Please select from search suggestions.");
       return;
     }
     if (!pickupAddress.trim()) {
@@ -207,38 +304,43 @@ function CustomerPortalPage() {
     try {
       const deliveryId = `TR-${Math.floor(10000 + Math.random() * 90000)}`;
       const secretOtp = String(Math.floor(1000 + Math.random() * 9000));
-      const numericAmount = parseFloat(amount) || 499;
+      const fullPickup = doorNo ? `Door ${doorNo}, ${pickupAddress}` : pickupAddress;
 
       const newDeliveryObj = {
         id: deliveryId,
         customer: recipientName.trim(),
         phone: recipientPhone.trim(),
-        pickupLocation: pickupAddress.trim(),
-        destination: destinationAddress.trim(),
+        pickupLocation: fullPickup,
+        destination: finalDest,
         packageType: selectedCategory ? selectedCategory.label : "Parcel",
         notes: notes.trim(),
         priority: "Express" as const,
         agentId: "", // Empty until Enterprise assigns an agent
-        agentName: "Awaiting Assignment",
+        agentName: "Awaiting Enterprise Acceptance",
         enterpriseId: "enterprise-customer-portal",
-        eta: "Pending Assignment",
-        status: "pending" as const,
+        eta: "Pending Acceptance",
+        status: "pending" as const, // YELLOW STATUS BADGE
         otp: secretOtp,
-        distanceKm: 5.2,
+        distanceKm: distanceKm,
         createdAt: new Date().toISOString(),
         paymentType: paymentType,
         paymentStatus: paymentType === "cod" ? ("cod_pending" as const) : ("pending" as const),
-        paymentAmount: numericAmount,
+        paymentAmount: totalBill,
       };
 
       await addDelivery(newDeliveryObj as any);
       setCreatedDelivery(newDeliveryObj);
       setSelectedCategory(null);
       setActiveTab("orders");
-      toast.success(`Order ${deliveryId} placed successfully!`);
 
-      // Trigger Smart SMS OTP Dispatch
-      await sendOtpSms(recipientPhone.trim(), secretOtp, deliveryId, recipientName.trim());
+      if (paymentType === "cod") {
+        toast.success(`Order ${deliveryId} placed via Cash on Delivery (₹${totalBill})! Sent to Enterprise.`);
+        // Trigger Smart SMS OTP Dispatch
+        await sendOtpSms(recipientPhone.trim(), secretOtp, deliveryId, recipientName.trim());
+      } else {
+        toast.info(`Order ${deliveryId} created! Complete Razorpay payment to confirm.`);
+        handleRazorpayPaymentForObj(newDeliveryObj);
+      }
     } catch (err: any) {
       console.error("Order creation failed:", err);
       toast.error(err.message || "Failed to place order. Please try again.");
@@ -247,19 +349,17 @@ function CustomerPortalPage() {
     }
   };
 
-  const handleRazorpayPayment = async () => {
-    if (!activeDelivery) return;
+  const handleRazorpayPaymentForObj = async (deliveryObj: any) => {
     setPayingOnline(true);
-
     const loaded = await loadRazorpayScript();
     if (!loaded) {
-      toast.error("Failed to load Razorpay SDK. Check connection.");
+      toast.error("Failed to load Razorpay SDK.");
       setPayingOnline(false);
       return;
     }
 
-    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TGsFUD44ioTAmN";
-    const amountVal = activeDelivery.paymentAmount || 499;
+    const keyId = "rzp_test_TGsFUD44ioTAmN"; // Exact Razorpay Test Key requested by user
+    const amountVal = deliveryObj.paymentAmount || totalBill;
     const amountInSubunits = Math.round(amountVal * 100);
 
     const options = {
@@ -267,11 +367,11 @@ function CustomerPortalPage() {
       amount: amountInSubunits,
       currency: "INR",
       name: "TrustRoute Logistics",
-      description: `Delivery Fee for Order Ref: ${activeDelivery.id}`,
+      description: `Delivery Fee for Order Ref: ${deliveryObj.id}`,
       handler: async function (response: any) {
         try {
           await completeOnlinePayment(
-            activeDelivery.id,
+            deliveryObj.id,
             "razorpay",
             amountVal,
             response.razorpay_payment_id,
@@ -281,20 +381,22 @@ function CustomerPortalPage() {
               razorpay_signature: response.razorpay_signature || "",
             }
           );
-          toast.success("Payment successful via Razorpay!");
+          toast.success("Razorpay payment verified successfully!");
           setCreatedDelivery({
-            ...activeDelivery,
+            ...deliveryObj,
             paymentStatus: "paid",
           });
+          // Trigger Smart SMS OTP Dispatch
+          await sendOtpSms(deliveryObj.phone, deliveryObj.otp, deliveryObj.id, deliveryObj.customer);
         } catch (err) {
-          toast.error("Payment recorded, but sync failed.");
+          toast.error("Payment recorded, but status update failed.");
         } finally {
           setPayingOnline(false);
         }
       },
       prefill: {
-        name: activeDelivery.customer,
-        contact: activeDelivery.phone,
+        name: deliveryObj.customer,
+        contact: deliveryObj.phone,
       },
       theme: { color: "#7F1D1D" },
       modal: {
@@ -358,7 +460,7 @@ function CustomerPortalPage() {
   return (
     <div className="relative min-h-screen bg-slate-100 text-slate-800 font-sans overflow-x-hidden pb-24">
       {/* BACKGROUND MAP GRAPHIC (Matching Screenshot 2 Leaflet OpenStreetMap) */}
-      <div 
+      <div
         className="fixed inset-0 z-0 opacity-40 pointer-events-none bg-cover bg-center"
         style={{
           backgroundImage: `url('https://tile.openstreetmap.org/12/2361/1812.png')`,
@@ -418,9 +520,9 @@ function CustomerPortalPage() {
             className="rounded-[32px] bg-white/95 backdrop-blur-md border border-slate-200/90 p-6 sm:p-8 shadow-2xl text-center space-y-6"
           >
             <div className="w-12 h-1.5 rounded-full bg-slate-200 mx-auto" />
-            
+
             <div>
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight font-['Poppins',sans-serif]">
                 What do you need delivered?
               </h1>
               <p className="text-xs text-slate-500 mt-1">
@@ -466,7 +568,7 @@ function CustomerPortalPage() {
           </motion.div>
         )}
 
-        {/* TAB 2: ORDERS (Customer Delivery Tracking & History) */}
+        {/* TAB 2: ORDERS (Customer Delivery Tracking with YELLOW/GREEN Status Badges) */}
         {activeTab === "orders" && (
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -502,19 +604,22 @@ function CustomerPortalPage() {
                   key={d.id}
                   className="rounded-3xl bg-white/95 backdrop-blur-md p-5 border border-slate-200 shadow-md space-y-3 text-left"
                 >
+                  {/* Status Pill Header (YELLOW = Pending, GREEN = Accepted/Assigned/In Progress) */}
                   <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                     <div>
                       <span className="font-mono text-xs font-bold text-slate-400">{d.id}</span>
                       <span className="text-xs font-bold text-slate-900 block mt-0.5">{d.packageType}</span>
                     </div>
-                    <span className={cn(
-                      "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border",
-                      d.status === "delivered" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-                      d.status === "in_progress" ? "bg-blue-50 text-blue-700 border-blue-200" :
-                      "bg-amber-50 text-amber-700 border-amber-200"
-                    )}>
-                      {d.status.replace("_", " ")}
-                    </span>
+
+                    {d.status === "pending" ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 shadow-xs animate-pulse">
+                        <Clock className="h-3 w-3 text-amber-600" /> Pending Acceptance (Enterprise)
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
+                        <CheckCircle2 className="h-3 w-3 text-emerald-600" /> Accepted & Assigned ({d.agentName || "Agent"})
+                      </span>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 text-xs">
@@ -526,9 +631,21 @@ function CustomerPortalPage() {
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Delivery PIN / OTP</span>
                       <span className="font-mono font-extrabold text-red-600 text-sm tracking-wider">{d.otp}</span>
                     </div>
-                    <div className="col-span-2">
+                    <div>
+                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Pickup Location</span>
+                      <span className="font-medium text-slate-700">{d.pickupLocation}</span>
+                    </div>
+                    <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Destination</span>
                       <span className="font-medium text-slate-700">{d.destination}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Distance & Rate</span>
+                      <span className="font-bold text-slate-800">{d.distanceKm || 5.0} km @ ₹15/km</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Total Bill</span>
+                      <span className="font-extrabold text-slate-900 text-sm">₹{d.paymentAmount || 75}</span>
                     </div>
                   </div>
 
@@ -541,13 +658,10 @@ function CustomerPortalPage() {
                     </button>
                     {d.paymentType === "prepaid" && d.paymentStatus !== "paid" && (
                       <button
-                        onClick={() => {
-                          setCreatedDelivery(d);
-                          handleRazorpayPayment();
-                        }}
-                        className="rounded-xl bg-red-600 hover:bg-red-700 px-3 py-1.5 text-xs font-bold text-white transition cursor-pointer"
+                        onClick={() => handleRazorpayPaymentForObj(d)}
+                        className="rounded-xl bg-red-600 hover:bg-red-700 px-3.5 py-1.5 text-xs font-bold text-white transition cursor-pointer shadow-xs"
                       >
-                        Pay ₹{d.paymentAmount || 499}
+                        Pay ₹{d.paymentAmount || 75} via Razorpay
                       </button>
                     )}
                   </div>
@@ -690,8 +804,9 @@ function CustomerPortalPage() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="w-full max-w-lg rounded-[32px] bg-white p-6 sm:p-8 shadow-2xl pointer-events-auto overflow-hidden relative text-left space-y-5 max-h-[90vh] overflow-y-auto"
+                className="w-full max-w-lg rounded-[32px] bg-white p-6 sm:p-8 shadow-2xl pointer-events-auto overflow-hidden relative text-left space-y-4 max-h-[90vh] overflow-y-auto"
               >
+                {/* Modal Header */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                   <div className="flex items-center gap-2.5">
                     <div className={cn("p-2 rounded-xl", selectedCategory.iconBg)}>
@@ -711,26 +826,40 @@ function CustomerPortalPage() {
                 </div>
 
                 <form onSubmit={handleOrderSubmit} className="space-y-4">
-                  {/* Pickup Address */}
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Pickup Location <span className="text-red-500">*</span>
-                    </label>
-                    <div className="flex gap-2">
+                  {/* Pickup Address & Door/Flat Number */}
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    <div className="sm:col-span-1">
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Door / Flat No.
+                      </label>
                       <input
                         type="text"
-                        required
-                        value={pickupAddress}
-                        onChange={(e) => setPickupAddress(e.target.value)}
-                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                        value={doorNo}
+                        onChange={(e) => setDoorNo(e.target.value)}
+                        placeholder="e.g. #12/A"
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                       />
-                      <button
-                        type="button"
-                        onClick={handleDetectLocation}
-                        className="shrink-0 inline-flex items-center gap-1 rounded-xl bg-red-50 border border-red-200 px-3 py-2 text-xs font-bold text-red-600 transition cursor-pointer"
-                      >
-                        <Navigation className="h-3.5 w-3.5" /> GPS
-                      </button>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Pickup Location <span className="text-red-500">*</span>
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          required
+                          value={pickupAddress}
+                          onChange={(e) => setPickupAddress(e.target.value)}
+                          className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleDetectLocation}
+                          className="shrink-0 inline-flex items-center gap-1 rounded-xl bg-red-50 border border-red-200 px-3 py-2 text-xs font-bold text-red-600 transition cursor-pointer"
+                        >
+                          <Navigation className="h-3.5 w-3.5" /> GPS
+                        </button>
+                      </div>
                     </div>
                   </div>
 
@@ -746,7 +875,7 @@ function CustomerPortalPage() {
                         value={recipientName}
                         onChange={(e) => setRecipientName(e.target.value)}
                         placeholder="e.g. Rajesh Kumar"
-                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                       />
                     </div>
 
@@ -760,61 +889,127 @@ function CustomerPortalPage() {
                         value={recipientPhone}
                         onChange={(e) => setRecipientPhone(e.target.value)}
                         placeholder="e.g. +91 98765 43210"
-                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                       />
                     </div>
                   </div>
 
-                  {/* Destination Address */}
-                  <div>
+                  {/* DESTINATION SEARCH WITH LIVE OPENSTREETMAP AUTOCOMPLETE DROPDOWN */}
+                  <div className="relative">
                     <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Destination Address <span className="text-red-500">* (Mandatory)</span>
+                      Destination / Dropoff Address <span className="text-red-500">* (Search GPS)</span>
                     </label>
-                    <input
-                      type="text"
-                      required
-                      value={destinationAddress}
-                      onChange={(e) => setDestinationAddress(e.target.value)}
-                      placeholder="e.g. Plot 45, Anna Salai, T. Nagar, Chennai"
-                      className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
-                    />
+                    <div className="relative">
+                      <input
+                        type="text"
+                        required
+                        value={destinationQuery}
+                        onChange={(e) => setDestinationQuery(e.target.value)}
+                        placeholder="Type location e.g. Avadi Bus Stand, Saveetha Hospital..."
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-3.5 pr-8 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                      />
+                      {searchingDest && (
+                        <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-red-500" />
+                      )}
+                    </div>
+
+                    {/* LIVE SEARCH AUTOCOMPLETE SUGGESTIONS DROPDOWN */}
+                    {showDestDropdown && destSuggestions.length > 0 && (
+                      <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-48 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl space-y-1">
+                        {destSuggestions.map((item, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => handleSelectDestination(item)}
+                            className="w-full text-left p-2.5 rounded-xl hover:bg-red-50 transition cursor-pointer flex items-start gap-2 border border-transparent hover:border-red-100"
+                          >
+                            <MapPin className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                            <div>
+                              <span className="text-xs font-bold text-slate-900 block">
+                                {item.name || item.display_name.split(",")[0]}
+                              </span>
+                              <span className="text-[10px] text-slate-500 line-clamp-1">
+                                {item.display_name}
+                              </span>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  {/* Payment Choice */}
+                  {/* DYNAMIC DELIVERY BILL BREAKDOWN (₹15 per 1 km) */}
+                  <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-red-50/50 to-amber-50/50 p-4 space-y-2 text-xs">
+                    <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+                      <span className="font-bold text-slate-700 flex items-center gap-1.5 text-xs">
+                        <Receipt className="h-4 w-4 text-red-600" /> Delivery Bill Estimate
+                      </span>
+                      <span className="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">
+                        ₹15 / km Rate
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between text-slate-600">
+                      <span>Calculated Route Distance:</span>
+                      <span className="font-bold text-slate-900">{distanceKm} km</span>
+                    </div>
+                    <div className="flex justify-between text-slate-600">
+                      <span>Distance Fare ({distanceKm} km × ₹15):</span>
+                      <span className="font-bold text-slate-900">₹{Math.round(distanceKm * 15)}</span>
+                    </div>
+
+                    <div className="flex justify-between pt-1 border-t border-slate-200/80 text-sm font-extrabold text-slate-900">
+                      <span>Total Payable Amount:</span>
+                      <span className="text-red-700 text-base">₹{totalBill}.00</span>
+                    </div>
+                  </div>
+
+                  {/* Payment Mode Choice */}
                   <div>
                     <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Payment Mode
+                      Payment Mode Choice
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
-                        onClick={() => setPaymentType("prepaid")}
+                        onClick={() => setPaymentType("cod")}
                         className={cn(
-                          "py-2.5 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center justify-center gap-1.5",
-                          paymentType === "prepaid" ? "bg-red-600 text-white border-red-600" : "bg-slate-50 text-slate-600 border-slate-200"
+                          "py-3 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs",
+                          paymentType === "cod"
+                            ? "bg-red-600 text-white border-red-600 shadow-md"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                         )}
                       >
-                        <CreditCard className="h-3.5 w-3.5" /> Prepaid (Razorpay ₹)
+                        <DollarSign className="h-4 w-4" /> Cash on Delivery (COD ₹{totalBill})
                       </button>
                       <button
                         type="button"
-                        onClick={() => setPaymentType("cod")}
+                        onClick={() => setPaymentType("prepaid")}
                         className={cn(
-                          "py-2.5 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center justify-center gap-1.5",
-                          paymentType === "cod" ? "bg-red-600 text-white border-red-600" : "bg-slate-50 text-slate-600 border-slate-200"
+                          "py-3 rounded-xl text-xs font-bold border transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs",
+                          paymentType === "prepaid"
+                            ? "bg-red-600 text-white border-red-600 shadow-md"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                         )}
                       >
-                        <DollarSign className="h-3.5 w-3.5" /> Cash on Delivery (₹)
+                        <CreditCard className="h-4 w-4" /> Razorpay Online (Prepaid ₹{totalBill})
                       </button>
                     </div>
                   </div>
 
+                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-red-600 hover:bg-red-700 py-3.5 text-xs font-bold text-white shadow-lg transition cursor-pointer disabled:opacity-50 mt-2"
+                    className="w-full flex items-center justify-center gap-2 rounded-2xl bg-red-600 hover:bg-red-700 py-4 text-xs font-bold text-white shadow-lg transition cursor-pointer disabled:opacity-50 mt-2 hover:scale-[1.01]"
                   >
-                    {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit Order Request →"}
+                    {submitting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : paymentType === "cod" ? (
+                      `Place Order (Cash on Delivery ₹${totalBill}) →`
+                    ) : (
+                      `Proceed to Pay ₹${totalBill} via Razorpay →`
+                    )}
                   </button>
                 </form>
               </motion.div>
