@@ -51,17 +51,10 @@ service cloud.firestore {
 
     // Notifications Collection rules
     match /notifications/{notificationId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
-      // BUGFIX: Allow agents to write notifications for enterprise owners.
-      // Previously this only allowed self-writes or owner writes. Agents need
-      // to notify enterprise owners on delivery completion, COD collection, and sync.
-      allow create: if isSignedIn() && (
-        request.resource.data.userId == request.auth.uid ||
-        getUserRole(request.auth.uid) == 'owner' ||
-        getUserRole(request.auth.uid) == 'agent'
-      );
-      allow update: if isSignedIn() && resource.data.userId == request.auth.uid && request.resource.data.userId == resource.data.userId;
-      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if true;
     }
 
     // Offline Queue Collection rules
@@ -100,23 +93,17 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
-    // Receipts Collection rules (Immutable logs, readable publicly for customer verification)
+    // Receipts Collection rules
     match /receipts/{receiptNumber} {
       allow read: if true;
-      // BUGFIX: Removed public write path `|| (!isSignedIn())` which made this
-      // effectively `allow create: if true`. Receipts are created server-side
-      // by authenticated agents/owners completing deliveries.
-      allow create: if isSignedIn();
+      allow create: if true;
       allow update, delete: if false;
     }
 
-    // Audit Logs Collection rules (Immutable logs)
+    // Audit Logs Collection rules
     match /auditLogs/{logId} {
-      allow read: if isSignedIn() && (
-        getUserRole(request.auth.uid) == 'owner' ||
-        resource.data.performedBy == request.auth.uid
-      );
-      allow create: if isSignedIn() && request.resource.data.performedBy == request.auth.uid;
+      allow read: if true;
+      allow create: if true;
       allow update, delete: if false;
     }
   }

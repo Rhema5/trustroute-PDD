@@ -74,7 +74,7 @@ const loadRazorpayScript = (): Promise<boolean> => {
   });
 };
 
-// Haversine formula to compute distance between two lat/lng points in kilometers
+// Haversine formula to compute straight-line distance
 function calculateHaversineDistance(
   lat1: number,
   lon1: number,
@@ -91,8 +91,31 @@ function calculateHaversineDistance(
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c;
-  return Math.max(1, Math.round(distance * 10) / 10);
+  return Math.max(1, Math.round(R * c * 10) / 10);
+}
+
+// Real Driving Road Distance via OpenStreetMap OSRM Routing API (e.g. Avadi to Saveetha = ~14.5 km)
+async function fetchDrivingDistanceKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): Promise<number> {
+  try {
+    const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`;
+    const res = await fetch(url);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.routes && data.routes.length > 0) {
+        const meters = data.routes[0].distance;
+        return Math.max(1, Math.round((meters / 1000) * 10) / 10);
+      }
+    }
+  } catch (err) {
+    console.warn("OSRM routing API fallback:", err);
+  }
+  const straightLine = calculateHaversineDistance(lat1, lon1, lat2, lon2);
+  return Math.max(1, Math.round(straightLine * 1.5 * 10) / 10);
 }
 
 // 6 Delivery Categories matching Customer App Screenshot 2
@@ -132,7 +155,7 @@ function CustomerPortalPage() {
   const [searchingPickup, setSearchingPickup] = useState(false);
   const [showPickupDropdown, setShowPickupDropdown] = useState(false);
 
-  // Address details field (Door No, Street Name, Flat Name, Landmark)
+  // Address details field (Door No, Street Name, Flat/Building Name, Landmark)
   const [addressDetails, setAddressDetails] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [recipientPhone, setRecipientPhone] = useState("");
@@ -151,6 +174,7 @@ function CustomerPortalPage() {
   // Calculated distance & bill (RATE: ₹20 per 1 km)
   const [distanceKm, setDistanceKm] = useState<number>(5.0);
   const [totalBill, setTotalBill] = useState<number>(100); // 5km * ₹20 = ₹100
+  const [calculatingDist, setCalculatingDist] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [createdDelivery, setCreatedDelivery] = useState<any>(null);
@@ -167,18 +191,17 @@ function CustomerPortalPage() {
     c.label.toLowerCase().includes(searchCategory.toLowerCase())
   );
 
-  // Recalculate distance & bill whenever coordinates update (Rate: ₹20/km)
+  // Recalculate driving distance & bill whenever coordinates update (Rate: ₹20/km)
   useEffect(() => {
     if (pickupCoords && destCoords) {
-      const dist = calculateHaversineDistance(
-        pickupCoords.lat,
-        pickupCoords.lng,
-        destCoords.lat,
-        destCoords.lng
-      );
-      setDistanceKm(dist);
-      const calculatedFee = Math.max(50, Math.round(dist * 20)); // ₹20 per km (min ₹50)
-      setTotalBill(calculatedFee);
+      setCalculatingDist(true);
+      fetchDrivingDistanceKm(pickupCoords.lat, pickupCoords.lng, destCoords.lat, destCoords.lng)
+        .then((dist) => {
+          setDistanceKm(dist);
+          const calculatedFee = Math.max(50, Math.round(dist * 20)); // ₹20 per km (min ₹50)
+          setTotalBill(calculatedFee);
+        })
+        .finally(() => setCalculatingDist(false));
     }
   }, [pickupCoords, destCoords]);
 
@@ -268,11 +291,12 @@ function CustomerPortalPage() {
     setDestCoords({ lat, lng });
     setShowDestDropdown(false);
 
-    // Calculate distance and fee at ₹20/km
-    const dist = calculateHaversineDistance(pickupCoords.lat, pickupCoords.lng, lat, lng);
-    setDistanceKm(dist);
-    setTotalBill(Math.max(50, Math.round(dist * 20)));
-    toast.success(`Destination set: ${item.name || addr.split(",")[0]} (${dist} km @ ₹20/km)`);
+    // Calculate real driving road distance
+    fetchDrivingDistanceKm(pickupCoords.lat, pickupCoords.lng, lat, lng).then((dist) => {
+      setDistanceKm(dist);
+      setTotalBill(Math.max(50, Math.round(dist * 20)));
+      toast.success(`Destination set: ${item.name || addr.split(",")[0]} (${dist} km driving @ ₹20/km)`);
+    });
   };
 
   const handleDetectLocation = () => {
@@ -413,7 +437,7 @@ function CustomerPortalPage() {
       return;
     }
 
-    // Exact Razorpay Test Key requested by user
+    // Exact Razorpay Test Key requested by user: rzp_test_TI8WTa75JlJz66
     const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TI8WTa75JlJz66";
     const amountVal = deliveryObj.paymentAmount || totalBill;
     const amountInSubunits = Math.round(amountVal * 100);
@@ -450,7 +474,7 @@ function CustomerPortalPage() {
             ...deliveryObj,
             paymentStatus: "paid",
           });
-          toast.success("Razorpay payment verified!");
+          toast.success("Razorpay payment verified successfully!");
         } finally {
           setPayingOnline(false);
         }
@@ -701,7 +725,7 @@ function CustomerPortalPage() {
                       <span className="font-medium text-slate-700">{d.destination}</span>
                     </div>
                     <div>
-                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Distance & Rate</span>
+                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Driving Distance & Rate</span>
                       <span className="font-bold text-slate-800">{d.distanceKm || 5.0} km @ ₹20/km</span>
                     </div>
                     <div>
@@ -899,7 +923,7 @@ function CustomerPortalPage() {
                           required
                           value={pickupQuery}
                           onChange={(e) => setPickupQuery(e.target.value)}
-                          placeholder="Search pickup location e.g. Thandalam, Sekkadu..."
+                          placeholder="Search pickup location e.g. Thandalam, Sekkadu, Avadi..."
                           className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-3.5 pr-8 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                         />
                         {searchingPickup && (
@@ -943,7 +967,7 @@ function CustomerPortalPage() {
                   {/* ADDRESS DETAILS INPUT (Door No, Street Name, Flat/Building Name, Landmark) */}
                   <div>
                     <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Address Details
+                      Address Details (Door No, Street Name, Landmark)
                     </label>
                     <input
                       type="text"
@@ -1029,11 +1053,11 @@ function CustomerPortalPage() {
                     )}
                   </div>
 
-                  {/* DYNAMIC DELIVERY BILL BREAKDOWN (Rate: ₹20 per 1 km) */}
+                  {/* DYNAMIC DELIVERY BILL BREAKDOWN (REAL DRIVING DISTANCE @ ₹20/km) */}
                   <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-red-50/50 to-amber-50/50 p-4 space-y-2 text-xs">
                     <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
                       <span className="font-bold text-slate-700 flex items-center gap-1.5 text-xs">
-                        <Receipt className="h-4 w-4 text-red-600" /> Delivery Bill Estimate
+                        <Receipt className="h-4 w-4 text-red-600" /> Delivery Bill Estimate (Road Distance)
                       </span>
                       <span className="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">
                         ₹20 / km Rate
@@ -1041,8 +1065,16 @@ function CustomerPortalPage() {
                     </div>
 
                     <div className="flex justify-between text-slate-600">
-                      <span>Calculated Distance:</span>
-                      <span className="font-bold text-slate-900">{distanceKm} km</span>
+                      <span>Driving Road Distance:</span>
+                      <span className="font-bold text-slate-900 flex items-center gap-1">
+                        {calculatingDist ? (
+                          <>
+                            <Loader2 className="h-3 w-3 animate-spin text-red-500" /> Calculating...
+                          </>
+                        ) : (
+                          `${distanceKm} km`
+                        )}
+                      </span>
                     </div>
                     <div className="flex justify-between text-slate-600">
                       <span>Distance Fare ({distanceKm} km × ₹20):</span>
