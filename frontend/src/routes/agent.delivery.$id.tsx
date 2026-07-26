@@ -27,6 +27,7 @@ import {
 import { useApp } from "@/store/app-store";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { sendOtpSms } from "@/lib/sms-service";
 import { Capacitor } from "@capacitor/core";
 import { Camera as CapCamera, CameraResultType, CameraSource } from "@capacitor/camera";
 
@@ -272,6 +273,15 @@ function DeliveryFlow() {
       startGps();
     }
   }, [step, gpsState]);
+
+  // Auto-dispatch OTP to recipient when agent arrives at Step 2 (OTP verification step)
+  const [otpDispatched, setOtpDispatched] = useState(false);
+  useEffect(() => {
+    if (step === 2 && d && !otpDispatched) {
+      setOtpDispatched(true);
+      sendOtpSms(d.phone, d.otp, d.id, d.customer);
+    }
+  }, [step, d, otpDispatched]);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -1225,14 +1235,24 @@ function DeliveryFlow() {
                       (otpValid ? (
                         <div className="text-center mt-3">
                           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-950/30 border border-emerald-500/20 px-3 py-1.5 text-xs text-emerald-400 font-bold">
-                            <ShieldCheck className="h-4 w-4" /> Code attested successfully
+                            <ShieldCheck className="h-4 w-4" /> Code verified successfully
                           </span>
                         </div>
                       ) : (
                         <div className="text-xs text-rose-400 text-center font-bold">
-                          Attestation mismatch. Verify OTP sequence.
+                          OTP PIN mismatch. Please check code with customer.
                         </div>
                       ))}
+
+                    <div className="text-center pt-2">
+                      <button
+                        type="button"
+                        onClick={() => sendOtpSms(d.phone, d.otp, d.id, d.customer)}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 bg-cyan-950/30 border border-cyan-500/20 px-3.5 py-2 rounded-xl transition cursor-pointer"
+                      >
+                        <RefreshCw className="h-3.5 w-3.5" /> Resend OTP PIN to Customer ({d.phone})
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex gap-3 pt-4 border-t border-zinc-850/60">

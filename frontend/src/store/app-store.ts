@@ -295,7 +295,25 @@
    },
    subscribeToDeliveries: () => {
      const { user, role } = get();
-     if (!user || !role) return () => {};    let q;
+     if (!user || !role) {
+      const q = query(collection(db, "deliveries"));
+      const unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const items: Delivery[] = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data({ serverTimestamps: "estimate" });
+            items.push(convertTimestamps(data) as Delivery);
+          });
+          const processed = processDeliveries(items);
+          set({ deliveries: processed });
+        },
+        (error) => {
+          console.error("Error subscribing to customer deliveries:", error);
+        }
+      );
+      return unsubscribe;
+    }    let q;
     if (role === "owner") {
       // Show enterprise's own deliveries AND all pending customer orders
       q = query(

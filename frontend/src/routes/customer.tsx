@@ -710,10 +710,6 @@ function CustomerPortalPage() {
                       <span className="font-bold text-slate-800">{d.customer} ({d.phone})</span>
                     </div>
                     <div>
-                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Delivery PIN / OTP</span>
-                      <span className="font-mono font-extrabold text-red-600 text-sm tracking-wider">{d.otp}</span>
-                    </div>
-                    <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Pickup Location</span>
                       <span className="font-medium text-slate-700">{d.pickupLocation}</span>
                     </div>
