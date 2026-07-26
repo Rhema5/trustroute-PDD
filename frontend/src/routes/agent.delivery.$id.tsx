@@ -689,7 +689,7 @@ function DeliveryFlow() {
     return [
       { label: "Dispatch Assigned", desc: "Delivery dispatched and assigned to agent.", done: true, time: "09:12 AM" },
       { label: "Live GPS Verification", desc: "Snapping agent coords at destination.", done: gpsState === "done" || d.status === "delivered", time: "Pending" },
-      { label: "OTP Attestation", desc: "Recipient entering 4-digit code.", done: otpValid || d.status === "delivered", time: "Pending" },
+      { label: "Recipient OTP Verification", desc: "Recipient entering 4-digit OTP PIN.", done: otpValid || d.status === "delivered", time: "Pending" },
       { label: "Physical Packaging Proof", desc: "Camera snapped evidence overlay.", done: photo || d.status === "delivered", time: "Pending" },
       { label: "Payment Verification", desc: d.paymentType === "cod" ? "COD cash collected." : "Prepaid online verified.", done: isPaidOrCodCollected || d.status === "delivered", time: "Pending" },
       { label: "Cryptographic Certificate", desc: "Generate SHA signature & sync.", done: d.status === "delivered", time: "Pending" },
@@ -1198,10 +1198,15 @@ function DeliveryFlow() {
                   className="space-y-6"
                 >
                   <div>
-                    <h3 className="text-lg font-black text-white">Step 2: Recipient OTP Attestation</h3>
+                    <h3 className="text-lg font-black text-white">Step 2: Recipient OTP Verification</h3>
                     <p className="text-xs text-zinc-450 mt-1">
-                      Verify SMS OTP attestation code generated during parcel dispatch.
+                      Verify the 4-digit Recipient OTP code sent to customer {d.customer} ({d.phone}).
                     </p>
+                  </div>
+
+                  {/* Recipient OTP PIN Helper Badge for testing */}
+                  <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/20 p-2.5 text-center text-xs text-cyan-300 font-medium">
+                    🔑 Recipient Delivery OTP PIN: <span className="font-mono font-extrabold text-white tracking-widest text-sm bg-cyan-900/60 px-2 py-0.5 rounded">{d.otp}</span>
                   </div>
 
                   <div className="space-y-4">
