@@ -14,6 +14,7 @@ import type { Delivery, DeliveryStatus } from "./mock-data";
 // Defines which status transitions are allowed.
 // Key = current status, Value = array of valid next statuses
 const VALID_TRANSITIONS: Record<DeliveryStatus, DeliveryStatus[]> = {
+  pending: ["assigned", "cancelled"], // Customer order awaiting enterprise acceptance
   assigned: ["in_progress", "delivered", "failed", "cancelled"],
   in_progress: ["delivered", "failed", "cancelled"],
   delivered: [], // Terminal state — no further transitions
@@ -51,11 +52,12 @@ export function getTransitionError(
 // ─── Status Priority for Sorting ──────────────────────────────
 // Lower number = higher priority (shown first in the list)
 const STATUS_PRIORITY: Record<DeliveryStatus, number> = {
-  in_progress: 0, // Active deliveries first
-  assigned: 1, // Waiting to start
-  failed: 2, // Needs attention
-  delivered: 3, // Completed (least urgent)
-  cancelled: 4, // Terminal/Cancelled
+  pending: 0,   // Customer orders first — need enterprise acceptance
+  in_progress: 1, // Active deliveries
+  assigned: 2,  // Waiting to start
+  failed: 3,    // Needs attention
+  delivered: 4, // Completed (least urgent)
+  cancelled: 5, // Terminal/Cancelled
 };
 
 // Priority weight multiplier for delivery priority
@@ -159,6 +161,8 @@ export function isStaleWrite(
 
 /**
  * Validate a delivery object has required fields for data integrity.
+ * NOTE: agentId is optional for customer-created orders with status "pending"
+ * (they await enterprise assignment).
  */
 export function validateDeliveryFields(d: Partial<Delivery>): string[] {
   const errors: string[] = [];
@@ -167,7 +171,8 @@ export function validateDeliveryFields(d: Partial<Delivery>): string[] {
     errors.push("Customer name must be at least 2 characters.");
   if (!d.destination || d.destination.trim().length < 5)
     errors.push("Destination must be at least 5 characters.");
-  if (!d.agentId) errors.push("Agent must be assigned.");
+  // AgentId only required for non-pending deliveries
+  if (d.status !== "pending" && !d.agentId) errors.push("Agent must be assigned.");
   if (!d.enterpriseId) errors.push("Enterprise ID is required.");
   if (!d.otp || d.otp.length !== 4) errors.push("OTP must be a 4-digit code.");
   return errors;

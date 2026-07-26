@@ -117,6 +117,7 @@
       razorpay_signature?: string;
     }
   ) => Promise<void>;
+  acceptCustomerOrder: (deliveryId: string, agentId: string, agentName: string) => Promise<void>;
 }export const useApp = create<AppState>((set, get) => ({
    role: null,
    setRole: (r) => set({ role: r }),
@@ -157,6 +158,38 @@
        );
      } catch (err) {
        console.error("Error reassigning delivery:", err);
+       throw err;
+     }
+   },
+   acceptCustomerOrder: async (deliveryId, agentId, agentName) => {
+     try {
+       const { user, userProfile } = get();
+       if (!user) throw new Error("Not authenticated.");
+       const enterpriseId = userProfile?.enterpriseId || user.uid;
+       const docRef = doc(db, "deliveries", deliveryId);
+       await runTransaction(db, async (transaction) => {
+         const snap = await transaction.get(docRef);
+         if (!snap.exists()) throw new Error("Delivery not found.");
+         const data = snap.data();
+         if (data.status !== "pending") throw new Error("This order is no longer pending.");
+         const nextVersion = getNextVersion(data.version);
+         transaction.update(docRef, {
+           agentId,
+           agentName,
+           enterpriseId,
+           status: "assigned",
+           eta: "30-45 min",
+           version: nextVersion,
+           updatedAt: serverTimestamp(),
+         });
+       });
+       await get().addNotification(
+         "New Delivery Assigned",
+         `You have been assigned delivery ${deliveryId}. Please begin pickup.`,
+         agentId
+       );
+     } catch (err) {
+       console.error("Error accepting customer order:", err);
        throw err;
      }
    },
@@ -260,10 +293,46 @@
      const { user, role } = get();
      if (!user || !role) return () => {};    let q;
     if (role === "owner") {
+      // Show enterprise's own deliveries AND all pending customer orders
       q = query(
         collection(db, "deliveries"),
         where("enterpriseId", "==", user.uid),
       );
+      // Also subscribe to pending customer orders (global)
+      const pendingQ = query(
+        collection(db, "deliveries"),
+        where("enterpriseId", "==", "enterprise-customer-portal"),
+        where("status", "==", "pending"),
+      );
+      const enterpriseUnsub = onSnapshot(
+        q,
+        (snapshot) => {
+          const items: Delivery[] = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data({ serverTimestamps: "estimate" });
+            items.push(convertTimestamps(data) as Delivery);
+          });
+          const currentDeliveries = get().deliveries.filter(d => d.enterpriseId === "enterprise-customer-portal" && d.status === "pending");
+          const processed = processDeliveries([...currentDeliveries, ...items]);
+          set({ deliveries: processed });
+        },
+        (error) => { console.error("Error subscribing to deliveries:", error); },
+      );
+      const customerUnsub = onSnapshot(
+        pendingQ,
+        (snapshot) => {
+          const pendingItems: Delivery[] = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data({ serverTimestamps: "estimate" });
+            pendingItems.push(convertTimestamps(data) as Delivery);
+          });
+          const enterpriseDeliveries = get().deliveries.filter(d => d.enterpriseId !== "enterprise-customer-portal");
+          const processed = processDeliveries([...enterpriseDeliveries, ...pendingItems]);
+          set({ deliveries: processed });
+        },
+        (error) => { console.error("Error subscribing to customer orders:", error); },
+      );
+      return () => { enterpriseUnsub(); customerUnsub(); };
     } else if (role === "agent") {
       q = query(
         collection(db, "deliveries"),

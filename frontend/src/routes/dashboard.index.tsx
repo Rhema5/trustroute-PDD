@@ -10,12 +10,15 @@ import {
   ShieldCheck,
   AlertTriangle,
   ArrowRight,
+  UserCheck,
+  Loader2,
 } from "lucide-react";
 import { useApp } from "@/store/app-store";
 import { StatusBadge } from "@/components/trust/StatusBadge";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { DeliveryStatus } from "@/lib/mock-data";
+import { toast } from "sonner";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -35,6 +38,7 @@ const icons = [Package, ShieldCheck, Truck, AlertTriangle];
 
 // Status group labels for the auto-sorted sections
 const STATUS_GROUP_LABELS: Record<DeliveryStatus, { label: string; color: string; dotColor: string }> = {
+  pending: { label: "Customer Orders — Awaiting Acceptance", color: "text-yellow-700", dotColor: "bg-yellow-400" },
   in_progress: { label: "In Transit", color: "text-blue-600", dotColor: "bg-blue-500" },
   assigned: { label: "Assigned & Pending Pickup", color: "text-amber-600", dotColor: "bg-amber-500" },
   failed: { label: "Attention Required", color: "text-rose-600", dotColor: "bg-rose-500" },
@@ -44,6 +48,7 @@ const STATUS_GROUP_LABELS: Record<DeliveryStatus, { label: string; color: string
 
 // Valid next transitions for inline display
 const NEXT_TRANSITIONS: Record<DeliveryStatus, DeliveryStatus[]> = {
+  pending: ["assigned", "cancelled"],
   assigned: ["in_progress", "failed", "cancelled"],
   in_progress: ["delivered", "failed", "cancelled"],
   delivered: [],
@@ -52,6 +57,7 @@ const NEXT_TRANSITIONS: Record<DeliveryStatus, DeliveryStatus[]> = {
 };
 
 const TRANSITION_LABELS: Record<DeliveryStatus, string> = {
+  pending: "Awaiting Enterprise",
   assigned: "Assigned",
   in_progress: "In Transit",
   delivered: "Delivered",
@@ -61,8 +67,35 @@ const TRANSITION_LABELS: Record<DeliveryStatus, string> = {
 
 function DashboardHome() {
   const deliveries = useApp((s) => s.deliveries);
+  const agents = useApp((s) => s.agents);
+  const acceptCustomerOrder = useApp((s) => s.acceptCustomerOrder);
   const q = useApp((s) => s.searchQuery);
   const setQ = useApp((s) => s.setSearchQuery);
+
+  const [acceptingId, setAcceptingId] = useState<string | null>(null);
+  const [selectedAgent, setSelectedAgent] = useState<Record<string, string>>({});
+
+  const handleAcceptOrder = async (deliveryId: string) => {
+    const agentId = selectedAgent[deliveryId];
+    if (!agentId) {
+      toast.error("Please select an agent to assign before accepting.");
+      return;
+    }
+    const agent = agents.find(a => a.id === agentId);
+    if (!agent) {
+      toast.error("Selected agent not found.");
+      return;
+    }
+    setAcceptingId(deliveryId);
+    try {
+      await acceptCustomerOrder(deliveryId, agent.id, agent.name);
+      toast.success(`Order ${deliveryId} accepted and assigned to ${agent.name}!`);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to accept order.");
+    } finally {
+      setAcceptingId(null);
+    }
+  };
 
   const filtered = deliveries.filter((d) =>
     [d.id, d.customer, d.destination, d.agentName || ""].some((v) =>
@@ -376,15 +409,38 @@ function DashboardHome() {
                           </div>
                         </td>
                         <td className="p-4 text-right">
-                          <Link
-                            to={
-                              d.status === "delivered" ? "/dashboard/proofs/$id" : "/dashboard/history"
-                            }
-                            params={{ id: d.id }}
-                            className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 px-3.5 py-2 text-xs font-bold text-zinc-750 transition cursor-pointer"
-                          >
-                            View <ExternalLink className="h-3.5 w-3.5" />
-                          </Link>
+                          {d.status === "pending" ? (
+                            <div className="flex items-center gap-2 justify-end">
+                              <select
+                                value={selectedAgent[d.id] || ""}
+                                onChange={(e) => setSelectedAgent(prev => ({ ...prev, [d.id]: e.target.value }))}
+                                className="rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs text-zinc-700 outline-none max-w-[140px]"
+                              >
+                                <option value="">Select Agent</option>
+                                {agents.map(a => (
+                                  <option key={a.id} value={a.id}>{a.name}</option>
+                                ))}
+                              </select>
+                              <button
+                                onClick={() => handleAcceptOrder(d.id)}
+                                disabled={acceptingId === d.id}
+                                className="inline-flex items-center gap-1 rounded-xl bg-yellow-500 hover:bg-yellow-600 px-3 py-1.5 text-xs font-bold text-white transition cursor-pointer disabled:opacity-50"
+                              >
+                                {acceptingId === d.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <UserCheck className="h-3 w-3" />}
+                                Accept
+                              </button>
+                            </div>
+                          ) : (
+                            <Link
+                              to={
+                                d.status === "delivered" ? "/dashboard/proofs/$id" : "/dashboard/history"
+                              }
+                              params={{ id: d.id }}
+                              className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 px-3.5 py-2 text-xs font-bold text-zinc-750 transition cursor-pointer"
+                            >
+                              View <ExternalLink className="h-3.5 w-3.5" />
+                            </Link>
+                          )}
                         </td>
                       </motion.tr>
                     </>

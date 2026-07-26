@@ -194,6 +194,21 @@ function Landing() {
 
                 <div className="space-y-3">
                   <button
+                    onClick={() => navigate({ to: "/customer" })}
+                    className="w-full text-left group relative rounded-2xl border border-red-500/30 bg-red-950/20 p-5 transition hover:bg-red-950/40 hover:border-red-500/60 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="rounded-xl bg-red-950 p-3 text-red-500 group-hover:bg-red-900/50 transition">
+                        <Package className="h-6 w-6 text-red-400 group-hover:text-red-300 transition" />
+                      </div>
+                      <div>
+                        <div className="font-bold text-white mb-0.5">Customer Portal</div>
+                        <div className="text-xs text-zinc-400">Book Delivery & Track Orders</div>
+                      </div>
+                    </div>
+                  </button>
+
+                  <button
                     onClick={() => navigate({ to: "/login", search: { mode: "owner" } })}
                     className="w-full text-left group relative rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:bg-white/[0.06] hover:border-primary/50 cursor-pointer"
                   >

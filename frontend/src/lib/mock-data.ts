@@ -1,4 +1,4 @@
-export type DeliveryStatus = "assigned" | "in_progress" | "delivered" | "failed" | "cancelled";
+export type DeliveryStatus = "pending" | "assigned" | "in_progress" | "delivered" | "failed" | "cancelled";
 
 export interface Agent {
   id: string;
@@ -58,6 +58,7 @@ export interface Delivery {
   id: string;
   customer: string;
   phone: string;
+  pickupLocation?: string;
   destination: string;
   packageType: string;
   notes?: string;

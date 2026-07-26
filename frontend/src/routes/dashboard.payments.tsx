@@ -266,13 +266,13 @@ function PaymentsDashboard() {
       {/* Analytics KPI responsive grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Today's Revenue", value: `$${stats.todayRev.toFixed(2)}`, desc: "Settled calendar day", icon: DollarSign, color: "text-[#7F1D1D] bg-red-50 border-red-100" },
-          { label: "Total Revenue", value: `$${stats.totalRev.toFixed(2)}`, desc: "Prepaid + COD Collected", icon: DollarSign, color: "text-[#7F1D1D] bg-red-50 border-red-100" },
+          { label: "Today's Revenue", value: `₹${stats.todayRev.toFixed(2)}`, desc: "Settled calendar day", icon: DollarSign, color: "text-[#7F1D1D] bg-red-50 border-red-100" },
+          { label: "Total Revenue", value: `₹${stats.totalRev.toFixed(2)}`, desc: "Prepaid + COD Collected", icon: DollarSign, color: "text-[#7F1D1D] bg-red-50 border-red-100" },
           { label: "Payment Success Rate", value: `${stats.successRate}%`, desc: "Handoff checkout success", icon: CheckCircle, color: "text-emerald-700 bg-emerald-50 border-emerald-100" },
-          { label: "Prepaid Received", value: `$${stats.prepaidPaid.toFixed(2)}`, desc: "Prepaid online", icon: CheckCircle, color: "text-emerald-700 bg-emerald-50 border-emerald-100" },
-          { label: "COD Collected", value: `$${stats.codCollected.toFixed(2)}`, desc: "Collected by agents", icon: TrendingUp, color: "text-blue-700 bg-blue-50 border-blue-100" },
-          { label: "COD Pending", value: `$${stats.codPending.toFixed(2)}`, desc: "COD dispatch pending", icon: Clock, color: "text-amber-700 bg-amber-50 border-amber-100" },
-          { label: "AOV", value: `$${stats.aov.toFixed(2)}`, desc: "Avg order value", icon: ArrowUpRight, color: "text-purple-700 bg-purple-50 border-purple-100" },
+          { label: "Prepaid Received", value: `₹${stats.prepaidPaid.toFixed(2)}`, desc: "Prepaid online (Razorpay)", icon: CheckCircle, color: "text-emerald-700 bg-emerald-50 border-emerald-100" },
+          { label: "COD Collected", value: `₹${stats.codCollected.toFixed(2)}`, desc: "Collected by agents", icon: TrendingUp, color: "text-blue-700 bg-blue-50 border-blue-100" },
+          { label: "COD Pending", value: `₹${stats.codPending.toFixed(2)}`, desc: "COD dispatch pending", icon: Clock, color: "text-amber-700 bg-amber-50 border-amber-100" },
+          { label: "Avg Order Value", value: `₹${stats.aov.toFixed(2)}`, desc: "Avg order value (INR)", icon: ArrowUpRight, color: "text-purple-700 bg-purple-50 border-purple-100" },
           { label: "Failed Transactions", value: stats.failed.toString(), desc: "Unsuccessful checkouts", icon: AlertTriangle, color: "text-rose-700 bg-rose-50 border-rose-100" },
         ].map((widget, i) => (
           <div
@@ -475,7 +475,7 @@ function PaymentsDashboard() {
                       <span className="font-mono font-bold text-zinc-700">{p.deliveryId}</span>
                     </td>
                     <td className="p-4 font-bold text-zinc-900">
-                      ${p.amount.toFixed(2)}
+                      ₹{p.amount.toFixed(2)}
                     </td>
                     <td className="p-4">
                       <div className="font-bold capitalize text-zinc-800">{p.paymentMethod}</div>

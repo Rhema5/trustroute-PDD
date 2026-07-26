@@ -228,7 +228,7 @@ function NewDelivery() {
                   </div>
                 </div>
                 <div>
-                  <Label>Payment Amount ($)</Label>
+                  <Label>Payment Amount (₹ INR)</Label>
                   <input
                     type="number"
                     step="0.01"

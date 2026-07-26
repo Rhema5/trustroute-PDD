@@ -43,32 +43,52 @@ service cloud.firestore {
 
     // Deliveries Collection rules
     match /deliveries/{deliveryId} {
-      // Owners can only read deliveries belonging to their enterprise. Agents can only read deliveries assigned to them.
-      // Allow read of non-existent documents for transaction.get() to work during creation.
-      allow read: if isSignedIn() && (
+      // Owners can read their enterprise deliveries AND pending customer orders.
+      // Agents can only read deliveries assigned to them.
+      // Unauthenticated users can read their specific delivery (for customer tracking by ID).
+      allow read: if (
         resource == null ||
-        getUserRole(request.auth.uid) == 'owner' || 
-        resource.data.agentId == request.auth.uid
+        (isSignedIn() && (
+          getUserRole(request.auth.uid) == 'owner' ||
+          resource.data.agentId == request.auth.uid ||
+          resource.data.enterpriseId == 'enterprise-customer-portal'
+        ))
       );
       
-      // Only owners can create deliveries associated with their own enterprise ID
-      allow create: if isSignedIn() && 
-        getUserRole(request.auth.uid) == 'owner' && 
-        request.resource.data.enterpriseId == request.auth.uid;
+      // Owners can create deliveries for their own enterprise.
+      // Unauthenticated customers can create pending orders (for customer portal).
+      allow create: if (
+        (isSignedIn() &&
+          getUserRole(request.auth.uid) == 'owner' &&
+          request.resource.data.enterpriseId == request.auth.uid) ||
+        // Customer portal: unauthenticated pending orders
+        (!isSignedIn() &&
+          request.resource.data.status == 'pending' &&
+          request.resource.data.enterpriseId == 'enterprise-customer-portal') ||
+        // Authenticated customer portal (if signed in as non-owner/agent)
+        (isSignedIn() &&
+          request.resource.data.status == 'pending' &&
+          request.resource.data.enterpriseId == 'enterprise-customer-portal')
+      );
       
-      // Only owners can update their enterprise deliveries, or the assigned agent can update the delivery status/proof (preserving enterpriseId/agentId mapping)
+      // Owners can update their enterprise deliveries OR accept pending customer orders.
+      // Assigned agents can update delivery status/proof.
       allow update: if isSignedIn() && (
-        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) || 
+        // Owner updating their own delivery
+        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == request.auth.uid) ||
+        // Owner accepting a customer order (changing enterpriseId from 'enterprise-customer-portal')
+        (getUserRole(request.auth.uid) == 'owner' && resource.data.enterpriseId == 'enterprise-customer-portal') ||
+        // Agent updating delivery status/proof
         (
-          resource.data.agentId == request.auth.uid && 
-          request.resource.data.agentId == resource.data.agentId && 
+          resource.data.agentId == request.auth.uid &&
+          request.resource.data.agentId == resource.data.agentId &&
           request.resource.data.enterpriseId == resource.data.enterpriseId
         )
       );
       
       // Only owners can delete their own enterprise deliveries
-      allow delete: if isSignedIn() && 
-        getUserRole(request.auth.uid) == 'owner' && 
+      allow delete: if isSignedIn() &&
+        getUserRole(request.auth.uid) == 'owner' &&
         resource.data.enterpriseId == request.auth.uid;
     }
 

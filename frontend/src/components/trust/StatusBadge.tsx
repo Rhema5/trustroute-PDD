@@ -2,8 +2,13 @@ import type { DeliveryStatus } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
 const map: Record<DeliveryStatus, { label: string; cls: string; pulse?: boolean }> = {
+  pending: {
+    label: "Awaiting Enterprise",
+    cls: "bg-yellow-500/15 text-yellow-300 border-yellow-500/30",
+    pulse: true,
+  },
   delivered: {
-    label: "Verified",
+    label: "Delivered",
     cls: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30 shadow-[0_0_20px_-6px_oklch(0.74_0.18_155/0.6)]",
   },
   in_progress: {
@@ -23,7 +28,7 @@ const map: Record<DeliveryStatus, { label: string; cls: string; pulse?: boolean 
 };
 
 export function StatusBadge({ status }: { status: DeliveryStatus }) {
-  const s = map[status];
+  const s = map[status] || map.failed;
   return (
     <span
       className={cn(

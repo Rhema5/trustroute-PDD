@@ -229,25 +229,17 @@ function PendingApprovalsPage() {
                     <button
                       disabled={actioningId !== null}
                       onClick={() => handleApprove(u.id, "agent")}
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 px-3.5 py-2 text-xs font-bold text-zinc-700 transition cursor-pointer disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-800 transition cursor-pointer disabled:opacity-50"
                     >
-                      <UserCheck className="h-3.5 w-3.5 text-emerald-600" />
+                      <UserCheck className="h-4 w-4 text-emerald-600" />
                       Approve Agent
                     </button>
                     <button
                       disabled={actioningId !== null}
-                      onClick={() => handleApprove(u.id, "owner")}
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 px-3.5 py-2 text-xs font-bold text-zinc-700 transition cursor-pointer disabled:opacity-50"
-                    >
-                      <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-                      Approve Admin
-                    </button>
-                    <button
-                      disabled={actioningId !== null}
                       onClick={() => handleReject(u.id)}
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 px-3.5 py-2 text-xs font-bold text-rose-700 transition cursor-pointer disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 px-4 py-2 text-xs font-bold text-rose-700 transition cursor-pointer disabled:opacity-50"
                     >
-                      <UserX className="h-3.5 w-3.5 text-rose-600" />
+                      <UserX className="h-4 w-4 text-rose-600" />
                       Deny Access
                     </button>
                   </div>
