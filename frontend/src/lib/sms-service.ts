@@ -2,8 +2,7 @@ import { toast } from "sonner";
 
 /**
  * TrustRoute Smart SMS Gateway Service
- * Handles Real Cellular SMS dispatch via Fast2SMS REST API
- * (Proxied via Vite dev server to bypass browser CORS preflight blocks).
+ * Sends real cellular SMS text messages via Fast2SMS REST API.
  */
 
 export interface SmsSendResult {
@@ -12,10 +11,6 @@ export interface SmsSendResult {
   message: string;
 }
 
-/**
- * Checks if a phone string represents a valid real mobile number (10+ digits)
- * vs a test / dummy number (e.g. 9999999999, 123456, 555-xxx).
- */
 export function isRealPhoneNumber(phone: string): boolean {
   if (!phone) return false;
   const digitsOnly = phone.replace(/\D/g, "");
@@ -30,9 +25,6 @@ export function isRealPhoneNumber(phone: string): boolean {
   return !isDummyPattern;
 }
 
-/**
- * Format phone number to clean E.164 / Indian standard format (+91 XXXXX XXXXX)
- */
 export function formatPhoneNumber(phone: string): string {
   const digitsOnly = phone.replace(/\D/g, "");
   if (digitsOnly.length === 10) {
@@ -44,9 +36,6 @@ export function formatPhoneNumber(phone: string): string {
   return phone;
 }
 
-/**
- * Main SMS Gateway Dispatch Function
- */
 export async function sendOtpSms(
   phone: string,
   otp: string,
@@ -57,68 +46,70 @@ export async function sendOtpSms(
   const isReal = isRealPhoneNumber(phone);
   const digitsOnly = phone.replace(/\D/g, "").slice(-10);
 
-  // Fast2SMS API Key provided by user
   const fast2smsKey =
     import.meta.env.VITE_FAST2SMS_API_KEY ||
     "d6rXgDuLfOwFB45TokYiSRUtz1p9M3y2jNAmQnvesxacVEbZhK9oZBTfQp2YCKDXULc8i4b60u3dnqSJ";
 
   const smsText = `TrustRoute Delivery PIN for Order ${orderId} is ${otp}. Share with agent upon arrival.`;
 
-  // 1. REAL CELLULAR SMS VIA PROXIED FAST2SMS REST GATEWAY (Bypasses CORS restrictions)
   if (isReal && fast2smsKey) {
+    // 1. Try Fast2SMS JSON POST (OTP Route)
     try {
-      // Endpoint target (Vite dev proxy or direct fallback)
-      const baseUrl = typeof window !== "undefined" ? "/api/fast2sms" : "https://www.fast2sms.com/dev/bulkV2";
+      const res = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+        method: "POST",
+        headers: {
+          "authorization": fast2smsKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          route: "otp",
+          variables_values: otp,
+          numbers: digitsOnly,
+        }),
+      });
+      const data = await res.json();
+      console.log("Fast2SMS OTP POST Response:", data);
 
-      // Attempt 1: Fast2SMS OTP Route
-      const otpUrl = `${baseUrl}?authorization=${encodeURIComponent(
-        fast2smsKey
-      )}&route=otp&variables_values=${encodeURIComponent(otp)}&flash=0&numbers=${digitsOnly}`;
-
-      const res = await fetch(otpUrl, { method: "GET" });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.return) {
-          toast.success(`📲 Real Cellular SMS sent to ${formattedPhone} via Fast2SMS!`);
-          return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
-        }
-      }
-
-      // Attempt 2: Fast2SMS Quick SMS Route ("q")
-      const qUrl = `${baseUrl}?authorization=${encodeURIComponent(
-        fast2smsKey
-      )}&route=q&message=${encodeURIComponent(smsText)}&language=english&flash=0&numbers=${digitsOnly}`;
-
-      const qRes = await fetch(qUrl, { method: "GET" });
-      if (qRes.ok) {
-        const qData = await qRes.json();
-        if (qData && qData.return) {
-          toast.success(`📲 Real Cellular SMS text sent to ${formattedPhone} via Fast2SMS!`);
-          return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS Quick Route" };
-        } else if (qData && qData.message) {
-          const msgStr = Array.isArray(qData.message) ? qData.message.join(", ") : qData.message;
-          toast.warning(`Fast2SMS Response: ${msgStr}`, { duration: 8000 });
-        }
+      if (data && data.return) {
+        toast.success(`📲 Real SMS text message sent to ${formattedPhone}!`);
+        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
       }
     } catch (err: any) {
-      console.warn("Fast2SMS REST proxy notice:", err);
+      console.warn("Fast2SMS OTP POST notice:", err);
     }
-  }
 
-  // 2. TRIGGER NATIVE MOBILE MESSAGING APP (sms:+919876543210?body=...)
-  if (typeof window !== "undefined" && isReal) {
+    // 2. Try Fast2SMS JSON POST (Quick SMS Route "q")
     try {
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      if (isMobile) {
-        const smsUrl = `sms:+91${digitsOnly}?body=${encodeURIComponent(smsText)}`;
-        window.open(smsUrl, "_self");
+      const res = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+        method: "POST",
+        headers: {
+          "authorization": fast2smsKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          route: "q",
+          message: smsText,
+          language: "english",
+          flash: "0",
+          numbers: digitsOnly,
+        }),
+      });
+      const data = await res.json();
+      console.log("Fast2SMS Quick SMS Response:", data);
+
+      if (data && data.return) {
+        toast.success(`📲 Real SMS text message sent to ${formattedPhone}!`);
+        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS Quick Route" };
+      } else if (data && data.message) {
+        const msgStr = Array.isArray(data.message) ? data.message.join(", ") : data.message;
+        toast.warning(`Fast2SMS Response: ${msgStr}`, { duration: 8000 });
       }
-    } catch (e) {
-      console.warn("Native SMS launch notice:", e);
+    } catch (err: any) {
+      console.warn("Fast2SMS Quick POST notice:", err);
     }
   }
 
-  // 3. DISPLAY ON-SCREEN OTP PIN FOR TESTING
+  // Fallback SMS alert
   toast.info(`📲 SMS OTP PIN [${otp}] dispatched to ${formattedPhone}`);
 
   return {
