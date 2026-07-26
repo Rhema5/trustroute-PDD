@@ -304,7 +304,8 @@ function AgentDeliveries() {
                       </td>
                       <td className="px-5 py-4 whitespace-nowrap">
                         <StatusBadge status={d.status} />
-                      </td                      <td className="px-5 py-4 whitespace-nowrap">
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap">
                         <span className={cn(
                           "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold border uppercase tracking-wider",
                           d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered"
@@ -401,7 +402,7 @@ function AgentDeliveries() {
                       )}
                     >
                       {d.paymentType === "cod" ? "COD" : "Prepaid"} · ₹{d.paymentAmount || 0} · {d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered" ? (d.paymentType === "cod" ? "COD COLLECTED" : "PAID") : (d.paymentStatus || "pending").replace(/_/g, " ")}
-                    </span>  </span>
+                    </span>
 
                     {d.status === "delivered" ? (
                       <Link
