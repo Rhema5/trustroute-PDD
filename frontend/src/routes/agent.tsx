@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState, useRef } from "react";
+import { useApp } from "@/store/app-store";
 import { requireRole } from "@/lib/role-guard";
 
 export const Route = createFileRoute("/agent")({
