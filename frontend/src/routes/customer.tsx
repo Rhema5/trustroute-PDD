@@ -17,11 +17,13 @@ import {
   Loader2,
   Building2,
   DollarSign,
+  Send,
 } from "lucide-react";
 import { Logo } from "@/components/trust/Logo";
 import { useApp } from "@/store/app-store";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { sendOtpSms, formatPhoneNumber } from "@/lib/sms-service";
 
 export const Route = createFileRoute("/customer")({
   head: () => ({
@@ -178,6 +180,9 @@ function CustomerPortalPage() {
       await addDelivery(newDeliveryObj as any);
       setCreatedDelivery(newDeliveryObj);
       toast.success(`Order ${deliveryId} placed successfully!`);
+
+      // Trigger Smart SMS OTP Dispatch
+      await sendOtpSms(recipientPhone.trim(), secretOtp, deliveryId, recipientName.trim());
     } catch (err: any) {
       console.error("Order creation failed:", err);
       toast.error(err.message || "Failed to place order. Please try again.");
@@ -574,8 +579,25 @@ function CustomerPortalPage() {
                 </div>
               )}
 
-              <div className="mt-6 flex justify-between">
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-6">
                 <button
+                  type="button"
+                  onClick={() => {
+                    sendOtpSms(
+                      activeDelivery.phone,
+                      activeDelivery.otp,
+                      activeDelivery.id,
+                      activeDelivery.customer
+                    );
+                  }}
+                  className="inline-flex items-center gap-2 rounded-xl border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 px-4 py-2 text-xs font-bold text-blue-400 transition cursor-pointer"
+                >
+                  <Send className="h-3.5 w-3.5" />
+                  Resend SMS OTP to {formatPhoneNumber(activeDelivery.phone)}
+                </button>
+
+                <button
+                  type="button"
                   onClick={() => setCreatedDelivery(null)}
                   className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2 text-xs font-bold text-slate-300 hover:bg-slate-800 transition cursor-pointer"
                 >

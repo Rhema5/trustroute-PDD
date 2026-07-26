@@ -19,6 +19,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { DeliveryStatus } from "@/lib/mock-data";
 import { toast } from "sonner";
+import { sendOtpSms } from "@/lib/sms-service";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -90,6 +91,12 @@ function DashboardHome() {
     try {
       await acceptCustomerOrder(deliveryId, agent.id, agent.name);
       toast.success(`Order ${deliveryId} accepted and assigned to ${agent.name}!`);
+
+      // Trigger Smart SMS OTP Dispatch to recipient phone
+      const targetDelivery = deliveries.find(d => d.id === deliveryId);
+      if (targetDelivery && targetDelivery.phone && targetDelivery.otp) {
+        sendOtpSms(targetDelivery.phone, targetDelivery.otp, deliveryId, targetDelivery.customer);
+      }
     } catch (err: any) {
       toast.error(err.message || "Failed to accept order.");
     } finally {
