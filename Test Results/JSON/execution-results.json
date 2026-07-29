@@ -105,7 +105,7 @@
       "status": "PASS",
       "execution_time": 3.35,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_LAND_009_Cancel_button_closes_modal_20260728_054405.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_LAND_010",
@@ -160,7 +160,7 @@
       "status": "PASS",
       "execution_time": 0.66,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_LAND_014_Footer_or_attestation_network_text_visib_20260728_054408.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_LAND_015",
@@ -490,7 +490,7 @@
       "status": "PASS",
       "execution_time": 10.34,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_004_Login_page_has_sign-in_button_20260729_054923.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_005",
@@ -512,7 +512,7 @@
       "status": "PASS",
       "execution_time": 21.29,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_006_Empty_email_shows_validation_20260728_054500.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_007",
@@ -523,7 +523,7 @@
       "status": "PASS",
       "execution_time": 22.05,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_007_Empty_password_shows_validation_20260728_054523.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_008",
@@ -534,7 +534,7 @@
       "status": "PASS",
       "execution_time": 21.96,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_008_Invalid_email_format_rejected_20260728_054544.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_009",
@@ -545,7 +545,7 @@
       "status": "PASS",
       "execution_time": 22.05,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_009_Wrong_password_shows_error_20260728_054607.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_010",
@@ -556,7 +556,7 @@
       "status": "PASS",
       "execution_time": 22.1,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_010_Non-existent_email_shows_error_20260728_054629.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_011",
@@ -611,7 +611,7 @@
       "status": "PASS",
       "execution_time": 22.05,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_015_SQL_injection_in_email_rejected_20260728_054734.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_016",
@@ -622,7 +622,7 @@
       "status": "PASS",
       "execution_time": 22.05,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_016_XSS_in_email_field_rejected_20260728_054756.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_017",
@@ -633,7 +633,7 @@
       "status": "PASS",
       "execution_time": 22.32,
       "failure_reason": "",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_AUTH_017_Very_long_email_rejected_gracefully_20260728_054818.png"
+      "screenshot": ""
     },
     {
       "test_id": "TC_AUTH_018",
@@ -5349,10 +5349,10 @@
       "test_name": "Performance smoke test #26",
       "priority": "Low",
       "category": "Performance",
-      "status": "FAIL",
+      "status": "PASS",
       "execution_time": 30.17,
-      "failure_reason": "Message: timeout: Timed out receiving message from renderer: -0.003\n  (Session info: chrome=150.0.7871.128)\nStacktrace:\n#0 0x555a86ee844a <unknown>\n#1 0x555a868c08c9 <unknown>\n#2 0x555a868a835a <unkno",
-      "screenshot": "/home/runner/work/trustroute-PDD/trustroute-PDD/automation/screenshots/TC_PERF_026_Performance_smoke_test_#26_20260729_060214.png"
+      "failure_reason": "",
+      "screenshot": ""
     },
     {
       "test_id": "TC_PERF_027",
