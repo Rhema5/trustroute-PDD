@@ -73,16 +73,16 @@
     <div class="lbl">Total Tests</div>
   </div>
   <div class="kpi green">
-    <div class="val">500</div>
+    <div class="val">488</div>
     <div class="lbl">Passed</div>
-    <div class="progress-bar"><div class="progress-fill" style="width:100.0%"></div></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:97.6%"></div></div>
   </div>
   <div class="kpi red">
-    <div class="val">0</div>
+    <div class="val">12</div>
     <div class="lbl">Failed</div>
   </div>
   <div class="kpi green">
-    <div class="val">100.0%</div>
+    <div class="val">97.6%</div>
     <div class="lbl">Pass Rate</div>
   </div>
   <div class="kpi blue">
@@ -95,8 +95,8 @@
   <div class="section-title">📋 Test Results</div>
   <div class="filter-bar">
     <button class="filter-btn active" onclick="filterTable('all',this)">All (500)</button>
-    <button class="filter-btn" onclick="filterTable('PASS',this)">✅ Passed (500)</button>
-    <button class="filter-btn" onclick="filterTable('FAIL',this)">❌ Failed (0)</button>
+    <button class="filter-btn" onclick="filterTable('PASS',this)">✅ Passed (488)</button>
+    <button class="filter-btn" onclick="filterTable('FAIL',this)">❌ Failed (12)</button>
   </div>
   <table id="results-table">
     <thead>
@@ -195,15 +195,15 @@
         <td style="color:var(--muted);font-size:0.78rem">—</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_LAND_009</td>
         <td>Landing</td>
         <td>UI Validation</td>
         <td><span class="priority low">Low</span></td>
         <td>Cancel button closes modal</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">3.35</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">3.33</td>
+        <td style="color:var(--muted);font-size:0.78rem">Modal should be closed</td>
       </tr>
     
       <tr data-status="PASS">
@@ -250,15 +250,15 @@
         <td style="color:var(--muted);font-size:0.78rem">—</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_LAND_014</td>
         <td>Landing</td>
         <td>UI Validation</td>
         <td><span class="priority low">Low</span></td>
         <td>Footer or attestation network text visible</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">0.66</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">0.7</td>
+        <td style="color:var(--muted);font-size:0.78rem">Page seems empty</td>
       </tr>
     
       <tr data-status="PASS">
@@ -580,14 +580,14 @@
         <td style="color:var(--muted);font-size:0.78rem">—</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_004</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority critical">Critical</span></td>
         <td>Login page has sign-in button</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">10.34</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">10.37</td>
         <td style="color:var(--muted);font-size:0.78rem">—</td>
       </tr>
     
@@ -602,59 +602,74 @@
         <td style="color:var(--muted);font-size:0.78rem">—</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_006</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority high">High</span></td>
         <td>Empty email shows validation</td>
-        <td><span class="badge pass">PASS</span></td>
+        <td><span class="badge fail">FAIL</span></td>
         <td style="text-align:center">21.29</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_007</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority high">High</span></td>
         <td>Empty password shows validation</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">22.05</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">21.98</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_008</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority high">High</span></td>
         <td>Invalid email format rejected</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">21.96</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">22.05</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_009</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority critical">Critical</span></td>
         <td>Wrong password shows error</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">22.05</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">22.15</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_010</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority critical">Critical</span></td>
         <td>Non-existent email shows error</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">22.1</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">22.08</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
       <tr data-status="PASS">
@@ -701,37 +716,46 @@
         <td style="color:var(--muted);font-size:0.78rem">—</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_015</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority high">High</span></td>
         <td>SQL injection in email rejected</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">22.05</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">22.12</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_016</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority high">High</span></td>
         <td>XSS in email field rejected</td>
-        <td><span class="badge pass">PASS</span></td>
-        <td style="text-align:center">22.05</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td><span class="badge fail">FAIL</span></td>
+        <td style="text-align:center">22.13</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
-      <tr data-status="PASS">
+      <tr data-status="FAIL">
         <td style="font-family:monospace;font-size:0.8rem;color:var(--accent)">TC_AUTH_017</td>
         <td>Authentication</td>
         <td>Authentication</td>
         <td><span class="priority medium">Medium</span></td>
         <td>Very long email rejected gracefully</td>
-        <td><span class="badge pass">PASS</span></td>
+        <td><span class="badge fail">FAIL</span></td>
         <td style="text-align:center">22.32</td>
-        <td style="color:var(--muted);font-size:0.78rem">—</td>
+        <td style="color:var(--muted);font-size:0.78rem">Message: 
+Stacktrace:
+#0 0x555a86ee844a <unknown>
+#1 0x555a8</td>
       </tr>
     
       <tr data-status="PASS">
