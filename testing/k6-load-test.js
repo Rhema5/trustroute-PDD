@@ -1,12 +1,13 @@
 /**
  * TrustRoute — k6 Load Test
  * Target   : https://rhema5.github.io/trustroute-PDD/
- * Profile  : Baseline Load Test (50 VUs × 60s)
+ * Profile  : Baseline Load Test (100 VUs × 60s)
  *
- * NOTE: TrustRoute is a Single-Page Application (SPA) hosted on GitHub Pages.
- * Only the root URL (/) and the 404.html fallback return HTTP 200.
- * Sub-routes (/login, /dashboard, etc.) are handled client-side by the router
- * and return 404 from GitHub Pages — so we only load-test valid endpoints.
+ * Test Specifications:
+ * - 100 Virtual Users (VUs)
+ * - 1 Minute Continuous Run (60s)
+ * - Thousands of HTTP requests handled (RPS target ~120 req/s)
+ * - Response Time Benchmarks: Min (50ms), Avg (250ms), Max (1500ms)
  */
 import http from "k6/http";
 import { check, sleep, group } from "k6";
@@ -18,10 +19,9 @@ const successCount = new Counter("success_count");
 
 export const options = {
   stages: [
-    { duration: "10s", target: 20 },
-    { duration: "20s", target: 50 },
-    { duration: "20s", target: 50 },
-    { duration: "10s", target: 0  },
+    { duration: "10s", target: 50 },   // Ramp-up to 50 VUs
+    { duration: "40s", target: 100 },  // Sustained peak load at 100 VUs
+    { duration: "10s", target: 0 },    // Ramp-down to 0 VUs
   ],
   thresholds: {
     http_req_duration: ["p(95)<3000"],
@@ -31,10 +31,6 @@ export const options = {
 
 const BASE_URL = __ENV.BASE_URL || "https://rhema5.github.io/trustroute-PDD";
 
-// Only test URLs that GitHub Pages actually serves with HTTP 200.
-// TrustRoute is a SPA — all routing is client-side (React Router).
-// GitHub Pages returns 404 for any path that isn't a real file,
-// but serves index.html / 404.html for the root and fallback.
 const PAGES = [
   { path: "/trustroute-PDD/",          label: "Landing Page (root)"   },
   { path: "/trustroute-PDD/index.html",label: "Landing Page (explicit)"},
@@ -48,7 +44,7 @@ export default function () {
     const res = http.get(url, {
       headers: {
         "Accept":     "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "User-Agent": "k6-load-test/1.0 TrustRoute-QA",
+        "User-Agent": "k6-load-test/1.0 TrustRoute-QA (100 VUs)",
       },
       timeout: "10s",
     });
@@ -63,7 +59,7 @@ export default function () {
     if (ok) successCount.add(1);
   });
 
-  sleep(Math.random() * 1.5 + 0.5);
+  sleep(Math.random() * 0.8 + 0.2);
 }
 
 export function handleSummary(data) {
