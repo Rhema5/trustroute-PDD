@@ -3,11 +3,13 @@
     "rules": "backend/firestore.rules"
   },
   "hosting": {
-    "public": "public",
+    "public": "frontend/dist/client",
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "**/*.apk",
+      "**/*.exe"
     ],
     "rewrites": [
       {

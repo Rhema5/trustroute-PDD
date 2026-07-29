@@ -20,6 +20,9 @@ function SettingsPage() {
   const user = useApp((s) => s.user);
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
+  const [fast2smsApiKey, setFast2smsApiKey] = useState(() => {
+    return localStorage.getItem("FAST2SMS_API_KEY") || "";
+  });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,6 +34,10 @@ function SettingsPage() {
           const data = userDoc.data();
           setName(data.name || "");
           setCompany(data.company || "Acme Logistics");
+          if (data.fast2smsApiKey) {
+            setFast2smsApiKey(data.fast2smsApiKey);
+            localStorage.setItem("FAST2SMS_API_KEY", data.fast2smsApiKey);
+          }
         }
       } catch (err) {
         console.error("Error loading settings:", err);
@@ -52,9 +59,17 @@ function SettingsPage() {
     }
 
     try {
+      const cleanKey = fast2smsApiKey.trim();
+      if (cleanKey) {
+        localStorage.setItem("FAST2SMS_API_KEY", cleanKey);
+      } else {
+        localStorage.removeItem("FAST2SMS_API_KEY");
+      }
+
       await updateDoc(doc(db, "users", user.uid), {
         name: name.trim(),
         company: company.trim(),
+        fast2smsApiKey: cleanKey,
       });
       useApp.setState({ userName: name.trim() });
       toast.success("Settings saved successfully.");
@@ -109,6 +124,24 @@ function SettingsPage() {
               onChange={(e) => setCompany(e.target.value)}
               className="mt-1 w-full rounded-xl border border-zinc-250 bg-zinc-50 px-3 py-2.5 text-sm text-zinc-800 outline-none transition focus:border-[#7F1D1D]/45 focus:bg-white"
               required
+            />
+          </div>
+        </div>
+
+        <div className="border-t border-zinc-100 pt-5 space-y-3">
+          <div>
+            <label className="text-[10px] uppercase font-bold text-emerald-700 tracking-wider block">
+              Fast2SMS Cellular API Key (For Real SMS OTPs)
+            </label>
+            <p className="text-xs text-zinc-400 mb-1.5">
+              Paste your paid Fast2SMS Authorization Key here to send real SMS text messages to mobile numbers.
+            </p>
+            <input
+              type="password"
+              placeholder="Paste Fast2SMS API Key..."
+              value={fast2smsApiKey}
+              onChange={(e) => setFast2smsApiKey(e.target.value)}
+              className="w-full rounded-xl border border-zinc-250 bg-zinc-50 px-3.5 py-2.5 text-sm font-mono text-zinc-800 outline-none transition focus:border-emerald-500 focus:bg-white"
             />
           </div>
         </div>

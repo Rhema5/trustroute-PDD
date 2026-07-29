@@ -32,8 +32,8 @@ function LoginPage() {
   const searchParams = Route.useSearch();
   const initialMode = searchParams.mode;
 
-  const [isSignUp, setIsSignUp] = useState(!!initialMode);
   const [role, setRole] = useState<"owner" | "agent">(initialMode || "owner");
+  const [isSignUp, setIsSignUp] = useState(initialMode === "agent");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +49,28 @@ function LoginPage() {
       const sanitizedEmail = email.trim();
       const sanitizedName = name.trim();
 
+      const ALLOWED_ENTERPRISE_EMAILS = [
+        "enterprise@gmail.com",
+        "enterprise_avadi@trustroute.com",
+        "enterprise_poonamallee@trustroute.com",
+        "enterprise_koyambedu@trustroute.com",
+        "enterprise_vellore@trustroute.com",
+      ];
+
+      if (role === "owner") {
+        if (!ALLOWED_ENTERPRISE_EMAILS.includes(sanitizedEmail.toLowerCase())) {
+          toast.error("Access Denied: Only authorized Enterprise Accounts (Avadi, Poonamallee, Koyambedu, Vellore, Central) can log in to the Enterprise Portal.");
+          setLoading(false);
+          return;
+        }
+      }
+
       if (isSignUp) {
+        if (role === "owner") {
+          toast.error("Enterprise Accounts are pre-configured. Please sign in using your regional Enterprise credentials.");
+          setLoading(false);
+          return;
+        }
         const validation = signupSchema.safeParse({
           name: sanitizedName,
           email: sanitizedEmail,
@@ -282,7 +303,7 @@ function LoginPage() {
           )}
 
           <form onSubmit={submit} className="space-y-4">
-            {isSignUp && (
+            {isSignUp ? (
               <>
                 <Field icon={User} label="Full Name" type="text" value={name} onChange={setName} />
                 <label className="group relative block">
@@ -295,22 +316,63 @@ function LoginPage() {
                     required
                     className="peer block w-full appearance-none rounded-xl border border-white/10 bg-white/[0.04] px-10 pt-5 pb-2 text-sm text-foreground outline-none transition focus:border-primary/50 focus:bg-white/[0.06] focus:shadow-glow"
                   >
-                    <option value="Chennai" className="bg-background text-foreground">Chennai</option>
-                    <option value="Bangalore" className="bg-background text-foreground">Bangalore</option>
-                    <option value="Mumbai" className="bg-background text-foreground">Mumbai</option>
-                    <option value="Delhi" className="bg-background text-foreground">Delhi</option>
-                    <option value="Hyderabad" className="bg-background text-foreground">Hyderabad</option>
+                    <option value="Avadi" className="bg-background text-foreground">Avadi Region</option>
+                    <option value="Poonamallee" className="bg-background text-foreground">Poonamallee Region</option>
+                    <option value="Koyambedu" className="bg-background text-foreground">Koyambedu Region</option>
+                    <option value="Vellore" className="bg-background text-foreground">Vellore Region</option>
+                    <option value="Chennai" className="bg-background text-foreground">Chennai General</option>
                   </select>
                   <span className="pointer-events-none absolute left-10 top-2 text-[10px] uppercase tracking-wider text-muted-foreground">
                     Operating Region
                   </span>
                 </label>
+                <Field icon={Mail} label="Email Address" type="email" value={email} onChange={setEmail} />
+              </>
+            ) : (
+              <>
+                {/* SELECT ENTERPRISE HUB REGION DROPDOWN */}
+                <label className="group relative block">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <Building2 className="h-4 w-4 text-amber-400" />
+                  </span>
+                  <select
+                    value={email}
+                    onChange={(e) => {
+                      const selectedEmail = e.target.value;
+                      setEmail(selectedEmail);
+                      const HUB_CREDENTIALS = [
+                        { email: "enterprise_avadi@trustroute.com", password: "AvadiHub@2026!" },
+                        { email: "enterprise_poonamallee@trustroute.com", password: "PoonamalleeHub@2026!" },
+                        { email: "enterprise_koyambedu@trustroute.com", password: "KoyambeduHub@2026!" },
+                        { email: "enterprise_vellore@trustroute.com", password: "VelloreHub@2026!" },
+                        { email: "enterprise@gmail.com", password: "DefaultHub@2026!" },
+                      ];
+                      const hub = HUB_CREDENTIALS.find((h) => h.email === selectedEmail);
+                      if (hub) {
+                        setPassword(hub.password);
+                      }
+                    }}
+                    className="peer block w-full appearance-none rounded-xl border border-white/10 bg-white/[0.04] px-10 pt-5 pb-2 text-sm text-foreground outline-none transition focus:border-primary/50 focus:bg-white/[0.06] focus:shadow-glow cursor-pointer"
+                  >
+                    <option value="" className="bg-background text-foreground">Select Enterprise Hub Account...</option>
+                    <option value="enterprise_avadi@trustroute.com" className="bg-background text-foreground">📍 Avadi Hub (enterprise_avadi@trustroute.com)</option>
+                    <option value="enterprise_poonamallee@trustroute.com" className="bg-background text-foreground">📍 Poonamallee Hub (enterprise_poonamallee@trustroute.com)</option>
+                    <option value="enterprise_koyambedu@trustroute.com" className="bg-background text-foreground">📍 Koyambedu Hub (enterprise_koyambedu@trustroute.com)</option>
+                    <option value="enterprise_vellore@trustroute.com" className="bg-background text-foreground">📍 Vellore Hub (enterprise_vellore@trustroute.com)</option>
+                    <option value="enterprise@gmail.com" className="bg-background text-foreground">📍 Default General Hub (enterprise@gmail.com)</option>
+                  </select>
+                  <span className="pointer-events-none absolute left-10 top-2 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
+                    Select Enterprise Hub
+                  </span>
+                </label>
+
+                <Field icon={Mail} label="Enterprise Email Address" type="email" value={email} onChange={setEmail} />
               </>
             )}
-            <Field icon={Mail} label="Email" type="email" value={email} onChange={setEmail} />
+
             <Field
               icon={Lock}
-              label="Password"
+              label="Password (Secret)"
               type="password"
               value={password}
               onChange={setPassword}
@@ -367,31 +429,33 @@ function LoginPage() {
             Continue with Google
           </button>
 
-          <div className="mt-6 text-center text-xs text-muted-foreground">
-            {isSignUp ? (
-              <p>
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setIsSignUp(false)}
-                  className="text-primary font-semibold hover:underline cursor-pointer"
-                >
-                  Sign In
-                </button>
-              </p>
-            ) : (
-              <p>
-                Don't have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setIsSignUp(true)}
-                  className="text-primary font-semibold hover:underline cursor-pointer"
-                >
-                  Create one
-                </button>
-              </p>
-            )}
-          </div>
+          {role !== "owner" && (
+            <div className="mt-6 text-center text-xs text-muted-foreground">
+              {isSignUp ? (
+                <p>
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => setIsSignUp(false)}
+                    className="text-primary font-semibold hover:underline cursor-pointer"
+                  >
+                    Sign In
+                  </button>
+                </p>
+              ) : (
+                <p>
+                  Don't have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => setIsSignUp(true)}
+                    className="text-primary font-semibold hover:underline cursor-pointer"
+                  >
+                    Create one
+                  </button>
+                </p>
+              )}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>

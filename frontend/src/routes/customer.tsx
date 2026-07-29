@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Package,
   MapPin,
@@ -43,6 +43,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { sendOtpSms } from "@/lib/sms-service";
 import { auth, db } from "@/lib/firebase";
+import { AVAILABLE_HUB_REGIONS, REGIONAL_HUBS, isWithinRegionalRadius, type HubRegion } from "@/lib/hub-routing";
 
 export const Route = createFileRoute("/customer")({
   head: () => ({
@@ -128,8 +129,8 @@ function CustomerPortalPage() {
   const [pickupCoords, setPickupCoords] = useState<{ lat: number; lng: number }>({ lat: 13.0298, lng: 79.9721 });
   const [detectingLocation, setDetectingLocation] = useState(false);
 
-  // Category Search
-  const [searchCategory, setSearchCategory] = useState("");
+  // Selected Region Hub (Default: Avadi)
+  const [selectedRegionHub, setSelectedRegionHub] = useState<HubRegion>("Avadi");
 
   // Selected category & modal visibility for booking
   const [selectedCategory, setSelectedCategory] = useState<typeof CATEGORIES[0] | null>(null);
@@ -141,8 +142,10 @@ function CustomerPortalPage() {
   const [searchingPickup, setSearchingPickup] = useState(false);
   const [showPickupDropdown, setShowPickupDropdown] = useState(false);
 
-  // Address details field
+  // Address details field & Customer Details
   const [addressDetails, setAddressDetails] = useState("");
+  const [customerName, setCustomerName] = useState(user?.displayName || "");
+  const [customerPhone, setCustomerPhone] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [recipientPhone, setRecipientPhone] = useState("");
   
@@ -175,18 +178,78 @@ function CustomerPortalPage() {
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authName, setAuthName] = useState("");
+  const [authPhone, setAuthPhone] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
 
-  const filteredCategories = CATEGORIES.filter((c) =>
-    c.label.toLowerCase().includes(searchCategory.toLowerCase())
-  );
-
+  // Load user profile details if logged in
+  useEffect(() => {
+    const loadCustomerProfile = async () => {
+      if (!user) return;
+      if (user.displayName) setCustomerName(user.displayName);
+      try {
+        const { doc, getDoc } = await import("firebase/firestore");
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          if (data.name || data.displayName) setCustomerName(data.name || data.displayName);
+          if (data.phone) setCustomerPhone(data.phone);
+        }
+      } catch (err) {
+        console.warn("Failed to load customer profile:", err);
+      }
+    };
+    loadCustomerProfile();
+  }, [user]);
   // Subscribe to live delivery orders for customer portal
   useEffect(() => {
     const unsub = useApp.getState().subscribeToDeliveries();
     return () => unsub();
   }, []);
+
+  // Safe helper to read saved order IDs from localStorage
+  const getSavedOrderIds = (): string[] => {
+    try {
+      const raw = localStorage.getItem("MY_PLACED_ORDER_IDS");
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  };
+
+  // Safe helper to save order ID to localStorage
+  const saveOrderId = (id: string) => {
+    try {
+      const current = getSavedOrderIds();
+      if (!current.includes(id)) {
+        localStorage.setItem("MY_PLACED_ORDER_IDS", JSON.stringify([...current, id]));
+      }
+    } catch (e) {
+      console.warn("Failed to save order ID:", e);
+    }
+  };
+
+  // Filter deliveries belonging strictly to this customer / device session
+  const myCustomerDeliveries = useMemo(() => {
+    const savedIds = getSavedOrderIds();
+    return deliveries.filter((d) => {
+      if (!d) return false;
+      // 1. Saved in device localStorage or created in active session
+      if (savedIds.includes(d.id) || (createdDelivery && d.id === createdDelivery.id)) return true;
+
+      // 2. Logged-in user matching (UID or Email)
+      if (user?.uid && ((d as any).customerId === user.uid || (d as any).customerEmail === user.email)) return true;
+      if (user?.email && (d as any).customerEmail === user.email) return true;
+
+      // 3. Customer name or phone match
+      if (user?.displayName && d.customer && d.customer.toLowerCase().trim() === user.displayName.toLowerCase().trim()) return true;
+      if (customerPhone && d.phone && d.phone.replace(/\D/g, '') === customerPhone.replace(/\D/g, '')) return true;
+
+      return false;
+    });
+  }, [deliveries, user, customerPhone, createdDelivery]);
 
   // Recalculate driving distance & bill ONLY when destCoords is selected!
   useEffect(() => {
@@ -205,9 +268,47 @@ function CustomerPortalPage() {
     }
   }, [pickupCoords, destCoords]);
 
+  // Helper to match local hub sub-areas matching query string (e.g. VGV Nagar, Kamaraj Nagar, Govarthanagiri)
+  const searchLocalHubSubAreas = (query: string, region: HubRegion) => {
+    const config = REGIONAL_HUBS[region];
+    if (!config || !config.subAreas) return [];
+
+    const allSubAreas = config.subAreas.map((area) => ({
+      display_name: area.address,
+      name: area.name,
+      lat: String(area.lat),
+      lon: String(area.lng),
+    }));
+
+    const qClean = query.toLowerCase().replace(/[^a-z0-9]/g, "").trim();
+    if (!qClean) return allSubAreas;
+
+    const filtered = config.subAreas
+      .filter((area) => {
+        const nameClean = area.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const addrClean = area.address.toLowerCase().replace(/[^a-z0-9]/g, "");
+        return (
+          nameClean.includes(qClean) ||
+          addrClean.includes(qClean) ||
+          (qClean.length >= 2 && (
+            nameClean.startsWith(qClean) ||
+            addrClean.startsWith(qClean)
+          ))
+        );
+      })
+      .map((area) => ({
+        display_name: area.address,
+        name: area.name,
+        lat: String(area.lat),
+        lon: String(area.lng),
+      }));
+
+    return filtered.length > 0 ? filtered : allSubAreas;
+  };
+
   // Live Pickup Autocomplete Search
   useEffect(() => {
-    if (!pickupQuery || pickupQuery.trim().length < 3 || pickupQuery === currentLocation) {
+    if (!pickupQuery || pickupQuery.trim().length < 2 || pickupQuery === currentLocation) {
       setPickupSuggestions([]);
       setShowPickupDropdown(false);
       return;
@@ -215,31 +316,45 @@ function CustomerPortalPage() {
 
     const timer = setTimeout(async () => {
       setSearchingPickup(true);
+      const localMatches = searchLocalHubSubAreas(pickupQuery, selectedRegionHub);
       try {
+        const searchQuery = pickupQuery.toLowerCase().includes(selectedRegionHub.toLowerCase())
+          ? pickupQuery
+          : `${pickupQuery}, ${selectedRegionHub}, Chennai, Tamil Nadu`;
         const res = await fetch(
           `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-            pickupQuery
-          )}&format=json&countrycodes=in&limit=5&addressdetails=1`,
+            searchQuery
+          )}&format=json&countrycodes=in&limit=6&addressdetails=1`,
           { headers: { "Accept-Language": "en" } }
         );
+        let osmMatches: any[] = [];
         if (res.ok) {
-          const data = await res.json();
-          setPickupSuggestions(data);
-          setShowPickupDropdown(true);
+          osmMatches = await res.json();
         }
+        // Deduplicate and combine localMatches + OSM matches
+        const combined = [...localMatches, ...osmMatches];
+        const unique = combined.filter((item, index, self) =>
+          index === self.findIndex((t) => t.display_name === item.display_name)
+        );
+        setPickupSuggestions(unique);
+        setShowPickupDropdown(true);
       } catch (err) {
         console.error("Pickup search failed:", err);
+        if (localMatches.length > 0) {
+          setPickupSuggestions(localMatches);
+          setShowPickupDropdown(true);
+        }
       } finally {
         setSearchingPickup(false);
       }
-    }, 350);
+    }, 250);
 
     return () => clearTimeout(timer);
-  }, [pickupQuery]);
+  }, [pickupQuery, selectedRegionHub]);
 
   // Live Destination Autocomplete Search
   useEffect(() => {
-    if (!destinationQuery || destinationQuery.trim().length < 3) {
+    if (!destinationQuery || destinationQuery.trim().length < 2) {
       setDestSuggestions([]);
       setShowDestDropdown(false);
       return;
@@ -247,27 +362,41 @@ function CustomerPortalPage() {
 
     const timer = setTimeout(async () => {
       setSearchingDest(true);
+      const localMatches = searchLocalHubSubAreas(destinationQuery, selectedRegionHub);
       try {
+        const searchQuery = destinationQuery.toLowerCase().includes(selectedRegionHub.toLowerCase())
+          ? destinationQuery
+          : `${destinationQuery}, ${selectedRegionHub}, Chennai, Tamil Nadu`;
         const res = await fetch(
           `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-            destinationQuery
-          )}&format=json&countrycodes=in&limit=5&addressdetails=1`,
+            searchQuery
+          )}&format=json&countrycodes=in&limit=6&addressdetails=1`,
           { headers: { "Accept-Language": "en" } }
         );
+        let osmMatches: any[] = [];
         if (res.ok) {
-          const data = await res.json();
-          setDestSuggestions(data);
-          setShowDestDropdown(true);
+          osmMatches = await res.json();
         }
+        // Deduplicate and combine localMatches + OSM matches
+        const combined = [...localMatches, ...osmMatches];
+        const unique = combined.filter((item, index, self) =>
+          index === self.findIndex((t) => t.display_name === item.display_name)
+        );
+        setDestSuggestions(unique);
+        setShowDestDropdown(true);
       } catch (err) {
         console.error("Destination search failed:", err);
+        if (localMatches.length > 0) {
+          setDestSuggestions(localMatches);
+          setShowDestDropdown(true);
+        }
       } finally {
         setSearchingDest(false);
       }
-    }, 350);
+    }, 250);
 
     return () => clearTimeout(timer);
-  }, [destinationQuery]);
+  }, [destinationQuery, selectedRegionHub]);
 
   const handleSelectPickup = (item: any) => {
     const lat = parseFloat(item.lat);
@@ -285,6 +414,12 @@ function CustomerPortalPage() {
     const lat = parseFloat(item.lat);
     const lng = parseFloat(item.lon);
     const addr = item.display_name;
+
+    const boundCheck = isWithinRegionalRadius(selectedRegionHub, lat, lng, 20);
+    if (!boundCheck.valid) {
+      toast.error(`Location is outside ${selectedRegionHub} Regional Hub (20 km limit). Distance is ${boundCheck.distanceKm} km from hub center.`);
+      return;
+    }
 
     setDestinationAddress(addr);
     setDestinationQuery(item.name || addr.split(",")[0]);
@@ -350,6 +485,11 @@ function CustomerPortalPage() {
   };
 
   const handleCategorySelect = (cat: typeof CATEGORIES[0]) => {
+    if (!user) {
+      toast.error("Please Sign In or Create a Customer Account before placing an order.");
+      setActiveTab("profile");
+      return;
+    }
     setSelectedCategory(cat);
     setPickupAddress(currentLocation);
     setPickupQuery(currentLocation);
@@ -365,12 +505,20 @@ function CustomerPortalPage() {
     e.preventDefault();
     if (submitting) return;
 
+    if (!customerName.trim()) {
+      toast.error("Customer Name is mandatory.");
+      return;
+    }
+    if (!customerPhone.trim() || customerPhone.trim().replace(/\D/g, "").length < 7) {
+      toast.error("Customer Phone number is mandatory.");
+      return;
+    }
     if (!recipientName.trim()) {
       toast.error("Recipient Name is mandatory.");
       return;
     }
-    if (!recipientPhone.trim() || recipientPhone.trim().length < 7) {
-      toast.error("A valid Recipient Phone number is mandatory.");
+    if (!recipientPhone.trim() || recipientPhone.trim().replace(/\D/g, "").length < 7) {
+      toast.error("Recipient Phone number is mandatory.");
       return;
     }
     const finalDest = destinationAddress.trim() || destinationQuery.trim();
@@ -384,6 +532,14 @@ function CustomerPortalPage() {
       return;
     }
 
+    if (destCoords) {
+      const boundCheck = isWithinRegionalRadius(selectedRegionHub, destCoords.lat, destCoords.lng, 20);
+      if (!boundCheck.valid) {
+        toast.error(`Destination is outside ${selectedRegionHub} Regional Hub (20 km limit). Distance: ${boundCheck.distanceKm} km. Please select a location within 20 km.`);
+        return;
+      }
+    }
+
     const calculatedBill = totalBill > 0 ? totalBill : 100;
 
     setSubmitting(true);
@@ -392,10 +548,17 @@ function CustomerPortalPage() {
       const secretOtp = String(Math.floor(1000 + Math.random() * 9000));
       const fullPickup = addressDetails ? `${addressDetails}, ${finalPickup}` : finalPickup;
 
+      const finalRecipientName = recipientName.trim() || customerName.trim();
+      const finalRecipientPhone = recipientPhone.trim() || customerPhone.trim();
+
       const newDeliveryObj = {
         id: deliveryId,
-        customer: recipientName.trim(),
-        phone: recipientPhone.trim(),
+        customer: finalRecipientName,
+        phone: finalRecipientPhone,
+        customerName: customerName.trim(),
+        customerPhone: customerPhone.trim(),
+        customerId: user?.uid || "",
+        customerEmail: user?.email || "",
         pickupLocation: fullPickup,
         destination: finalDest,
         packageType: selectedCategory ? selectedCategory.label : "Parcel",
@@ -403,7 +566,8 @@ function CustomerPortalPage() {
         priority: "Express" as const,
         agentId: "",
         agentName: "Awaiting Enterprise Acceptance",
-        enterpriseId: "enterprise-customer-portal",
+        enterpriseId: `enterprise-${selectedRegionHub.toLowerCase()}`,
+        hubRegion: selectedRegionHub,
         eta: "Pending Acceptance",
         status: "pending" as const,
         otp: secretOtp,
@@ -413,6 +577,9 @@ function CustomerPortalPage() {
         paymentStatus: paymentType === "cod" ? ("cod_pending" as const) : ("pending" as const),
         paymentAmount: calculatedBill,
       };
+
+      // Save order ID safely
+      saveOrderId(deliveryId);
 
       await addDelivery(newDeliveryObj as any);
       setCreatedDelivery(newDeliveryObj);
@@ -512,6 +679,16 @@ function CustomerPortalPage() {
     try {
       const { signInWithEmailAndPassword, createUserWithEmailAndPassword } = await import("firebase/auth");
       if (isSignUp) {
+        if (!authName.trim()) {
+          toast.error("Full Name is required for Sign Up.");
+          setAuthLoading(false);
+          return;
+        }
+        if (!authPhone.trim() || authPhone.trim().replace(/\D/g, "").length < 7) {
+          toast.error("Valid Mobile Phone Number is required for Sign Up.");
+          setAuthLoading(false);
+          return;
+        }
         const cred = await createUserWithEmailAndPassword(auth, authEmail.trim(), authPassword);
         const { doc, setDoc, serverTimestamp } = await import("firebase/firestore");
         await setDoc(doc(db, "users", cred.user.uid), {
@@ -519,16 +696,28 @@ function CustomerPortalPage() {
           email: authEmail.trim(),
           displayName: authName.trim() || "Customer",
           name: authName.trim() || "Customer",
+          phone: authPhone.trim(),
           role: "customer",
           createdAt: serverTimestamp(),
         });
-        toast.success("Customer account created!");
+        setCustomerName(authName.trim());
+        setCustomerPhone(authPhone.trim());
+        toast.success("Customer account created successfully!");
       } else {
         await signInWithEmailAndPassword(auth, authEmail.trim(), authPassword);
         toast.success("Logged in successfully!");
       }
     } catch (err: any) {
-      toast.error(err.message || "Authentication failed.");
+      if (err.code === "auth/email-already-in-use") {
+        toast.error("This email address is already registered. Please click 'Already have an account? Sign In' to log in.");
+        setIsSignUp(false);
+      } else if (err.code === "auth/wrong-password") {
+        toast.error("Incorrect password. Please try again.");
+      } else if (err.code === "auth/user-not-found") {
+        toast.error("No customer account found with this email. Please click 'Sign Up' to create an account.");
+      } else {
+        toast.error(err.message || "Authentication failed. Please check your details.");
+      }
     } finally {
       setAuthLoading(false);
     }
@@ -536,9 +725,20 @@ function CustomerPortalPage() {
 
   const handleSignOut = async () => {
     try {
+      localStorage.removeItem("MY_PLACED_ORDER_IDS");
+      localStorage.removeItem("CUSTOMER_PHONE");
+      setCustomerName("");
+      setCustomerPhone("");
+      setAuthEmail("");
+      setAuthPassword("");
+      setAuthName("");
+      setAuthPhone("");
+      setIsSignUp(false);
+      setCreatedDelivery(null);
       await auth.signOut();
-      toast.success("Signed out.");
-    } catch {
+      toast.success("Customer signed out successfully.");
+    } catch (err: any) {
+      console.error("Error signing out:", err);
       toast.error("Failed to sign out.");
     }
   };
@@ -584,14 +784,6 @@ function CustomerPortalPage() {
               )}
             </button>
           </div>
-
-          <Link
-            to="/login"
-            search={{ mode: "owner" }}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3.5 py-1.5 text-xs font-bold text-slate-700 transition cursor-pointer shadow-xs"
-          >
-            <Building2 className="h-3.5 w-3.5 text-slate-500" /> Enterprise Portal Login
-          </Link>
         </div>
       </header>
 
@@ -604,51 +796,40 @@ function CustomerPortalPage() {
             animate={{ opacity: 1, y: 0 }}
             className="rounded-[32px] bg-white/95 backdrop-blur-md border border-slate-200/90 p-6 sm:p-8 shadow-2xl text-center space-y-6"
           >
-            <div className="w-12 h-1.5 rounded-full bg-slate-200 mx-auto" />
+              <div className="w-12 h-1.5 rounded-full bg-slate-200 mx-auto" />
 
-            <div>
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight font-['Poppins',sans-serif]">
-                What do you need delivered?
-              </h1>
-              <p className="text-xs text-slate-500 mt-1">
-                Select a category to dispatch a verified delivery agent.
-              </p>
-            </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight font-['Poppins',sans-serif]">
+                  What do you need delivered?
+                </h1>
+                <p className="text-xs text-slate-500 mt-1">
+                  Select a category to dispatch a verified delivery agent in your local region hub.
+                </p>
+              </div>
 
-            <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input
-                type="text"
-                value={searchCategory}
-                onChange={(e) => setSearchCategory(e.target.value)}
-                placeholder="Search for categories..."
-                className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 pl-10 pr-4 py-3 text-xs text-slate-800 placeholder:text-slate-400 outline-none focus:border-red-500 focus:bg-white transition"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3.5 pt-2">
-              {filteredCategories.map((cat) => {
-                const IconComponent = cat.icon;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => handleCategorySelect(cat)}
-                    className={cn(
-                      "flex flex-col items-center justify-center p-4 rounded-2xl border transition-all cursor-pointer hover:scale-[1.02] shadow-xs group",
-                      cat.color
-                    )}
-                  >
-                    <div className={cn("grid h-12 w-12 place-items-center rounded-xl mb-2.5 transition", cat.iconBg)}>
-                      <IconComponent className="h-6 w-6" />
-                    </div>
-                    <span className="text-xs font-bold text-slate-800 group-hover:text-slate-950">
-                      {cat.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </motion.div>
+              <div className="grid grid-cols-2 gap-3.5 pt-2">
+                {CATEGORIES.map((cat) => {
+                  const IconComponent = cat.icon;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => handleCategorySelect(cat)}
+                      className={cn(
+                        "flex flex-col items-center justify-center p-4 rounded-2xl border transition-all cursor-pointer hover:scale-[1.02] shadow-xs group",
+                        cat.color
+                      )}
+                    >
+                      <div className={cn("grid h-12 w-12 place-items-center rounded-xl mb-2.5 transition", cat.iconBg)}>
+                        <IconComponent className="h-6 w-6" />
+                      </div>
+                      <span className="text-xs font-bold text-slate-800 group-hover:text-slate-950">
+                        {cat.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
         )}
 
         {/* TAB 2: ORDERS */}
@@ -659,18 +840,21 @@ function CustomerPortalPage() {
             className="space-y-4"
           >
             <div className="flex items-center justify-between bg-white/90 backdrop-blur-md rounded-2xl p-4 border border-slate-200 shadow-xs">
-              <h2 className="text-base font-bold text-slate-900 font-['Poppins',sans-serif]">
-                My Delivery Orders
-              </h2>
+              <div>
+                <h2 className="text-base font-bold text-slate-900 font-['Poppins',sans-serif]">
+                  My Delivery Orders
+                </h2>
+                <p className="text-[10px] text-slate-500">Live order status, recipient info, and doorstep OTP verification</p>
+              </div>
               <button
                 onClick={() => setActiveTab("home")}
-                className="text-xs font-bold text-red-600 hover:text-red-700 cursor-pointer"
+                className="text-xs font-bold text-red-600 hover:text-red-700 cursor-pointer bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-xl border border-red-200 transition"
               >
                 + Book New
               </button>
             </div>
 
-            {deliveries.length === 0 ? (
+            {myCustomerDeliveries.length === 0 ? (
               <div className="rounded-3xl bg-white/90 p-8 text-center border border-slate-200 shadow-sm space-y-3">
                 <Package className="h-10 w-10 text-slate-300 mx-auto" />
                 <p className="text-xs text-slate-500 font-semibold">No delivery orders placed yet.</p>
@@ -682,74 +866,96 @@ function CustomerPortalPage() {
                 </button>
               </div>
             ) : (
-              deliveries.map((d) => (
+              myCustomerDeliveries.map((d) => (
                 <div
                   key={d.id}
-                  className="rounded-3xl bg-white/95 backdrop-blur-md p-5 border border-slate-200 shadow-md space-y-3 text-left"
+                  className="rounded-3xl bg-white/95 backdrop-blur-md p-5 border border-slate-200 shadow-md space-y-3 text-left transition hover:border-slate-300"
                 >
                   <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                     <div>
-                      <span className="font-mono text-xs font-bold text-slate-400">{d.id}</span>
-                      <span className="text-xs font-bold text-slate-900 block mt-0.5">{d.packageType}</span>
+                      <span className="font-mono text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-100">{d.id}</span>
+                      <span className="text-xs font-bold text-slate-900 block mt-1">{d.packageType}</span>
                     </div>
 
                     {d.status === "pending" ? (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 shadow-xs animate-pulse">
                         <Clock className="h-3 w-3 text-amber-600" /> Pending Acceptance (Enterprise)
                       </span>
+                    ) : d.status === "assigned" ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-blue-100 text-blue-800 border border-blue-300 shadow-xs">
+                        <CheckCircle2 className="h-3 w-3 text-blue-600" /> Accepted & Assigned ({d.agentName || "Agent"})
+                      </span>
+                    ) : d.status === "in_transit" ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300 shadow-xs animate-pulse">
+                        <Bike className="h-3 w-3 text-purple-600" /> In Transit ({d.agentName || "Agent"})
+                      </span>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-600" /> Accepted & Assigned ({d.agentName || "Agent"})
+                        <ShieldCheck className="h-3 w-3 text-emerald-600" /> Delivered & Verified ✓
                       </span>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="grid grid-cols-2 gap-2.5 text-xs">
                     <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Recipient</span>
                       <span className="font-bold text-slate-800">{d.customer} ({d.phone})</span>
                     </div>
                     <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Pickup Location</span>
-                      <span className="font-medium text-slate-700">{d.pickupLocation}</span>
+                      <span className="font-medium text-slate-700 line-clamp-1">{d.pickupLocation}</span>
                     </div>
                     <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Destination</span>
-                      <span className="font-medium text-slate-700">{d.destination}</span>
+                      <span className="font-medium text-slate-700 line-clamp-1">{d.destination}</span>
                     </div>
                     <div>
-                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Driving Distance & Rate</span>
+                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Driving Distance</span>
                       <span className="font-bold text-slate-800">{d.distanceKm || 5.0} km @ ₹20/km</span>
                     </div>
                     <div>
                       <span className="text-slate-400 text-[10px] block uppercase font-bold">Total Bill & Status</span>
                       <span className="font-extrabold text-slate-900 text-sm block">₹{d.paymentAmount || 100}</span>
                       {d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || d.status === "delivered" ? (
-                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full inline-block mt-0.5">
-                          ✓ {d.paymentType === "cod" ? "Paid (COD Cash Received)" : "Paid"}
-                        </span>
+                        <span className="text-[10px] font-bold text-emerald-600 uppercase">Paid ✓</span>
                       ) : (
-                        <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full inline-block mt-0.5">
-                          Pending Payment ({d.paymentType === "cod" ? "Pay Cash to Agent" : "Online"})
+                        <span className="text-[10px] font-bold text-amber-600 uppercase">
+                          {d.paymentType === "cod" ? "COD Pending" : "Prepaid Pending"}
                         </span>
                       )}
                     </div>
+                    <div>
+                      <span className="text-slate-400 text-[10px] block uppercase font-bold">Verification Mode</span>
+                      <span className="font-bold text-slate-800 flex items-center gap-1.5 mt-1 text-xs">
+                        <ShieldCheck className="h-4 w-4 text-red-600 shrink-0" /> OTP & GPS Secured
+                      </span>
+                    </div>
                   </div>
 
-                  {d.paymentType === "prepaid" && d.paymentStatus !== "paid" && (
-                    <div className="flex items-center justify-end pt-2 border-t border-slate-100 text-xs">
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                    {d.status === "delivered" && (
+                      <Link
+                        to="/dashboard/certificate/$id"
+                        params={{ id: d.id }}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:underline"
+                      >
+                        <ShieldCheck className="h-4 w-4 text-emerald-600" /> View Verified Proof Certificate
+                      </Link>
+                    )}
+
+                    {d.paymentType === "prepaid" && d.paymentStatus !== "paid" && d.status !== "delivered" && (
                       <button
                         onClick={() => {
                           setPendingPrepaidDelivery(d);
                           setShowRazorpayDrawer(true);
                           triggerOfficialRazorpayPopup(d);
                         }}
-                        className="rounded-xl bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 text-xs font-bold text-white transition cursor-pointer shadow-xs flex items-center gap-1.5"
+                        className="ml-auto rounded-xl bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 text-xs font-bold text-white transition cursor-pointer shadow-xs flex items-center gap-1.5"
                       >
                         <CreditCard className="h-3.5 w-3.5" /> Pay ₹{d.paymentAmount || 100} via Razorpay
                       </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               ))
             )}
@@ -783,6 +989,10 @@ function CustomerPortalPage() {
                     <span className="font-bold text-slate-800">Verified Customer</span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-slate-500 font-medium">Customer Phone:</span>
+                    <span className="font-bold text-slate-800">{customerPhone || "Not set"}</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-slate-500 font-medium">Default Location:</span>
                     <span className="font-bold text-slate-800">{currentLocation}</span>
                   </div>
@@ -796,7 +1006,7 @@ function CustomerPortalPage() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleAuthSubmit} className="space-y-4">
+              <form onSubmit={handleAuthSubmit} className="space-y-4" autoComplete="off">
                 <div>
                   <h2 className="text-xl font-bold text-slate-900 font-['Poppins',sans-serif]">
                     {isSignUp ? "Create Customer Account" : "Customer Sign In"}
@@ -807,19 +1017,37 @@ function CustomerPortalPage() {
                 </div>
 
                 {isSignUp && (
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={authName}
-                      onChange={(e) => setAuthName(e.target.value)}
-                      placeholder="e.g. Rajesh Kumar"
-                      className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
-                    />
-                  </div>
+                  <>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Full Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        autoComplete="off"
+                        value={authName}
+                        onChange={(e) => setAuthName(e.target.value)}
+                        placeholder="e.g. Rajesh Kumar"
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                        Mobile Phone Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        autoComplete="off"
+                        value={authPhone}
+                        onChange={(e) => setAuthPhone(e.target.value)}
+                        placeholder="e.g. 9876543210"
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                      />
+                    </div>
+                  </>
                 )}
 
                 <div>
@@ -829,6 +1057,7 @@ function CustomerPortalPage() {
                   <input
                     type="email"
                     required
+                    autoComplete="off"
                     value={authEmail}
                     onChange={(e) => setAuthEmail(e.target.value)}
                     placeholder="e.g. customer@example.com"
@@ -843,6 +1072,7 @@ function CustomerPortalPage() {
                   <input
                     type="password"
                     required
+                    autoComplete="new-password"
                     value={authPassword}
                     onChange={(e) => setAuthPassword(e.target.value)}
                     placeholder="••••••••"
@@ -910,10 +1140,37 @@ function CustomerPortalPage() {
                 </div>
 
                 <form onSubmit={handleOrderSubmit} className="space-y-4">
+                  {/* REGIONAL HUB SELECTION DROPDOWN */}
+                  <div>
+                    <label className="block text-[10px] font-bold text-red-600 uppercase tracking-wider mb-1">
+                      Regional Hub Area
+                    </label>
+                    <select
+                      value={selectedRegionHub}
+                      onChange={(e) => {
+                        const hub = e.target.value as HubRegion;
+                        setSelectedRegionHub(hub);
+                        const cfg = REGIONAL_HUBS[hub];
+                        if (cfg && cfg.subAreas.length > 0) {
+                          setPickupQuery(cfg.subAreas[0].address);
+                          setPickupAddress(cfg.subAreas[0].address);
+                          setPickupCoords({ lat: cfg.subAreas[0].lat, lng: cfg.subAreas[0].lng });
+                          setCurrentLocation(cfg.subAreas[0].address);
+                        }
+                      }}
+                      className="w-full rounded-xl border border-red-200 bg-red-50/50 px-3.5 py-2.5 text-xs font-bold text-slate-800 outline-none focus:border-red-600 cursor-pointer"
+                    >
+                      {AVAILABLE_HUB_REGIONS.map((h) => (
+                        <option key={h} value={h}>
+                          📍 {h} Regional Hub
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   {/* PICKUP LOCATION WITH GPS & LIVE AUTOCOMPLETE */}
                   <div className="relative">
                     <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Pickup Location <span className="text-red-500">* (Current GPS or Search)</span>
+                      Pickup Location <span className="text-red-500">*</span>
                     </label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
@@ -922,7 +1179,11 @@ function CustomerPortalPage() {
                           required
                           value={pickupQuery}
                           onChange={(e) => setPickupQuery(e.target.value)}
-                          placeholder="Search pickup location e.g. Thandalam, Sekkadu, Avadi..."
+                          onFocus={() => {
+                            setPickupSuggestions(searchLocalHubSubAreas(pickupQuery, selectedRegionHub));
+                            setShowPickupDropdown(true);
+                          }}
+                          placeholder="Search pickup area e.g. Govarthanagiri, Sekkadu, Avadi..."
                           className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-3.5 pr-8 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                         />
                         {searchingPickup && (
@@ -965,22 +1226,53 @@ function CustomerPortalPage() {
                   {/* ADDRESS DETAILS INPUT */}
                   <div>
                     <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Address Details (Door No, Street Name, Landmark)
+                      Address Details
                     </label>
                     <input
                       type="text"
                       value={addressDetails}
                       onChange={(e) => setAddressDetails(e.target.value)}
-                      placeholder="e.g. Door No. 12/A, 2nd Street, Saveetha Campus, Landmark near Hospital"
+                      placeholder="Door No, Street Name, Landmark"
                       className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                     />
+                  </div>
+
+                  {/* CUSTOMER DETAILS */}
+                  <div className="grid gap-3 sm:grid-cols-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        Customer Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        placeholder="e.g. Rahul Sharma"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        Customer Phone <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        placeholder="e.g. 9876543210"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
+                      />
+                    </div>
                   </div>
 
                   {/* RECIPIENT DETAILS */}
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div>
                       <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                        Recipient Name <span className="text-red-500">* (Mandatory)</span>
+                        Recipient Name <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -994,14 +1286,14 @@ function CustomerPortalPage() {
 
                     <div>
                       <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                        Recipient Phone <span className="text-red-500">* (Mandatory)</span>
+                        Recipient Phone <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="tel"
                         required
                         value={recipientPhone}
                         onChange={(e) => setRecipientPhone(e.target.value)}
-                        placeholder="e.g. +91 98765 43210"
+                        placeholder="e.g. 9876543210"
                         className="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                       />
                     </div>
@@ -1010,7 +1302,7 @@ function CustomerPortalPage() {
                   {/* DESTINATION SEARCH WITH LIVE OPENSTREETMAP AUTOCOMPLETE */}
                   <div className="relative">
                     <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                      Destination / Dropoff Address <span className="text-red-500">* (Search GPS)</span>
+                      Destination Address <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -1018,7 +1310,11 @@ function CustomerPortalPage() {
                         required
                         value={destinationQuery}
                         onChange={(e) => setDestinationQuery(e.target.value)}
-                        placeholder="Type location e.g. Avadi Bus Stand, Saveetha Hospital..."
+                        onFocus={() => {
+                          setDestSuggestions(searchLocalHubSubAreas(destinationQuery, selectedRegionHub));
+                          setShowDestDropdown(true);
+                        }}
+                        placeholder="Search area e.g. Govarthanagiri, Sekkadu, Avadi Bus Stand..."
                         className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-3.5 pr-8 py-2.5 text-xs text-slate-800 outline-none focus:border-red-600 transition"
                       />
                       {searchingDest && (

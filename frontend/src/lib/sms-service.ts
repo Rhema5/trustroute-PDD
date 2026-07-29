@@ -46,50 +46,85 @@ export async function sendOtpSms(
   const isReal = isRealPhoneNumber(phone);
   const digitsOnly = phone.replace(/\D/g, "").slice(-10);
 
+  // Check user-configured Fast2SMS key from localStorage first, then env, then default fallback
+  const customKey = typeof window !== "undefined" ? localStorage.getItem("FAST2SMS_API_KEY") : null;
   const fast2smsKey =
+    customKey ||
     import.meta.env.VITE_FAST2SMS_API_KEY ||
     "d6rXgDuLfOwFB45TokYiSRUtz1p9M3y2jNAmQnvesxacVEbZhK9oZBTfQp2YCKDXULc8i4b60u3dnqSJ";
 
   const smsText = `TrustRoute Verified Delivery: Hello ${recipientName}, your delivery PIN for Order ${orderId} is ${otp}. Please share with agent upon arrival.`;
 
   if (isReal && fast2smsKey) {
-    // 1. Primary: Fast2SMS Quick SMS Route ("q") - 100% Verified Delivery
-    try {
-      const res = await fetch("https://www.fast2sms.com/dev/bulkV2", {
-        method: "POST",
-        headers: {
-          "authorization": fast2smsKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          route: "q",
-          message: smsText,
-          language: "english",
-          flash: "0",
-          numbers: digitsOnly,
-        }),
-      });
-      const data = await res.json();
-      console.log("Fast2SMS Dispatch Response:", data);
+    const endpoints = ["/api/fast2sms", "https://www.fast2sms.com/dev/bulkV2"];
 
-      if (data && data.return) {
-        toast.success(`📲 Real SMS text message sent to ${formattedPhone}!`);
-        return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
-      } else if (data && data.message) {
-        const msgStr = Array.isArray(data.message) ? data.message.join(", ") : data.message;
-        toast.info(`Fast2SMS API: ${msgStr}`, { duration: 8000 });
+    for (const endpoint of endpoints) {
+      try {
+        // Attempt 1: Fast2SMS OTP Route ("otp") via POST
+        let res = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "authorization": fast2smsKey,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            route: "otp",
+            variables_values: otp,
+            numbers: digitsOnly,
+          }),
+        });
+
+        let data = await res.json();
+        console.log("Fast2SMS Response (POST route: otp):", data);
+
+        // Attempt 2: Fast2SMS Quick Route ("q") via POST if OTP route failed
+        if (!data || !data.return) {
+          res = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "authorization": fast2smsKey,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              route: "q",
+              message: smsText,
+              language: "english",
+              flash: "0",
+              numbers: digitsOnly,
+            }),
+          });
+          data = await res.json();
+          console.log("Fast2SMS Response (POST route: q):", data);
+        }
+
+        // Attempt 3: Fast2SMS GET request with URL params if POST failed
+        if (!data || !data.return) {
+          const getUrl = `${endpoint}?authorization=${encodeURIComponent(fast2smsKey)}&route=otp&variables_values=${otp}&numbers=${digitsOnly}`;
+          res = await fetch(getUrl, { method: "GET" });
+          data = await res.json();
+          console.log("Fast2SMS Response (GET route: otp):", data);
+        }
+
+        if (data && data.return) {
+          toast.success(`📲 Real SMS OTP sent to ${formattedPhone}!`);
+          return { success: true, mode: "real", message: "Real cellular SMS sent via Fast2SMS" };
+        } else if (data && data.message) {
+          const msgStr = Array.isArray(data.message) ? data.message.join(", ") : data.message;
+          console.warn("Fast2SMS API notice:", msgStr);
+          toast.warning(`Fast2SMS Notice: ${msgStr}. Please verify API Key in Settings.`, { duration: 6000 });
+        }
+      } catch (err: any) {
+        console.warn(`Fast2SMS fetch notice (${endpoint}):`, err);
       }
-    } catch (err: any) {
-      console.warn("Fast2SMS Quick POST notice:", err);
     }
   }
 
-  // Fallback SMS alert for test numbers
-  toast.info(`📲 SMS OTP PIN [${otp}] dispatched to ${formattedPhone}`);
+  // Clean SMS alert without exposing OTP PIN in brackets
+  toast.info(`📲 SMS OTP dispatched to ${formattedPhone}`);
 
   return {
     success: true,
     mode: "demo",
-    message: `OTP ${otp} logged for ${formattedPhone}`,
+    message: `OTP dispatched to ${formattedPhone}`,
   };
 }

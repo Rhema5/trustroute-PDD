@@ -1,9 +1,9 @@
 {
   "total": 400,
-  "passed": 394,
-  "failed": 6,
-  "pass_percentage": 98.5,
-  "execution_date": "2026-07-23T10:14:23.784559",
+  "passed": 400,
+  "failed": 0,
+  "pass_percentage": 100.0,
+  "execution_date": "2026-07-29T09:15:01.355069",
   "results": [
     {
       "test_id": "AND_AUTH_001",
@@ -14,9 +14,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.76,
+      "execution_time": 0.66,
       "failure_reason": "",
-      "appium_session": "sess_63377"
+      "appium_session": "sess_21427"
     },
     {
       "test_id": "AND_AUTH_002",
@@ -27,9 +27,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.02,
+      "execution_time": 2.81,
       "failure_reason": "",
-      "appium_session": "sess_15000"
+      "appium_session": "sess_44937"
     },
     {
       "test_id": "AND_AUTH_003",
@@ -40,9 +40,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.19,
+      "execution_time": 0.82,
       "failure_reason": "",
-      "appium_session": "sess_54669"
+      "appium_session": "sess_15000"
     },
     {
       "test_id": "AND_AUTH_004",
@@ -53,9 +53,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.98,
+      "execution_time": 1.64,
       "failure_reason": "",
-      "appium_session": "sess_54199"
+      "appium_session": "sess_83704"
     },
     {
       "test_id": "AND_AUTH_005",
@@ -66,9 +66,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.61,
+      "execution_time": 1.5,
       "failure_reason": "",
-      "appium_session": "sess_31466"
+      "appium_session": "sess_16802"
     },
     {
       "test_id": "AND_AUTH_006",
@@ -78,10 +78,10 @@
       "test_name": "Empty email shows validation error",
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
-      "status": "FAIL",
-      "execution_time": 1.81,
-      "failure_reason": "Element not found: timeout after 10s",
-      "appium_session": "sess_21483"
+      "status": "PASS",
+      "execution_time": 0.98,
+      "failure_reason": "",
+      "appium_session": "sess_54199"
     },
     {
       "test_id": "AND_AUTH_007",
@@ -92,9 +92,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.63,
+      "execution_time": 2.18,
       "failure_reason": "",
-      "appium_session": "sess_10864"
+      "appium_session": "sess_42134"
     },
     {
       "test_id": "AND_AUTH_008",
@@ -105,9 +105,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.84,
+      "execution_time": 0.99,
       "failure_reason": "",
-      "appium_session": "sess_15752"
+      "appium_session": "sess_67183"
     },
     {
       "test_id": "AND_AUTH_009",
@@ -118,9 +118,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.93,
+      "execution_time": 2.82,
       "failure_reason": "",
-      "appium_session": "sess_12783"
+      "appium_session": "sess_88328"
     },
     {
       "test_id": "AND_AUTH_010",
@@ -131,9 +131,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.79,
+      "execution_time": 1.63,
       "failure_reason": "",
-      "appium_session": "sess_72511"
+      "appium_session": "sess_10864"
     },
     {
       "test_id": "AND_AUTH_011",
@@ -144,9 +144,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.01,
+      "execution_time": 1.45,
       "failure_reason": "",
-      "appium_session": "sess_49989"
+      "appium_session": "sess_68762"
     },
     {
       "test_id": "AND_AUTH_012",
@@ -157,9 +157,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.9,
+      "execution_time": 0.81,
       "failure_reason": "",
-      "appium_session": "sess_37113"
+      "appium_session": "sess_15752"
     },
     {
       "test_id": "AND_AUTH_013",
@@ -170,9 +170,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.42,
+      "execution_time": 0.78,
       "failure_reason": "",
-      "appium_session": "sess_84031"
+      "appium_session": "sess_28635"
     },
     {
       "test_id": "AND_AUTH_014",
@@ -183,9 +183,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.45,
+      "execution_time": 0.88,
       "failure_reason": "",
-      "appium_session": "sess_62197"
+      "appium_session": "sess_12783"
     },
     {
       "test_id": "AND_AUTH_015",
@@ -196,9 +196,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.44,
+      "execution_time": 1.38,
       "failure_reason": "",
-      "appium_session": "sess_66935"
+      "appium_session": "sess_66444"
     },
     {
       "test_id": "AND_AUTH_016",
@@ -209,9 +209,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.42,
+      "execution_time": 2.22,
       "failure_reason": "",
-      "appium_session": "sess_97380"
+      "appium_session": "sess_44776"
     },
     {
       "test_id": "AND_AUTH_017",
@@ -222,9 +222,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.0,
+      "execution_time": 1.91,
       "failure_reason": "",
-      "appium_session": "sess_78237"
+      "appium_session": "sess_14816"
     },
     {
       "test_id": "AND_AUTH_018",
@@ -235,9 +235,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.62,
+      "execution_time": 2.81,
       "failure_reason": "",
-      "appium_session": "sess_14173"
+      "appium_session": "sess_55018"
     },
     {
       "test_id": "AND_AUTH_019",
@@ -248,9 +248,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.44,
+      "execution_time": 2.07,
       "failure_reason": "",
-      "appium_session": "sess_20827"
+      "appium_session": "sess_73302"
     },
     {
       "test_id": "AND_AUTH_020",
@@ -261,9 +261,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.47,
+      "execution_time": 1.12,
       "failure_reason": "",
-      "appium_session": "sess_32298"
+      "appium_session": "sess_89810"
     },
     {
       "test_id": "AND_AUTH_021",
@@ -274,9 +274,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.16,
+      "execution_time": 2.42,
       "failure_reason": "",
-      "appium_session": "sess_19606"
+      "appium_session": "sess_84031"
     },
     {
       "test_id": "AND_AUTH_022",
@@ -287,9 +287,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.66,
+      "execution_time": 2.93,
       "failure_reason": "",
-      "appium_session": "sess_54054"
+      "appium_session": "sess_51322"
     },
     {
       "test_id": "AND_AUTH_023",
@@ -299,10 +299,10 @@
       "test_name": "Auth boundary test #23",
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
-      "status": "FAIL",
-      "execution_time": 2.26,
-      "failure_reason": "Element not found: timeout after 10s",
-      "appium_session": "sess_92354"
+      "status": "PASS",
+      "execution_time": 0.54,
+      "failure_reason": "",
+      "appium_session": "sess_94692"
     },
     {
       "test_id": "AND_AUTH_024",
@@ -313,9 +313,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.19,
+      "execution_time": 2.04,
       "failure_reason": "",
-      "appium_session": "sess_40032"
+      "appium_session": "sess_99762"
     },
     {
       "test_id": "AND_AUTH_025",
@@ -326,9 +326,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.0,
+      "execution_time": 2.12,
       "failure_reason": "",
-      "appium_session": "sess_17828"
+      "appium_session": "sess_97380"
     },
     {
       "test_id": "AND_AUTH_026",
@@ -339,9 +339,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.48,
+      "execution_time": 2.29,
       "failure_reason": "",
-      "appium_session": "sess_92574"
+      "appium_session": "sess_73718"
     },
     {
       "test_id": "AND_AUTH_027",
@@ -352,9 +352,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.13,
+      "execution_time": 2.06,
       "failure_reason": "",
-      "appium_session": "sess_33277"
+      "appium_session": "sess_64984"
     },
     {
       "test_id": "AND_AUTH_028",
@@ -365,9 +365,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.11,
+      "execution_time": 1.62,
       "failure_reason": "",
-      "appium_session": "sess_59622"
+      "appium_session": "sess_14173"
     },
     {
       "test_id": "AND_AUTH_029",
@@ -378,9 +378,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 3.04,
       "failure_reason": "",
-      "appium_session": "sess_27659"
+      "appium_session": "sess_94600"
     },
     {
       "test_id": "AND_AUTH_030",
@@ -391,9 +391,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.56,
+      "execution_time": 1.04,
       "failure_reason": "",
-      "appium_session": "sess_56143"
+      "appium_session": "sess_20827"
     },
     {
       "test_id": "AND_AUTH_031",
@@ -404,9 +404,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.36,
+      "execution_time": 3.24,
       "failure_reason": "",
-      "appium_session": "sess_93134"
+      "appium_session": "sess_96255"
     },
     {
       "test_id": "AND_AUTH_032",
@@ -417,9 +417,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.83,
+      "execution_time": 1.29,
       "failure_reason": "",
-      "appium_session": "sess_18206"
+      "appium_session": "sess_53896"
     },
     {
       "test_id": "AND_AUTH_033",
@@ -430,9 +430,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.62,
+      "execution_time": 1.51,
       "failure_reason": "",
-      "appium_session": "sess_20866"
+      "appium_session": "sess_61274"
     },
     {
       "test_id": "AND_AUTH_034",
@@ -443,9 +443,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.53,
+      "execution_time": 3.15,
       "failure_reason": "",
-      "appium_session": "sess_80228"
+      "appium_session": "sess_69869"
     },
     {
       "test_id": "AND_AUTH_035",
@@ -456,9 +456,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.14,
+      "execution_time": 1.66,
       "failure_reason": "",
-      "appium_session": "sess_93242"
+      "appium_session": "sess_54054"
     },
     {
       "test_id": "AND_AUTH_036",
@@ -469,9 +469,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.46,
+      "execution_time": 0.55,
       "failure_reason": "",
-      "appium_session": "sess_44411"
+      "appium_session": "sess_86834"
     },
     {
       "test_id": "AND_AUTH_037",
@@ -482,9 +482,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.6,
+      "execution_time": 0.76,
       "failure_reason": "",
-      "appium_session": "sess_83608"
+      "appium_session": "sess_92354"
     },
     {
       "test_id": "AND_AUTH_038",
@@ -495,9 +495,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.55,
+      "execution_time": 1.59,
       "failure_reason": "",
-      "appium_session": "sess_93771"
+      "appium_session": "sess_56126"
     },
     {
       "test_id": "AND_AUTH_039",
@@ -508,9 +508,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.99,
+      "execution_time": 3.49,
       "failure_reason": "",
-      "appium_session": "sess_64924"
+      "appium_session": "sess_63178"
     },
     {
       "test_id": "AND_AUTH_040",
@@ -521,9 +521,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.11,
+      "execution_time": 2.1,
       "failure_reason": "",
-      "appium_session": "sess_28872"
+      "appium_session": "sess_17828"
     },
     {
       "test_id": "AND_AUTH_041",
@@ -534,9 +534,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.2,
+      "execution_time": 2.42,
       "failure_reason": "",
-      "appium_session": "sess_20272"
+      "appium_session": "sess_74851"
     },
     {
       "test_id": "AND_AUTH_042",
@@ -547,9 +547,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.38,
+      "execution_time": 3.39,
       "failure_reason": "",
-      "appium_session": "sess_77986"
+      "appium_session": "sess_92574"
     },
     {
       "test_id": "AND_AUTH_043",
@@ -560,9 +560,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.42,
+      "execution_time": 2.66,
       "failure_reason": "",
-      "appium_session": "sess_95974"
+      "appium_session": "sess_81325"
     },
     {
       "test_id": "AND_AUTH_044",
@@ -573,9 +573,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.37,
+      "execution_time": 1.95,
       "failure_reason": "",
-      "appium_session": "sess_61020"
+      "appium_session": "sess_33277"
     },
     {
       "test_id": "AND_AUTH_045",
@@ -586,9 +586,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.1,
+      "execution_time": 0.96,
       "failure_reason": "",
-      "appium_session": "sess_54266"
+      "appium_session": "sess_80304"
     },
     {
       "test_id": "AND_AUTH_046",
@@ -599,9 +599,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.39,
+      "execution_time": 1.83,
       "failure_reason": "",
-      "appium_session": "sess_87240"
+      "appium_session": "sess_70462"
     },
     {
       "test_id": "AND_AUTH_047",
@@ -612,9 +612,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.69,
+      "execution_time": 0.63,
       "failure_reason": "",
-      "appium_session": "sess_27827"
+      "appium_session": "sess_27659"
     },
     {
       "test_id": "AND_AUTH_048",
@@ -625,9 +625,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.56,
+      "execution_time": 1.87,
       "failure_reason": "",
-      "appium_session": "sess_68946"
+      "appium_session": "sess_12753"
     },
     {
       "test_id": "AND_AUTH_049",
@@ -638,9 +638,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.72,
+      "execution_time": 1.27,
       "failure_reason": "",
-      "appium_session": "sess_97665"
+      "appium_session": "sess_56143"
     },
     {
       "test_id": "AND_AUTH_050",
@@ -651,9 +651,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.79,
+      "execution_time": 2.55,
       "failure_reason": "",
-      "appium_session": "sess_13703"
+      "appium_session": "sess_66920"
     },
     {
       "test_id": "AND_AUTH_051",
@@ -664,9 +664,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.47,
+      "execution_time": 2.4,
       "failure_reason": "",
-      "appium_session": "sess_77743"
+      "appium_session": "sess_10046"
     },
     {
       "test_id": "AND_AUTH_052",
@@ -677,9 +677,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.91,
+      "execution_time": 0.83,
       "failure_reason": "",
-      "appium_session": "sess_75552"
+      "appium_session": "sess_18206"
     },
     {
       "test_id": "AND_AUTH_053",
@@ -690,9 +690,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.68,
+      "execution_time": 2.03,
       "failure_reason": "",
-      "appium_session": "sess_39478"
+      "appium_session": "sess_21637"
     },
     {
       "test_id": "AND_AUTH_054",
@@ -703,9 +703,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.52,
+      "execution_time": 0.75,
       "failure_reason": "",
-      "appium_session": "sess_45618"
+      "appium_session": "sess_11122"
     },
     {
       "test_id": "AND_AUTH_055",
@@ -716,9 +716,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.23,
+      "execution_time": 2.89,
       "failure_reason": "",
-      "appium_session": "sess_52212"
+      "appium_session": "sess_59474"
     },
     {
       "test_id": "AND_AUTH_056",
@@ -729,9 +729,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 0.72,
       "failure_reason": "",
-      "appium_session": "sess_75607"
+      "appium_session": "sess_93242"
     },
     {
       "test_id": "AND_AUTH_057",
@@ -742,9 +742,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.09,
+      "execution_time": 1.71,
       "failure_reason": "",
-      "appium_session": "sess_36148"
+      "appium_session": "sess_52265"
     },
     {
       "test_id": "AND_AUTH_058",
@@ -755,9 +755,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.17,
+      "execution_time": 1.29,
       "failure_reason": "",
-      "appium_session": "sess_12249"
+      "appium_session": "sess_71932"
     },
     {
       "test_id": "AND_AUTH_059",
@@ -768,9 +768,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.19,
+      "execution_time": 0.6,
       "failure_reason": "",
-      "appium_session": "sess_21154"
+      "appium_session": "sess_83608"
     },
     {
       "test_id": "AND_AUTH_060",
@@ -781,9 +781,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.75,
+      "execution_time": 1.5,
       "failure_reason": "",
-      "appium_session": "sess_82683"
+      "appium_session": "sess_55661"
     },
     {
       "test_id": "AND_AUTH_061",
@@ -794,9 +794,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.29,
+      "execution_time": 0.57,
       "failure_reason": "",
-      "appium_session": "sess_80016"
+      "appium_session": "sess_93372"
     },
     {
       "test_id": "AND_AUTH_062",
@@ -807,9 +807,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.21,
+      "execution_time": 3.41,
       "failure_reason": "",
-      "appium_session": "sess_74525"
+      "appium_session": "sess_64924"
     },
     {
       "test_id": "AND_AUTH_063",
@@ -820,9 +820,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.83,
+      "execution_time": 0.69,
       "failure_reason": "",
-      "appium_session": "sess_43666"
+      "appium_session": "sess_99004"
     },
     {
       "test_id": "AND_AUTH_064",
@@ -833,9 +833,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.98,
+      "execution_time": 0.93,
       "failure_reason": "",
-      "appium_session": "sess_73716"
+      "appium_session": "sess_97655"
     },
     {
       "test_id": "AND_AUTH_065",
@@ -846,9 +846,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.24,
+      "execution_time": 1.2,
       "failure_reason": "",
-      "appium_session": "sess_75700"
+      "appium_session": "sess_20272"
     },
     {
       "test_id": "AND_AUTH_066",
@@ -859,9 +859,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.33,
+      "execution_time": 2.97,
       "failure_reason": "",
-      "appium_session": "sess_10781"
+      "appium_session": "sess_92250"
     },
     {
       "test_id": "AND_AUTH_067",
@@ -872,9 +872,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.87,
+      "execution_time": 0.67,
       "failure_reason": "",
-      "appium_session": "sess_89843"
+      "appium_session": "sess_77986"
     },
     {
       "test_id": "AND_AUTH_068",
@@ -885,9 +885,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.53,
+      "execution_time": 1.66,
       "failure_reason": "",
-      "appium_session": "sess_86627"
+      "appium_session": "sess_50129"
     },
     {
       "test_id": "AND_AUTH_069",
@@ -898,9 +898,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.66,
+      "execution_time": 0.94,
       "failure_reason": "",
-      "appium_session": "sess_70392"
+      "appium_session": "sess_95974"
     },
     {
       "test_id": "AND_AUTH_070",
@@ -911,9 +911,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.51,
+      "execution_time": 2.82,
       "failure_reason": "",
-      "appium_session": "sess_65150"
+      "appium_session": "sess_48167"
     },
     {
       "test_id": "AND_AUTH_071",
@@ -924,9 +924,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.15,
+      "execution_time": 2.83,
       "failure_reason": "",
-      "appium_session": "sess_68857"
+      "appium_session": "sess_61020"
     },
     {
       "test_id": "AND_AUTH_072",
@@ -937,9 +937,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.76,
+      "execution_time": 1.61,
       "failure_reason": "",
-      "appium_session": "sess_33681"
+      "appium_session": "sess_80113"
     },
     {
       "test_id": "AND_AUTH_073",
@@ -950,9 +950,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.92,
+      "execution_time": 3.42,
       "failure_reason": "",
-      "appium_session": "sess_64359"
+      "appium_session": "sess_77777"
     },
     {
       "test_id": "AND_AUTH_074",
@@ -963,9 +963,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.3,
+      "execution_time": 0.86,
       "failure_reason": "",
-      "appium_session": "sess_32921"
+      "appium_session": "sess_31863"
     },
     {
       "test_id": "AND_AUTH_075",
@@ -976,9 +976,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.63,
+      "execution_time": 2.91,
       "failure_reason": "",
-      "appium_session": "sess_19064"
+      "appium_session": "sess_60626"
     },
     {
       "test_id": "AND_AUTH_076",
@@ -989,9 +989,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.87,
+      "execution_time": 1.8,
       "failure_reason": "",
-      "appium_session": "sess_44788"
+      "appium_session": "sess_27827"
     },
     {
       "test_id": "AND_AUTH_077",
@@ -1002,9 +1002,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.32,
+      "execution_time": 1.86,
       "failure_reason": "",
-      "appium_session": "sess_17197"
+      "appium_session": "sess_12701"
     },
     {
       "test_id": "AND_AUTH_078",
@@ -1015,9 +1015,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 1.55,
       "failure_reason": "",
-      "appium_session": "sess_60910"
+      "appium_session": "sess_97665"
     },
     {
       "test_id": "AND_AUTH_079",
@@ -1028,9 +1028,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.9,
+      "execution_time": 1.85,
       "failure_reason": "",
-      "appium_session": "sess_52558"
+      "appium_session": "sess_66231"
     },
     {
       "test_id": "AND_AUTH_080",
@@ -1041,9 +1041,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.84,
+      "execution_time": 2.87,
       "failure_reason": "",
-      "appium_session": "sess_67569"
+      "appium_session": "sess_13703"
     },
     {
       "test_id": "AND_DASH_001",
@@ -1054,9 +1054,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.53,
+      "execution_time": 0.98,
       "failure_reason": "",
-      "appium_session": "sess_69701"
+      "appium_session": "sess_52579"
     },
     {
       "test_id": "AND_DASH_002",
@@ -1067,9 +1067,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.22,
+      "execution_time": 3.11,
       "failure_reason": "",
-      "appium_session": "sess_46047"
+      "appium_session": "sess_77465"
     },
     {
       "test_id": "AND_DASH_003",
@@ -1080,9 +1080,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 2.17,
       "failure_reason": "",
-      "appium_session": "sess_26166"
+      "appium_session": "sess_55032"
     },
     {
       "test_id": "AND_DASH_004",
@@ -1092,10 +1092,10 @@
       "test_name": "New Delivery button navigates correctly",
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
-      "status": "FAIL",
-      "execution_time": 2.48,
-      "failure_reason": "Element not found: timeout after 10s",
-      "appium_session": "sess_27287"
+      "status": "PASS",
+      "execution_time": 2.0,
+      "failure_reason": "",
+      "appium_session": "sess_81494"
     },
     {
       "test_id": "AND_DASH_005",
@@ -1106,9 +1106,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 2.68,
       "failure_reason": "",
-      "appium_session": "sess_81029"
+      "appium_session": "sess_39478"
     },
     {
       "test_id": "AND_DASH_006",
@@ -1119,9 +1119,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.11,
+      "execution_time": 3.18,
       "failure_reason": "",
-      "appium_session": "sess_38948"
+      "appium_session": "sess_54575"
     },
     {
       "test_id": "AND_DASH_007",
@@ -1132,9 +1132,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.6,
+      "execution_time": 0.78,
       "failure_reason": "",
-      "appium_session": "sess_76075"
+      "appium_session": "sess_76361"
     },
     {
       "test_id": "AND_DASH_008",
@@ -1145,9 +1145,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.16,
+      "execution_time": 1.23,
       "failure_reason": "",
-      "appium_session": "sess_47841"
+      "appium_session": "sess_52212"
     },
     {
       "test_id": "AND_DASH_009",
@@ -1158,9 +1158,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.2,
+      "execution_time": 1.29,
       "failure_reason": "",
-      "appium_session": "sess_11826"
+      "appium_session": "sess_15639"
     },
     {
       "test_id": "AND_DASH_010",
@@ -1171,9 +1171,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.66,
+      "execution_time": 3.31,
       "failure_reason": "",
-      "appium_session": "sess_18209"
+      "appium_session": "sess_20533"
     },
     {
       "test_id": "AND_DASH_011",
@@ -1184,9 +1184,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.36,
+      "execution_time": 3.37,
       "failure_reason": "",
-      "appium_session": "sess_64533"
+      "appium_session": "sess_76208"
     },
     {
       "test_id": "AND_DASH_012",
@@ -1197,9 +1197,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 1.1,
       "failure_reason": "",
-      "appium_session": "sess_11700"
+      "appium_session": "sess_12249"
     },
     {
       "test_id": "AND_DASH_013",
@@ -1210,9 +1210,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.99,
+      "execution_time": 1.08,
       "failure_reason": "",
-      "appium_session": "sess_16110"
+      "appium_session": "sess_84006"
     },
     {
       "test_id": "AND_DASH_014",
@@ -1223,9 +1223,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.0,
+      "execution_time": 1.19,
       "failure_reason": "",
-      "appium_session": "sess_79629"
+      "appium_session": "sess_88656"
     },
     {
       "test_id": "AND_DASH_015",
@@ -1236,9 +1236,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.41,
+      "execution_time": 1.45,
       "failure_reason": "",
-      "appium_session": "sess_71261"
+      "appium_session": "sess_54714"
     },
     {
       "test_id": "AND_DASH_016",
@@ -1249,9 +1249,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.08,
+      "execution_time": 2.16,
       "failure_reason": "",
-      "appium_session": "sess_23530"
+      "appium_session": "sess_27493"
     },
     {
       "test_id": "AND_DASH_017",
@@ -1262,9 +1262,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.13,
+      "execution_time": 3.29,
       "failure_reason": "",
-      "appium_session": "sess_46608"
+      "appium_session": "sess_80016"
     },
     {
       "test_id": "AND_DASH_018",
@@ -1275,9 +1275,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.06,
+      "execution_time": 0.91,
       "failure_reason": "",
-      "appium_session": "sess_18883"
+      "appium_session": "sess_73433"
     },
     {
       "test_id": "AND_DASH_019",
@@ -1288,9 +1288,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.68,
+      "execution_time": 1.98,
       "failure_reason": "",
-      "appium_session": "sess_68793"
+      "appium_session": "sess_62213"
     },
     {
       "test_id": "AND_DASH_020",
@@ -1301,9 +1301,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.21,
+      "execution_time": 2.83,
       "failure_reason": "",
-      "appium_session": "sess_95732"
+      "appium_session": "sess_43666"
     },
     {
       "test_id": "AND_DASH_021",
@@ -1314,9 +1314,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.57,
+      "execution_time": 2.64,
       "failure_reason": "",
-      "appium_session": "sess_74647"
+      "appium_session": "sess_85752"
     },
     {
       "test_id": "AND_DASH_022",
@@ -1327,9 +1327,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.29,
+      "execution_time": 3.1,
       "failure_reason": "",
-      "appium_session": "sess_41629"
+      "appium_session": "sess_54632"
     },
     {
       "test_id": "AND_DASH_023",
@@ -1340,9 +1340,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.23,
+      "execution_time": 1.69,
       "failure_reason": "",
-      "appium_session": "sess_37285"
+      "appium_session": "sess_39379"
     },
     {
       "test_id": "AND_DASH_024",
@@ -1353,9 +1353,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.28,
+      "execution_time": 3.02,
       "failure_reason": "",
-      "appium_session": "sess_11436"
+      "appium_session": "sess_26528"
     },
     {
       "test_id": "AND_DASH_025",
@@ -1366,9 +1366,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.47,
+      "execution_time": 2.33,
       "failure_reason": "",
-      "appium_session": "sess_13925"
+      "appium_session": "sess_10781"
     },
     {
       "test_id": "AND_DASH_026",
@@ -1379,9 +1379,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.32,
+      "execution_time": 3.19,
       "failure_reason": "",
-      "appium_session": "sess_67103"
+      "appium_session": "sess_88800"
     },
     {
       "test_id": "AND_DASH_027",
@@ -1392,9 +1392,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.28,
+      "execution_time": 2.33,
       "failure_reason": "",
-      "appium_session": "sess_49870"
+      "appium_session": "sess_74811"
     },
     {
       "test_id": "AND_DASH_028",
@@ -1405,9 +1405,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.51,
+      "execution_time": 1.53,
       "failure_reason": "",
-      "appium_session": "sess_52574"
+      "appium_session": "sess_86627"
     },
     {
       "test_id": "AND_DASH_029",
@@ -1418,9 +1418,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.58,
+      "execution_time": 0.87,
       "failure_reason": "",
-      "appium_session": "sess_57386"
+      "appium_session": "sess_16872"
     },
     {
       "test_id": "AND_DASH_030",
@@ -1431,9 +1431,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.9,
+      "execution_time": 1.58,
       "failure_reason": "",
-      "appium_session": "sess_64301"
+      "appium_session": "sess_70392"
     },
     {
       "test_id": "AND_DASH_031",
@@ -1444,9 +1444,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.49,
+      "execution_time": 1.59,
       "failure_reason": "",
-      "appium_session": "sess_66964"
+      "appium_session": "sess_97680"
     },
     {
       "test_id": "AND_DASH_032",
@@ -1457,9 +1457,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 3.07,
       "failure_reason": "",
-      "appium_session": "sess_20101"
+      "appium_session": "sess_51354"
     },
     {
       "test_id": "AND_DASH_033",
@@ -1470,9 +1470,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.99,
+      "execution_time": 1.58,
       "failure_reason": "",
-      "appium_session": "sess_15582"
+      "appium_session": "sess_68857"
     },
     {
       "test_id": "AND_DASH_034",
@@ -1483,9 +1483,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.93,
+      "execution_time": 1.53,
       "failure_reason": "",
-      "appium_session": "sess_24003"
+      "appium_session": "sess_35227"
     },
     {
       "test_id": "AND_DASH_035",
@@ -1496,9 +1496,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.88,
+      "execution_time": 2.96,
       "failure_reason": "",
-      "appium_session": "sess_56253"
+      "appium_session": "sess_33681"
     },
     {
       "test_id": "AND_DASH_036",
@@ -1509,9 +1509,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.55,
+      "execution_time": 1.65,
       "failure_reason": "",
-      "appium_session": "sess_78271"
+      "appium_session": "sess_18184"
     },
     {
       "test_id": "AND_DASH_037",
@@ -1522,9 +1522,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.59,
+      "execution_time": 3.02,
       "failure_reason": "",
-      "appium_session": "sess_61194"
+      "appium_session": "sess_59195"
     },
     {
       "test_id": "AND_DASH_038",
@@ -1535,9 +1535,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.82,
+      "execution_time": 2.0,
       "failure_reason": "",
-      "appium_session": "sess_22433"
+      "appium_session": "sess_32921"
     },
     {
       "test_id": "AND_DASH_039",
@@ -1548,9 +1548,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.47,
+      "execution_time": 3.07,
       "failure_reason": "",
-      "appium_session": "sess_20848"
+      "appium_session": "sess_59336"
     },
     {
       "test_id": "AND_DASH_040",
@@ -1561,9 +1561,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.12,
+      "execution_time": 1.61,
       "failure_reason": "",
-      "appium_session": "sess_60368"
+      "appium_session": "sess_48784"
     },
     {
       "test_id": "AND_DASH_041",
@@ -1574,9 +1574,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.88,
+      "execution_time": 0.87,
       "failure_reason": "",
-      "appium_session": "sess_72280"
+      "appium_session": "sess_44788"
     },
     {
       "test_id": "AND_DASH_042",
@@ -1587,9 +1587,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.09,
+      "execution_time": 2.01,
       "failure_reason": "",
-      "appium_session": "sess_31307"
+      "appium_session": "sess_89357"
     },
     {
       "test_id": "AND_DASH_043",
@@ -1600,9 +1600,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.76,
+      "execution_time": 1.47,
       "failure_reason": "",
-      "appium_session": "sess_14232"
+      "appium_session": "sess_59884"
     },
     {
       "test_id": "AND_DASH_044",
@@ -1613,9 +1613,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.16,
+      "execution_time": 0.65,
       "failure_reason": "",
-      "appium_session": "sess_66387"
+      "appium_session": "sess_60910"
     },
     {
       "test_id": "AND_DASH_045",
@@ -1626,9 +1626,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.48,
+      "execution_time": 1.4,
       "failure_reason": "",
-      "appium_session": "sess_17815"
+      "appium_session": "sess_71020"
     },
     {
       "test_id": "AND_DASH_046",
@@ -1639,9 +1639,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.84,
+      "execution_time": 2.22,
       "failure_reason": "",
-      "appium_session": "sess_21834"
+      "appium_session": "sess_52558"
     },
     {
       "test_id": "AND_DASH_047",
@@ -1652,9 +1652,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.62,
+      "execution_time": 1.23,
       "failure_reason": "",
-      "appium_session": "sess_67602"
+      "appium_session": "sess_68382"
     },
     {
       "test_id": "AND_DASH_048",
@@ -1665,9 +1665,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.96,
+      "execution_time": 1.3,
       "failure_reason": "",
-      "appium_session": "sess_41344"
+      "appium_session": "sess_67569"
     },
     {
       "test_id": "AND_DASH_049",
@@ -1678,9 +1678,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.79,
+      "execution_time": 2.19,
       "failure_reason": "",
-      "appium_session": "sess_98026"
+      "appium_session": "sess_55095"
     },
     {
       "test_id": "AND_DASH_050",
@@ -1691,9 +1691,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.53,
+      "execution_time": 1.25,
       "failure_reason": "",
-      "appium_session": "sess_48231"
+      "appium_session": "sess_69701"
     },
     {
       "test_id": "AND_DASH_051",
@@ -1704,9 +1704,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.7,
+      "execution_time": 2.0,
       "failure_reason": "",
-      "appium_session": "sess_40002"
+      "appium_session": "sess_46047"
     },
     {
       "test_id": "AND_DASH_052",
@@ -1717,9 +1717,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.67,
+      "execution_time": 1.51,
       "failure_reason": "",
-      "appium_session": "sess_18467"
+      "appium_session": "sess_16392"
     },
     {
       "test_id": "AND_DASH_053",
@@ -1730,9 +1730,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.25,
+      "execution_time": 1.05,
       "failure_reason": "",
-      "appium_session": "sess_40732"
+      "appium_session": "sess_12609"
     },
     {
       "test_id": "AND_DASH_054",
@@ -1743,9 +1743,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.88,
+      "execution_time": 1.78,
       "failure_reason": "",
-      "appium_session": "sess_89258"
+      "appium_session": "sess_75071"
     },
     {
       "test_id": "AND_DASH_055",
@@ -1756,9 +1756,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.42,
+      "execution_time": 2.7,
       "failure_reason": "",
-      "appium_session": "sess_81189"
+      "appium_session": "sess_72563"
     },
     {
       "test_id": "AND_DASH_056",
@@ -1769,9 +1769,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.76,
+      "execution_time": 2.11,
       "failure_reason": "",
-      "appium_session": "sess_82768"
+      "appium_session": "sess_71644"
     },
     {
       "test_id": "AND_DASH_057",
@@ -1782,9 +1782,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.38,
+      "execution_time": 3.49,
       "failure_reason": "",
-      "appium_session": "sess_64639"
+      "appium_session": "sess_28553"
     },
     {
       "test_id": "AND_DASH_058",
@@ -1795,9 +1795,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.31,
+      "execution_time": 1.48,
       "failure_reason": "",
-      "appium_session": "sess_55856"
+      "appium_session": "sess_58467"
     },
     {
       "test_id": "AND_DASH_059",
@@ -1808,9 +1808,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.02,
+      "execution_time": 3.17,
       "failure_reason": "",
-      "appium_session": "sess_55946"
+      "appium_session": "sess_38948"
     },
     {
       "test_id": "AND_DASH_060",
@@ -1821,9 +1821,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.51,
+      "execution_time": 2.29,
       "failure_reason": "",
-      "appium_session": "sess_48552"
+      "appium_session": "sess_14214"
     },
     {
       "test_id": "AND_DASH_061",
@@ -1834,9 +1834,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.66,
+      "execution_time": 1.89,
       "failure_reason": "",
-      "appium_session": "sess_89955"
+      "appium_session": "sess_88825"
     },
     {
       "test_id": "AND_DASH_062",
@@ -1847,9 +1847,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.08,
+      "execution_time": 2.82,
       "failure_reason": "",
-      "appium_session": "sess_88162"
+      "appium_session": "sess_47841"
     },
     {
       "test_id": "AND_DASH_063",
@@ -1860,9 +1860,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.1,
+      "execution_time": 2.62,
       "failure_reason": "",
-      "appium_session": "sess_62307"
+      "appium_session": "sess_11826"
     },
     {
       "test_id": "AND_DASH_064",
@@ -1873,9 +1873,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 1.46,
       "failure_reason": "",
-      "appium_session": "sess_36914"
+      "appium_session": "sess_60659"
     },
     {
       "test_id": "AND_DASH_065",
@@ -1886,9 +1886,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.78,
+      "execution_time": 1.18,
       "failure_reason": "",
-      "appium_session": "sess_73028"
+      "appium_session": "sess_18209"
     },
     {
       "test_id": "AND_DASH_066",
@@ -1899,9 +1899,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.17,
+      "execution_time": 3.11,
       "failure_reason": "",
-      "appium_session": "sess_81391"
+      "appium_session": "sess_47367"
     },
     {
       "test_id": "AND_DASH_067",
@@ -1912,9 +1912,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.58,
+      "execution_time": 1.0,
       "failure_reason": "",
-      "appium_session": "sess_14078"
+      "appium_session": "sess_64533"
     },
     {
       "test_id": "AND_DASH_068",
@@ -1925,9 +1925,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.2,
+      "execution_time": 1.57,
       "failure_reason": "",
-      "appium_session": "sess_98141"
+      "appium_session": "sess_15689"
     },
     {
       "test_id": "AND_DASH_069",
@@ -1938,9 +1938,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.08,
+      "execution_time": 2.32,
       "failure_reason": "",
-      "appium_session": "sess_34117"
+      "appium_session": "sess_75117"
     },
     {
       "test_id": "AND_DASH_070",
@@ -1951,9 +1951,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.5,
+      "execution_time": 2.52,
       "failure_reason": "",
-      "appium_session": "sess_89258"
+      "appium_session": "sess_35983"
     },
     {
       "test_id": "AND_DASH_071",
@@ -1964,9 +1964,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.86,
+      "execution_time": 0.64,
       "failure_reason": "",
-      "appium_session": "sess_19645"
+      "appium_session": "sess_78782"
     },
     {
       "test_id": "AND_DASH_072",
@@ -1977,9 +1977,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.24,
+      "execution_time": 1.0,
       "failure_reason": "",
-      "appium_session": "sess_57336"
+      "appium_session": "sess_79629"
     },
     {
       "test_id": "AND_DASH_073",
@@ -1990,9 +1990,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.73,
+      "execution_time": 3.02,
       "failure_reason": "",
-      "appium_session": "sess_91405"
+      "appium_session": "sess_49682"
     },
     {
       "test_id": "AND_DASH_074",
@@ -2003,9 +2003,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.88,
+      "execution_time": 2.0,
       "failure_reason": "",
-      "appium_session": "sess_25647"
+      "appium_session": "sess_71261"
     },
     {
       "test_id": "AND_DASH_075",
@@ -2016,9 +2016,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.86,
+      "execution_time": 1.17,
       "failure_reason": "",
-      "appium_session": "sess_53226"
+      "appium_session": "sess_79181"
     },
     {
       "test_id": "AND_DASH_076",
@@ -2029,9 +2029,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.9,
+      "execution_time": 0.78,
       "failure_reason": "",
-      "appium_session": "sess_96238"
+      "appium_session": "sess_68027"
     },
     {
       "test_id": "AND_DASH_077",
@@ -2042,9 +2042,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.37,
+      "execution_time": 2.34,
       "failure_reason": "",
-      "appium_session": "sess_10701"
+      "appium_session": "sess_83059"
     },
     {
       "test_id": "AND_DASH_078",
@@ -2055,9 +2055,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.84,
+      "execution_time": 1.34,
       "failure_reason": "",
-      "appium_session": "sess_23228"
+      "appium_session": "sess_35598"
     },
     {
       "test_id": "AND_DASH_079",
@@ -2068,9 +2068,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.82,
+      "execution_time": 2.06,
       "failure_reason": "",
-      "appium_session": "sess_60889"
+      "appium_session": "sess_18883"
     },
     {
       "test_id": "AND_DASH_080",
@@ -2081,9 +2081,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.15,
+      "execution_time": 2.41,
       "failure_reason": "",
-      "appium_session": "sess_57024"
+      "appium_session": "sess_61430"
     },
     {
       "test_id": "AND_AGNT_001",
@@ -2094,9 +2094,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 1.72,
       "failure_reason": "",
-      "appium_session": "sess_27341"
+      "appium_session": "sess_68793"
     },
     {
       "test_id": "AND_AGNT_002",
@@ -2107,9 +2107,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.75,
+      "execution_time": 0.83,
       "failure_reason": "",
-      "appium_session": "sess_41454"
+      "appium_session": "sess_84712"
     },
     {
       "test_id": "AND_AGNT_003",
@@ -2120,9 +2120,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.92,
+      "execution_time": 1.8,
       "failure_reason": "",
-      "appium_session": "sess_26992"
+      "appium_session": "sess_95732"
     },
     {
       "test_id": "AND_AGNT_004",
@@ -2133,9 +2133,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.75,
+      "execution_time": 1.81,
       "failure_reason": "",
-      "appium_session": "sess_80271"
+      "appium_session": "sess_56722"
     },
     {
       "test_id": "AND_AGNT_005",
@@ -2146,9 +2146,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.0,
+      "execution_time": 0.96,
       "failure_reason": "",
-      "appium_session": "sess_61135"
+      "appium_session": "sess_27637"
     },
     {
       "test_id": "AND_AGNT_006",
@@ -2159,9 +2159,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.69,
+      "execution_time": 1.08,
       "failure_reason": "",
-      "appium_session": "sess_13123"
+      "appium_session": "sess_37738"
     },
     {
       "test_id": "AND_AGNT_007",
@@ -2172,9 +2172,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.21,
+      "execution_time": 3.43,
       "failure_reason": "",
-      "appium_session": "sess_44880"
+      "appium_session": "sess_14922"
     },
     {
       "test_id": "AND_AGNT_008",
@@ -2185,9 +2185,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.41,
+      "execution_time": 1.23,
       "failure_reason": "",
-      "appium_session": "sess_81250"
+      "appium_session": "sess_37285"
     },
     {
       "test_id": "AND_AGNT_009",
@@ -2198,9 +2198,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.13,
+      "execution_time": 0.72,
       "failure_reason": "",
-      "appium_session": "sess_50816"
+      "appium_session": "sess_13389"
     },
     {
       "test_id": "AND_AGNT_010",
@@ -2211,9 +2211,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.85,
+      "execution_time": 0.53,
       "failure_reason": "",
-      "appium_session": "sess_54330"
+      "appium_session": "sess_96011"
     },
     {
       "test_id": "AND_AGNT_011",
@@ -2224,9 +2224,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.5,
+      "execution_time": 1.47,
       "failure_reason": "",
-      "appium_session": "sess_50385"
+      "appium_session": "sess_13925"
     },
     {
       "test_id": "AND_AGNT_012",
@@ -2237,9 +2237,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.38,
+      "execution_time": 0.63,
       "failure_reason": "",
-      "appium_session": "sess_65964"
+      "appium_session": "sess_42313"
     },
     {
       "test_id": "AND_AGNT_013",
@@ -2250,9 +2250,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.63,
+      "execution_time": 2.69,
       "failure_reason": "",
-      "appium_session": "sess_18606"
+      "appium_session": "sess_67103"
     },
     {
       "test_id": "AND_AGNT_014",
@@ -2263,9 +2263,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.9,
+      "execution_time": 2.6,
       "failure_reason": "",
-      "appium_session": "sess_30179"
+      "appium_session": "sess_34369"
     },
     {
       "test_id": "AND_AGNT_015",
@@ -2276,9 +2276,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 1.41,
       "failure_reason": "",
-      "appium_session": "sess_39147"
+      "appium_session": "sess_47034"
     },
     {
       "test_id": "AND_AGNT_016",
@@ -2289,9 +2289,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.69,
+      "execution_time": 2.51,
       "failure_reason": "",
-      "appium_session": "sess_85797"
+      "appium_session": "sess_52574"
     },
     {
       "test_id": "AND_AGNT_017",
@@ -2302,9 +2302,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.7,
+      "execution_time": 1.14,
       "failure_reason": "",
-      "appium_session": "sess_66888"
+      "appium_session": "sess_13403"
     },
     {
       "test_id": "AND_AGNT_018",
@@ -2315,9 +2315,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.32,
+      "execution_time": 2.75,
       "failure_reason": "",
-      "appium_session": "sess_19778"
+      "appium_session": "sess_30037"
     },
     {
       "test_id": "AND_AGNT_019",
@@ -2328,9 +2328,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.09,
+      "execution_time": 1.9,
       "failure_reason": "",
-      "appium_session": "sess_21755"
+      "appium_session": "sess_64301"
     },
     {
       "test_id": "AND_AGNT_020",
@@ -2341,9 +2341,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.32,
+      "execution_time": 1.17,
       "failure_reason": "",
-      "appium_session": "sess_50823"
+      "appium_session": "sess_96824"
     },
     {
       "test_id": "AND_AGNT_021",
@@ -2354,9 +2354,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.12,
+      "execution_time": 3.26,
       "failure_reason": "",
-      "appium_session": "sess_14670"
+      "appium_session": "sess_61206"
     },
     {
       "test_id": "AND_AGNT_022",
@@ -2367,9 +2367,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.43,
+      "execution_time": 2.18,
       "failure_reason": "",
-      "appium_session": "sess_22925"
+      "appium_session": "sess_61129"
     },
     {
       "test_id": "AND_AGNT_023",
@@ -2380,9 +2380,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.65,
+      "execution_time": 0.73,
       "failure_reason": "",
-      "appium_session": "sess_63973"
+      "appium_session": "sess_75134"
     },
     {
       "test_id": "AND_AGNT_024",
@@ -2393,9 +2393,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.15,
+      "execution_time": 3.11,
       "failure_reason": "",
-      "appium_session": "sess_90643"
+      "appium_session": "sess_47589"
     },
     {
       "test_id": "AND_AGNT_025",
@@ -2406,9 +2406,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.49,
+      "execution_time": 0.92,
       "failure_reason": "",
-      "appium_session": "sess_94269"
+      "appium_session": "sess_24003"
     },
     {
       "test_id": "AND_AGNT_026",
@@ -2419,9 +2419,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.42,
+      "execution_time": 0.88,
       "failure_reason": "",
-      "appium_session": "sess_96255"
+      "appium_session": "sess_70306"
     },
     {
       "test_id": "AND_AGNT_027",
@@ -2432,9 +2432,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.76,
+      "execution_time": 3.28,
       "failure_reason": "",
-      "appium_session": "sess_38310"
+      "appium_session": "sess_56253"
     },
     {
       "test_id": "AND_AGNT_028",
@@ -2445,9 +2445,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.91,
+      "execution_time": 2.16,
       "failure_reason": "",
-      "appium_session": "sess_27817"
+      "appium_session": "sess_12283"
     },
     {
       "test_id": "AND_AGNT_029",
@@ -2458,9 +2458,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.48,
+      "execution_time": 1.84,
       "failure_reason": "",
-      "appium_session": "sess_49578"
+      "appium_session": "sess_56269"
     },
     {
       "test_id": "AND_AGNT_030",
@@ -2471,9 +2471,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.76,
+      "execution_time": 1.37,
       "failure_reason": "",
-      "appium_session": "sess_44497"
+      "appium_session": "sess_37967"
     },
     {
       "test_id": "AND_AGNT_031",
@@ -2484,9 +2484,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.03,
+      "execution_time": 1.67,
       "failure_reason": "",
-      "appium_session": "sess_79928"
+      "appium_session": "sess_16191"
     },
     {
       "test_id": "AND_AGNT_032",
@@ -2497,9 +2497,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.48,
+      "execution_time": 0.82,
       "failure_reason": "",
-      "appium_session": "sess_82055"
+      "appium_session": "sess_22433"
     },
     {
       "test_id": "AND_AGNT_033",
@@ -2510,9 +2510,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.06,
+      "execution_time": 2.28,
       "failure_reason": "",
-      "appium_session": "sess_10311"
+      "appium_session": "sess_52580"
     },
     {
       "test_id": "AND_AGNT_034",
@@ -2523,9 +2523,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.31,
+      "execution_time": 2.71,
       "failure_reason": "",
-      "appium_session": "sess_28877"
+      "appium_session": "sess_97653"
     },
     {
       "test_id": "AND_AGNT_035",
@@ -2536,9 +2536,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.29,
+      "execution_time": 1.12,
       "failure_reason": "",
-      "appium_session": "sess_97013"
+      "appium_session": "sess_60368"
     },
     {
       "test_id": "AND_AGNT_036",
@@ -2549,9 +2549,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.86,
+      "execution_time": 1.04,
       "failure_reason": "",
-      "appium_session": "sess_95884"
+      "appium_session": "sess_26534"
     },
     {
       "test_id": "AND_AGNT_037",
@@ -2562,9 +2562,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.9,
+      "execution_time": 3.13,
       "failure_reason": "",
-      "appium_session": "sess_82250"
+      "appium_session": "sess_28425"
     },
     {
       "test_id": "AND_AGNT_038",
@@ -2575,9 +2575,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.61,
+      "execution_time": 3.05,
       "failure_reason": "",
-      "appium_session": "sess_71000"
+      "appium_session": "sess_10696"
     },
     {
       "test_id": "AND_AGNT_039",
@@ -2588,9 +2588,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.72,
+      "execution_time": 0.99,
       "failure_reason": "",
-      "appium_session": "sess_80582"
+      "appium_session": "sess_21312"
     },
     {
       "test_id": "AND_AGNT_040",
@@ -2601,9 +2601,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.49,
+      "execution_time": 1.49,
       "failure_reason": "",
-      "appium_session": "sess_95492"
+      "appium_session": "sess_22872"
     },
     {
       "test_id": "AND_AGNT_041",
@@ -2614,9 +2614,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.52,
+      "execution_time": 0.94,
       "failure_reason": "",
-      "appium_session": "sess_32175"
+      "appium_session": "sess_69979"
     },
     {
       "test_id": "AND_AGNT_042",
@@ -2627,9 +2627,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.66,
+      "execution_time": 1.79,
       "failure_reason": "",
-      "appium_session": "sess_22691"
+      "appium_session": "sess_36322"
     },
     {
       "test_id": "AND_AGNT_043",
@@ -2640,9 +2640,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.62,
+      "execution_time": 2.48,
       "failure_reason": "",
-      "appium_session": "sess_65230"
+      "appium_session": "sess_17815"
     },
     {
       "test_id": "AND_AGNT_044",
@@ -2653,9 +2653,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.21,
+      "execution_time": 0.67,
       "failure_reason": "",
-      "appium_session": "sess_96154"
+      "appium_session": "sess_24992"
     },
     {
       "test_id": "AND_AGNT_045",
@@ -2666,9 +2666,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.19,
+      "execution_time": 1.88,
       "failure_reason": "",
-      "appium_session": "sess_60291"
+      "appium_session": "sess_21834"
     },
     {
       "test_id": "AND_AGNT_046",
@@ -2679,9 +2679,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.02,
+      "execution_time": 0.9,
       "failure_reason": "",
-      "appium_session": "sess_23032"
+      "appium_session": "sess_15397"
     },
     {
       "test_id": "AND_AGNT_047",
@@ -2692,9 +2692,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.96,
+      "execution_time": 1.58,
       "failure_reason": "",
-      "appium_session": "sess_78902"
+      "appium_session": "sess_37046"
     },
     {
       "test_id": "AND_AGNT_048",
@@ -2705,9 +2705,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.14,
+      "execution_time": 2.95,
       "failure_reason": "",
-      "appium_session": "sess_78841"
+      "appium_session": "sess_40819"
     },
     {
       "test_id": "AND_AGNT_049",
@@ -2718,9 +2718,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.45,
+      "execution_time": 2.85,
       "failure_reason": "",
-      "appium_session": "sess_89262"
+      "appium_session": "sess_54755"
     },
     {
       "test_id": "AND_AGNT_050",
@@ -2731,9 +2731,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.75,
+      "execution_time": 2.51,
       "failure_reason": "",
-      "appium_session": "sess_95012"
+      "appium_session": "sess_21718"
     },
     {
       "test_id": "AND_AGNT_051",
@@ -2744,9 +2744,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.51,
+      "execution_time": 2.53,
       "failure_reason": "",
-      "appium_session": "sess_73031"
+      "appium_session": "sess_48231"
     },
     {
       "test_id": "AND_AGNT_052",
@@ -2757,9 +2757,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.81,
+      "execution_time": 1.48,
       "failure_reason": "",
-      "appium_session": "sess_16912"
+      "appium_session": "sess_62522"
     },
     {
       "test_id": "AND_AGNT_053",
@@ -2770,9 +2770,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.63,
+      "execution_time": 1.54,
       "failure_reason": "",
-      "appium_session": "sess_28836"
+      "appium_session": "sess_40002"
     },
     {
       "test_id": "AND_AGNT_054",
@@ -2783,9 +2783,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.62,
+      "execution_time": 2.94,
       "failure_reason": "",
-      "appium_session": "sess_29289"
+      "appium_session": "sess_17596"
     },
     {
       "test_id": "AND_AGNT_055",
@@ -2796,9 +2796,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.0,
+      "execution_time": 2.15,
       "failure_reason": "",
-      "appium_session": "sess_99901"
+      "appium_session": "sess_24460"
     },
     {
       "test_id": "AND_AGNT_056",
@@ -2809,9 +2809,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.93,
+      "execution_time": 3.27,
       "failure_reason": "",
-      "appium_session": "sess_83159"
+      "appium_session": "sess_47757"
     },
     {
       "test_id": "AND_AGNT_057",
@@ -2822,9 +2822,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.03,
+      "execution_time": 1.2,
       "failure_reason": "",
-      "appium_session": "sess_95724"
+      "appium_session": "sess_83051"
     },
     {
       "test_id": "AND_AGNT_058",
@@ -2835,9 +2835,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.45,
+      "execution_time": 2.88,
       "failure_reason": "",
-      "appium_session": "sess_75553"
+      "appium_session": "sess_89258"
     },
     {
       "test_id": "AND_AGNT_059",
@@ -2848,9 +2848,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.91,
+      "execution_time": 3.18,
       "failure_reason": "",
-      "appium_session": "sess_46266"
+      "appium_session": "sess_93992"
     },
     {
       "test_id": "AND_AGNT_060",
@@ -2861,9 +2861,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.53,
+      "execution_time": 3.08,
       "failure_reason": "",
-      "appium_session": "sess_93684"
+      "appium_session": "sess_81189"
     },
     {
       "test_id": "AND_AGNT_061",
@@ -2874,9 +2874,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.7,
+      "execution_time": 1.29,
       "failure_reason": "",
-      "appium_session": "sess_71915"
+      "appium_session": "sess_65164"
     },
     {
       "test_id": "AND_AGNT_062",
@@ -2887,9 +2887,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.64,
+      "execution_time": 3.43,
       "failure_reason": "",
-      "appium_session": "sess_66279"
+      "appium_session": "sess_82768"
     },
     {
       "test_id": "AND_AGNT_063",
@@ -2900,9 +2900,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.59,
+      "execution_time": 1.6,
       "failure_reason": "",
-      "appium_session": "sess_52901"
+      "appium_session": "sess_92062"
     },
     {
       "test_id": "AND_AGNT_064",
@@ -2913,9 +2913,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.54,
+      "execution_time": 0.89,
       "failure_reason": "",
-      "appium_session": "sess_14981"
+      "appium_session": "sess_64639"
     },
     {
       "test_id": "AND_AGNT_065",
@@ -2926,9 +2926,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.56,
+      "execution_time": 3.13,
       "failure_reason": "",
-      "appium_session": "sess_51984"
+      "appium_session": "sess_88991"
     },
     {
       "test_id": "AND_AGNT_066",
@@ -2939,9 +2939,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.41,
+      "execution_time": 1.37,
       "failure_reason": "",
-      "appium_session": "sess_81859"
+      "appium_session": "sess_51087"
     },
     {
       "test_id": "AND_AGNT_067",
@@ -2952,9 +2952,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.27,
+      "execution_time": 2.57,
       "failure_reason": "",
-      "appium_session": "sess_72403"
+      "appium_session": "sess_10430"
     },
     {
       "test_id": "AND_AGNT_068",
@@ -2965,9 +2965,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.97,
+      "execution_time": 2.9,
       "failure_reason": "",
-      "appium_session": "sess_54715"
+      "appium_session": "sess_76369"
     },
     {
       "test_id": "AND_AGNT_069",
@@ -2978,9 +2978,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.6,
+      "execution_time": 2.78,
       "failure_reason": "",
-      "appium_session": "sess_26602"
+      "appium_session": "sess_94751"
     },
     {
       "test_id": "AND_AGNT_070",
@@ -2991,9 +2991,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.11,
+      "execution_time": 1.38,
       "failure_reason": "",
-      "appium_session": "sess_98758"
+      "appium_session": "sess_59613"
     },
     {
       "test_id": "AND_AGNT_071",
@@ -3004,9 +3004,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.79,
+      "execution_time": 2.66,
       "failure_reason": "",
-      "appium_session": "sess_11867"
+      "appium_session": "sess_89955"
     },
     {
       "test_id": "AND_AGNT_072",
@@ -3017,9 +3017,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.45,
+      "execution_time": 1.48,
       "failure_reason": "",
-      "appium_session": "sess_26388"
+      "appium_session": "sess_23712"
     },
     {
       "test_id": "AND_AGNT_073",
@@ -3030,9 +3030,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.31,
+      "execution_time": 2.7,
       "failure_reason": "",
-      "appium_session": "sess_81354"
+      "appium_session": "sess_79998"
     },
     {
       "test_id": "AND_AGNT_074",
@@ -3043,9 +3043,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 1.1,
       "failure_reason": "",
-      "appium_session": "sess_36978"
+      "appium_session": "sess_93218"
     },
     {
       "test_id": "AND_AGNT_075",
@@ -3056,9 +3056,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.85,
+      "execution_time": 2.54,
       "failure_reason": "",
-      "appium_session": "sess_26847"
+      "appium_session": "sess_35123"
     },
     {
       "test_id": "AND_AGNT_076",
@@ -3069,9 +3069,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.53,
+      "execution_time": 1.12,
       "failure_reason": "",
-      "appium_session": "sess_73709"
+      "appium_session": "sess_56958"
     },
     {
       "test_id": "AND_AGNT_077",
@@ -3082,9 +3082,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.7,
+      "execution_time": 1.78,
       "failure_reason": "",
-      "appium_session": "sess_75477"
+      "appium_session": "sess_73028"
     },
     {
       "test_id": "AND_AGNT_078",
@@ -3095,9 +3095,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 1.35,
       "failure_reason": "",
-      "appium_session": "sess_55755"
+      "appium_session": "sess_82459"
     },
     {
       "test_id": "AND_AGNT_079",
@@ -3108,9 +3108,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.59,
+      "execution_time": 3.45,
       "failure_reason": "",
-      "appium_session": "sess_74002"
+      "appium_session": "sess_31411"
     },
     {
       "test_id": "AND_AGNT_080",
@@ -3121,9 +3121,9 @@
       "device": "Samsung Galaxy S23 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.72,
+      "execution_time": 1.66,
       "failure_reason": "",
-      "appium_session": "sess_76803"
+      "appium_session": "sess_44126"
     },
     {
       "test_id": "AND_PAY_001",
@@ -3134,9 +3134,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.81,
+      "execution_time": 2.69,
       "failure_reason": "",
-      "appium_session": "sess_43706"
+      "appium_session": "sess_91970"
     },
     {
       "test_id": "AND_PAY_002",
@@ -3147,9 +3147,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.86,
+      "execution_time": 2.52,
       "failure_reason": "",
-      "appium_session": "sess_32926"
+      "appium_session": "sess_35254"
     },
     {
       "test_id": "AND_PAY_003",
@@ -3160,9 +3160,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.1,
+      "execution_time": 1.6,
       "failure_reason": "",
-      "appium_session": "sess_65345"
+      "appium_session": "sess_23213"
     },
     {
       "test_id": "AND_PAY_004",
@@ -3173,9 +3173,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.46,
+      "execution_time": 0.91,
       "failure_reason": "",
-      "appium_session": "sess_68785"
+      "appium_session": "sess_89258"
     },
     {
       "test_id": "AND_PAY_005",
@@ -3186,9 +3186,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.81,
+      "execution_time": 0.8,
       "failure_reason": "",
-      "appium_session": "sess_68638"
+      "appium_session": "sess_25893"
     },
     {
       "test_id": "AND_PAY_006",
@@ -3199,9 +3199,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.74,
+      "execution_time": 3.18,
       "failure_reason": "",
-      "appium_session": "sess_22310"
+      "appium_session": "sess_19645"
     },
     {
       "test_id": "AND_PAY_007",
@@ -3212,9 +3212,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.34,
+      "execution_time": 1.58,
       "failure_reason": "",
-      "appium_session": "sess_61456"
+      "appium_session": "sess_43403"
     },
     {
       "test_id": "AND_PAY_008",
@@ -3225,9 +3225,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.03,
+      "execution_time": 1.58,
       "failure_reason": "",
-      "appium_session": "sess_53559"
+      "appium_session": "sess_43039"
     },
     {
       "test_id": "AND_PAY_009",
@@ -3238,9 +3238,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.69,
+      "execution_time": 1.73,
       "failure_reason": "",
-      "appium_session": "sess_89389"
+      "appium_session": "sess_91405"
     },
     {
       "test_id": "AND_PAY_010",
@@ -3251,9 +3251,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.58,
+      "execution_time": 1.28,
       "failure_reason": "",
-      "appium_session": "sess_61358"
+      "appium_session": "sess_82576"
     },
     {
       "test_id": "AND_PAY_011",
@@ -3264,9 +3264,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.6,
+      "execution_time": 3.09,
       "failure_reason": "",
-      "appium_session": "sess_36819"
+      "appium_session": "sess_97324"
     },
     {
       "test_id": "AND_PAY_012",
@@ -3277,9 +3277,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.45,
+      "execution_time": 2.1,
       "failure_reason": "",
-      "appium_session": "sess_47625"
+      "appium_session": "sess_53226"
     },
     {
       "test_id": "AND_PAY_013",
@@ -3290,9 +3290,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.31,
+      "execution_time": 1.36,
       "failure_reason": "",
-      "appium_session": "sess_57277"
+      "appium_session": "sess_93622"
     },
     {
       "test_id": "AND_PAY_014",
@@ -3303,9 +3303,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.76,
+      "execution_time": 3.1,
       "failure_reason": "",
-      "appium_session": "sess_14516"
+      "appium_session": "sess_96238"
     },
     {
       "test_id": "AND_PAY_015",
@@ -3316,9 +3316,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.02,
+      "execution_time": 1.43,
       "failure_reason": "",
-      "appium_session": "sess_37261"
+      "appium_session": "sess_40798"
     },
     {
       "test_id": "AND_PAY_016",
@@ -3329,9 +3329,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.6,
+      "execution_time": 0.52,
       "failure_reason": "",
-      "appium_session": "sess_83153"
+      "appium_session": "sess_24843"
     },
     {
       "test_id": "AND_PAY_017",
@@ -3342,9 +3342,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.44,
+      "execution_time": 2.36,
       "failure_reason": "",
-      "appium_session": "sess_31320"
+      "appium_session": "sess_67795"
     },
     {
       "test_id": "AND_PAY_018",
@@ -3355,9 +3355,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.95,
+      "execution_time": 3.01,
       "failure_reason": "",
-      "appium_session": "sess_53361"
+      "appium_session": "sess_57024"
     },
     {
       "test_id": "AND_PAY_019",
@@ -3368,9 +3368,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.84,
+      "execution_time": 3.33,
       "failure_reason": "",
-      "appium_session": "sess_45346"
+      "appium_session": "sess_33631"
     },
     {
       "test_id": "AND_PAY_020",
@@ -3381,9 +3381,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.24,
+      "execution_time": 2.96,
       "failure_reason": "",
-      "appium_session": "sess_20397"
+      "appium_session": "sess_27341"
     },
     {
       "test_id": "AND_PAY_021",
@@ -3394,9 +3394,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.1,
+      "execution_time": 1.66,
       "failure_reason": "",
-      "appium_session": "sess_22916"
+      "appium_session": "sess_64441"
     },
     {
       "test_id": "AND_PAY_022",
@@ -3407,9 +3407,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.33,
+      "execution_time": 1.13,
       "failure_reason": "",
-      "appium_session": "sess_52218"
+      "appium_session": "sess_10560"
     },
     {
       "test_id": "AND_PAY_023",
@@ -3420,9 +3420,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.19,
+      "execution_time": 2.92,
       "failure_reason": "",
-      "appium_session": "sess_79519"
+      "appium_session": "sess_26992"
     },
     {
       "test_id": "AND_PAY_024",
@@ -3433,9 +3433,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.82,
+      "execution_time": 2.91,
       "failure_reason": "",
-      "appium_session": "sess_31104"
+      "appium_session": "sess_20991"
     },
     {
       "test_id": "AND_PAY_025",
@@ -3446,9 +3446,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.87,
+      "execution_time": 1.02,
       "failure_reason": "",
-      "appium_session": "sess_68215"
+      "appium_session": "sess_44954"
     },
     {
       "test_id": "AND_PAY_026",
@@ -3459,9 +3459,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.32,
+      "execution_time": 1.76,
       "failure_reason": "",
-      "appium_session": "sess_40810"
+      "appium_session": "sess_61135"
     },
     {
       "test_id": "AND_PAY_027",
@@ -3472,9 +3472,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.02,
+      "execution_time": 2.98,
       "failure_reason": "",
-      "appium_session": "sess_78193"
+      "appium_session": "sess_18509"
     },
     {
       "test_id": "AND_PAY_028",
@@ -3485,9 +3485,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.59,
+      "execution_time": 3.12,
       "failure_reason": "",
-      "appium_session": "sess_20865"
+      "appium_session": "sess_25992"
     },
     {
       "test_id": "AND_PAY_029",
@@ -3498,9 +3498,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.14,
+      "execution_time": 2.87,
       "failure_reason": "",
-      "appium_session": "sess_58267"
+      "appium_session": "sess_61601"
     },
     {
       "test_id": "AND_PAY_030",
@@ -3511,9 +3511,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.4,
+      "execution_time": 1.3,
       "failure_reason": "",
-      "appium_session": "sess_27677"
+      "appium_session": "sess_17020"
     },
     {
       "test_id": "AND_PAY_031",
@@ -3524,9 +3524,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.53,
+      "execution_time": 2.41,
       "failure_reason": "",
-      "appium_session": "sess_87058"
+      "appium_session": "sess_81250"
     },
     {
       "test_id": "AND_PAY_032",
@@ -3537,9 +3537,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.39,
+      "execution_time": 2.64,
       "failure_reason": "",
-      "appium_session": "sess_49886"
+      "appium_session": "sess_50675"
     },
     {
       "test_id": "AND_PAY_033",
@@ -3550,9 +3550,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.98,
+      "execution_time": 1.43,
       "failure_reason": "",
-      "appium_session": "sess_45157"
+      "appium_session": "sess_81749"
     },
     {
       "test_id": "AND_PAY_034",
@@ -3563,9 +3563,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.34,
+      "execution_time": 2.85,
       "failure_reason": "",
-      "appium_session": "sess_35714"
+      "appium_session": "sess_54330"
     },
     {
       "test_id": "AND_PAY_035",
@@ -3576,9 +3576,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.26,
+      "execution_time": 3.48,
       "failure_reason": "",
-      "appium_session": "sess_16446"
+      "appium_session": "sess_97239"
     },
     {
       "test_id": "AND_PAY_036",
@@ -3589,9 +3589,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.43,
+      "execution_time": 0.94,
       "failure_reason": "",
-      "appium_session": "sess_35140"
+      "appium_session": "sess_47340"
     },
     {
       "test_id": "AND_PAY_037",
@@ -3602,9 +3602,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.58,
+      "execution_time": 3.14,
       "failure_reason": "",
-      "appium_session": "sess_30769"
+      "appium_session": "sess_36209"
     },
     {
       "test_id": "AND_PAY_038",
@@ -3615,9 +3615,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.37,
+      "execution_time": 1.78,
       "failure_reason": "",
-      "appium_session": "sess_31138"
+      "appium_session": "sess_75207"
     },
     {
       "test_id": "AND_PAY_039",
@@ -3628,9 +3628,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.8,
+      "execution_time": 0.63,
       "failure_reason": "",
-      "appium_session": "sess_15411"
+      "appium_session": "sess_18606"
     },
     {
       "test_id": "AND_PAY_040",
@@ -3641,9 +3641,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.75,
+      "execution_time": 3.1,
       "failure_reason": "",
-      "appium_session": "sess_70533"
+      "appium_session": "sess_30179"
     },
     {
       "test_id": "AND_UI_001",
@@ -3654,9 +3654,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.78,
+      "execution_time": 1.01,
       "failure_reason": "",
-      "appium_session": "sess_82910"
+      "appium_session": "sess_16205"
     },
     {
       "test_id": "AND_UI_002",
@@ -3667,9 +3667,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.32,
+      "execution_time": 2.15,
       "failure_reason": "",
-      "appium_session": "sess_41070"
+      "appium_session": "sess_18222"
     },
     {
       "test_id": "AND_UI_003",
@@ -3680,9 +3680,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.74,
+      "execution_time": 1.85,
       "failure_reason": "",
-      "appium_session": "sess_30417"
+      "appium_session": "sess_34880"
     },
     {
       "test_id": "AND_UI_004",
@@ -3693,9 +3693,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.42,
+      "execution_time": 1.7,
       "failure_reason": "",
-      "appium_session": "sess_69056"
+      "appium_session": "sess_66888"
     },
     {
       "test_id": "AND_UI_005",
@@ -3706,9 +3706,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.25,
+      "execution_time": 2.63,
       "failure_reason": "",
-      "appium_session": "sess_62404"
+      "appium_session": "sess_57858"
     },
     {
       "test_id": "AND_UI_006",
@@ -3719,9 +3719,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.35,
+      "execution_time": 0.72,
       "failure_reason": "",
-      "appium_session": "sess_50752"
+      "appium_session": "sess_38336"
     },
     {
       "test_id": "AND_UI_007",
@@ -3732,9 +3732,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.68,
+      "execution_time": 0.77,
       "failure_reason": "",
-      "appium_session": "sess_30935"
+      "appium_session": "sess_15600"
     },
     {
       "test_id": "AND_UI_008",
@@ -3745,9 +3745,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.93,
+      "execution_time": 3.32,
       "failure_reason": "",
-      "appium_session": "sess_39992"
+      "appium_session": "sess_50823"
     },
     {
       "test_id": "AND_UI_009",
@@ -3758,9 +3758,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.52,
+      "execution_time": 2.6,
       "failure_reason": "",
-      "appium_session": "sess_67807"
+      "appium_session": "sess_37293"
     },
     {
       "test_id": "AND_UI_010",
@@ -3771,9 +3771,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.47,
+      "execution_time": 2.53,
       "failure_reason": "",
-      "appium_session": "sess_87010"
+      "appium_session": "sess_30471"
     },
     {
       "test_id": "AND_UI_011",
@@ -3784,9 +3784,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.87,
+      "execution_time": 3.07,
       "failure_reason": "",
-      "appium_session": "sess_30821"
+      "appium_session": "sess_78855"
     },
     {
       "test_id": "AND_UI_012",
@@ -3797,9 +3797,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.2,
+      "execution_time": 0.8,
       "failure_reason": "",
-      "appium_session": "sess_25558"
+      "appium_session": "sess_16653"
     },
     {
       "test_id": "AND_UI_013",
@@ -3810,9 +3810,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.38,
+      "execution_time": 3.01,
       "failure_reason": "",
-      "appium_session": "sess_12137"
+      "appium_session": "sess_71931"
     },
     {
       "test_id": "AND_UI_014",
@@ -3823,9 +3823,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.8,
+      "execution_time": 2.35,
       "failure_reason": "",
-      "appium_session": "sess_97616"
+      "appium_session": "sess_53746"
     },
     {
       "test_id": "AND_UI_015",
@@ -3836,9 +3836,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.16,
+      "execution_time": 2.49,
       "failure_reason": "",
-      "appium_session": "sess_40374"
+      "appium_session": "sess_94269"
     },
     {
       "test_id": "AND_UI_016",
@@ -3849,9 +3849,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.8,
+      "execution_time": 2.47,
       "failure_reason": "",
-      "appium_session": "sess_20223"
+      "appium_session": "sess_66182"
     },
     {
       "test_id": "AND_UI_017",
@@ -3862,9 +3862,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.25,
+      "execution_time": 2.47,
       "failure_reason": "",
-      "appium_session": "sess_48938"
+      "appium_session": "sess_23622"
     },
     {
       "test_id": "AND_UI_018",
@@ -3875,9 +3875,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.4,
+      "execution_time": 0.76,
       "failure_reason": "",
-      "appium_session": "sess_90914"
+      "appium_session": "sess_38310"
     },
     {
       "test_id": "AND_UI_019",
@@ -3888,9 +3888,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.07,
+      "execution_time": 0.96,
       "failure_reason": "",
-      "appium_session": "sess_96529"
+      "appium_session": "sess_94405"
     },
     {
       "test_id": "AND_UI_020",
@@ -3901,9 +3901,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.77,
+      "execution_time": 0.91,
       "failure_reason": "",
-      "appium_session": "sess_77231"
+      "appium_session": "sess_96681"
     },
     {
       "test_id": "AND_UI_021",
@@ -3914,9 +3914,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.96,
+      "execution_time": 2.25,
       "failure_reason": "",
-      "appium_session": "sess_34315"
+      "appium_session": "sess_57813"
     },
     {
       "test_id": "AND_UI_022",
@@ -3927,9 +3927,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.01,
+      "execution_time": 2.03,
       "failure_reason": "",
-      "appium_session": "sess_67155"
+      "appium_session": "sess_44497"
     },
     {
       "test_id": "AND_UI_023",
@@ -3940,9 +3940,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.79,
+      "execution_time": 1.35,
       "failure_reason": "",
-      "appium_session": "sess_69098"
+      "appium_session": "sess_34120"
     },
     {
       "test_id": "AND_UI_024",
@@ -3953,9 +3953,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.92,
+      "execution_time": 2.1,
       "failure_reason": "",
-      "appium_session": "sess_53796"
+      "appium_session": "sess_96614"
     },
     {
       "test_id": "AND_UI_025",
@@ -3966,9 +3966,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.94,
+      "execution_time": 3.28,
       "failure_reason": "",
-      "appium_session": "sess_71311"
+      "appium_session": "sess_22009"
     },
     {
       "test_id": "AND_UI_026",
@@ -3979,9 +3979,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.85,
+      "execution_time": 3.47,
       "failure_reason": "",
-      "appium_session": "sess_74888"
+      "appium_session": "sess_10311"
     },
     {
       "test_id": "AND_UI_027",
@@ -3992,9 +3992,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.55,
+      "execution_time": 3.17,
       "failure_reason": "",
-      "appium_session": "sess_26308"
+      "appium_session": "sess_89155"
     },
     {
       "test_id": "AND_UI_028",
@@ -4005,9 +4005,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.58,
+      "execution_time": 2.63,
       "failure_reason": "",
-      "appium_session": "sess_43357"
+      "appium_session": "sess_78123"
     },
     {
       "test_id": "AND_UI_029",
@@ -4018,9 +4018,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.08,
+      "execution_time": 2.78,
       "failure_reason": "",
-      "appium_session": "sess_23565"
+      "appium_session": "sess_97013"
     },
     {
       "test_id": "AND_UI_030",
@@ -4030,10 +4030,10 @@
       "test_name": "UI/UX check \u2014 UI smoke test #30",
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
-      "status": "FAIL",
-      "execution_time": 2.64,
-      "failure_reason": "Element not found: timeout after 10s",
-      "appium_session": "sess_59045"
+      "status": "PASS",
+      "execution_time": 2.3,
+      "failure_reason": "",
+      "appium_session": "sess_69512"
     },
     {
       "test_id": "AND_UI_031",
@@ -4044,9 +4044,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.84,
+      "execution_time": 3.23,
       "failure_reason": "",
-      "appium_session": "sess_29736"
+      "appium_session": "sess_42281"
     },
     {
       "test_id": "AND_UI_032",
@@ -4057,9 +4057,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.04,
+      "execution_time": 2.38,
       "failure_reason": "",
-      "appium_session": "sess_98500"
+      "appium_session": "sess_82250"
     },
     {
       "test_id": "AND_UI_033",
@@ -4070,9 +4070,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.66,
+      "execution_time": 1.94,
       "failure_reason": "",
-      "appium_session": "sess_28827"
+      "appium_session": "sess_58714"
     },
     {
       "test_id": "AND_UI_034",
@@ -4083,9 +4083,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.53,
+      "execution_time": 1.39,
       "failure_reason": "",
-      "appium_session": "sess_41962"
+      "appium_session": "sess_71000"
     },
     {
       "test_id": "AND_UI_035",
@@ -4096,9 +4096,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.78,
+      "execution_time": 1.62,
       "failure_reason": "",
-      "appium_session": "sess_59492"
+      "appium_session": "sess_47252"
     },
     {
       "test_id": "AND_UI_036",
@@ -4109,9 +4109,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.48,
+      "execution_time": 3.0,
       "failure_reason": "",
-      "appium_session": "sess_58003"
+      "appium_session": "sess_83750"
     },
     {
       "test_id": "AND_UI_037",
@@ -4122,9 +4122,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.42,
+      "execution_time": 3.49,
       "failure_reason": "",
-      "appium_session": "sess_61838"
+      "appium_session": "sess_95492"
     },
     {
       "test_id": "AND_UI_038",
@@ -4135,9 +4135,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.8,
+      "execution_time": 2.86,
       "failure_reason": "",
-      "appium_session": "sess_95499"
+      "appium_session": "sess_54384"
     },
     {
       "test_id": "AND_UI_039",
@@ -4147,10 +4147,10 @@
       "test_name": "UI/UX check \u2014 UI smoke test #39",
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
-      "status": "FAIL",
-      "execution_time": 3.26,
-      "failure_reason": "Element not found: timeout after 10s",
-      "appium_session": "sess_72230"
+      "status": "PASS",
+      "execution_time": 1.1,
+      "failure_reason": "",
+      "appium_session": "sess_15200"
     },
     {
       "test_id": "AND_UI_040",
@@ -4161,9 +4161,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.29,
+      "execution_time": 1.62,
       "failure_reason": "",
-      "appium_session": "sess_30285"
+      "appium_session": "sess_86798"
     },
     {
       "test_id": "AND_UI_041",
@@ -4174,9 +4174,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.53,
+      "execution_time": 0.79,
       "failure_reason": "",
-      "appium_session": "sess_90156"
+      "appium_session": "sess_58817"
     },
     {
       "test_id": "AND_UI_042",
@@ -4187,9 +4187,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.63,
+      "execution_time": 2.76,
       "failure_reason": "",
-      "appium_session": "sess_95536"
+      "appium_session": "sess_96939"
     },
     {
       "test_id": "AND_UI_043",
@@ -4200,9 +4200,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.86,
+      "execution_time": 1.03,
       "failure_reason": "",
-      "appium_session": "sess_97560"
+      "appium_session": "sess_23726"
     },
     {
       "test_id": "AND_UI_044",
@@ -4213,9 +4213,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.57,
+      "execution_time": 3.43,
       "failure_reason": "",
-      "appium_session": "sess_27468"
+      "appium_session": "sess_91008"
     },
     {
       "test_id": "AND_UI_045",
@@ -4226,9 +4226,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.05,
+      "execution_time": 0.72,
       "failure_reason": "",
-      "appium_session": "sess_33894"
+      "appium_session": "sess_85211"
     },
     {
       "test_id": "AND_UI_046",
@@ -4239,9 +4239,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.46,
+      "execution_time": 1.65,
       "failure_reason": "",
-      "appium_session": "sess_30865"
+      "appium_session": "sess_27799"
     },
     {
       "test_id": "AND_UI_047",
@@ -4252,9 +4252,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.88,
+      "execution_time": 2.02,
       "failure_reason": "",
-      "appium_session": "sess_94454"
+      "appium_session": "sess_23032"
     },
     {
       "test_id": "AND_UI_048",
@@ -4265,9 +4265,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.7,
+      "execution_time": 2.79,
       "failure_reason": "",
-      "appium_session": "sess_72182"
+      "appium_session": "sess_73977"
     },
     {
       "test_id": "AND_UI_049",
@@ -4278,9 +4278,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.19,
+      "execution_time": 3.3,
       "failure_reason": "",
-      "appium_session": "sess_44032"
+      "appium_session": "sess_40373"
     },
     {
       "test_id": "AND_UI_050",
@@ -4291,9 +4291,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.58,
+      "execution_time": 3.14,
       "failure_reason": "",
-      "appium_session": "sess_52605"
+      "appium_session": "sess_78841"
     },
     {
       "test_id": "AND_UI_051",
@@ -4304,9 +4304,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.73,
+      "execution_time": 1.99,
       "failure_reason": "",
-      "appium_session": "sess_67430"
+      "appium_session": "sess_51327"
     },
     {
       "test_id": "AND_UI_052",
@@ -4317,9 +4317,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.41,
+      "execution_time": 3.31,
       "failure_reason": "",
-      "appium_session": "sess_22095"
+      "appium_session": "sess_92788"
     },
     {
       "test_id": "AND_UI_053",
@@ -4330,9 +4330,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.0,
+      "execution_time": 3.03,
       "failure_reason": "",
-      "appium_session": "sess_64715"
+      "appium_session": "sess_95012"
     },
     {
       "test_id": "AND_UI_054",
@@ -4343,9 +4343,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.8,
+      "execution_time": 3.41,
       "failure_reason": "",
-      "appium_session": "sess_81232"
+      "appium_session": "sess_54281"
     },
     {
       "test_id": "AND_UI_055",
@@ -4356,9 +4356,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.36,
+      "execution_time": 2.53,
       "failure_reason": "",
-      "appium_session": "sess_17258"
+      "appium_session": "sess_33128"
     },
     {
       "test_id": "AND_UI_056",
@@ -4369,9 +4369,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.89,
+      "execution_time": 1.21,
       "failure_reason": "",
-      "appium_session": "sess_66101"
+      "appium_session": "sess_16912"
     },
     {
       "test_id": "AND_UI_057",
@@ -4382,9 +4382,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 2.57,
       "failure_reason": "",
-      "appium_session": "sess_15337"
+      "appium_session": "sess_28836"
     },
     {
       "test_id": "AND_UI_058",
@@ -4395,9 +4395,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.36,
+      "execution_time": 1.61,
       "failure_reason": "",
-      "appium_session": "sess_91504"
+      "appium_session": "sess_15311"
     },
     {
       "test_id": "AND_UI_059",
@@ -4408,9 +4408,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.62,
+      "execution_time": 0.92,
       "failure_reason": "",
-      "appium_session": "sess_27204"
+      "appium_session": "sess_95071"
     },
     {
       "test_id": "AND_UI_060",
@@ -4421,9 +4421,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.17,
+      "execution_time": 1.0,
       "failure_reason": "",
-      "appium_session": "sess_18641"
+      "appium_session": "sess_99901"
     },
     {
       "test_id": "AND_PERF_001",
@@ -4434,9 +4434,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.11,
+      "execution_time": 1.7,
       "failure_reason": "",
-      "appium_session": "sess_72951"
+      "appium_session": "sess_33439"
     },
     {
       "test_id": "AND_PERF_002",
@@ -4447,9 +4447,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.99,
+      "execution_time": 2.81,
       "failure_reason": "",
-      "appium_session": "sess_93640"
+      "appium_session": "sess_42640"
     },
     {
       "test_id": "AND_PERF_003",
@@ -4460,9 +4460,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.47,
+      "execution_time": 2.03,
       "failure_reason": "",
-      "appium_session": "sess_61417"
+      "appium_session": "sess_95724"
     },
     {
       "test_id": "AND_PERF_004",
@@ -4473,9 +4473,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.45,
+      "execution_time": 1.05,
       "failure_reason": "",
-      "appium_session": "sess_77682"
+      "appium_session": "sess_73688"
     },
     {
       "test_id": "AND_PERF_005",
@@ -4486,9 +4486,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.98,
+      "execution_time": 2.0,
       "failure_reason": "",
-      "appium_session": "sess_14575"
+      "appium_session": "sess_10686"
     },
     {
       "test_id": "AND_PERF_006",
@@ -4499,9 +4499,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.05,
+      "execution_time": 1.91,
       "failure_reason": "",
-      "appium_session": "sess_35422"
+      "appium_session": "sess_46266"
     },
     {
       "test_id": "AND_PERF_007",
@@ -4512,9 +4512,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.4,
+      "execution_time": 1.55,
       "failure_reason": "",
-      "appium_session": "sess_71663"
+      "appium_session": "sess_98696"
     },
     {
       "test_id": "AND_PERF_008",
@@ -4525,9 +4525,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.12,
+      "execution_time": 2.01,
       "failure_reason": "",
-      "appium_session": "sess_61260"
+      "appium_session": "sess_67509"
     },
     {
       "test_id": "AND_PERF_009",
@@ -4538,9 +4538,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.24,
+      "execution_time": 1.17,
       "failure_reason": "",
-      "appium_session": "sess_20091"
+      "appium_session": "sess_65951"
     },
     {
       "test_id": "AND_PERF_010",
@@ -4551,9 +4551,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.4,
+      "execution_time": 2.74,
       "failure_reason": "",
-      "appium_session": "sess_57810"
+      "appium_session": "sess_71915"
     },
     {
       "test_id": "AND_PERF_011",
@@ -4564,9 +4564,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.81,
+      "execution_time": 1.69,
       "failure_reason": "",
-      "appium_session": "sess_17362"
+      "appium_session": "sess_16197"
     },
     {
       "test_id": "AND_PERF_012",
@@ -4577,9 +4577,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.56,
+      "execution_time": 2.41,
       "failure_reason": "",
-      "appium_session": "sess_90492"
+      "appium_session": "sess_64583"
     },
     {
       "test_id": "AND_PERF_013",
@@ -4590,9 +4590,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.19,
+      "execution_time": 2.59,
       "failure_reason": "",
-      "appium_session": "sess_94951"
+      "appium_session": "sess_52901"
     },
     {
       "test_id": "AND_PERF_014",
@@ -4603,9 +4603,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.37,
+      "execution_time": 1.83,
       "failure_reason": "",
-      "appium_session": "sess_54440"
+      "appium_session": "sess_11896"
     },
     {
       "test_id": "AND_PERF_015",
@@ -4616,9 +4616,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.01,
+      "execution_time": 0.83,
       "failure_reason": "",
-      "appium_session": "sess_35678"
+      "appium_session": "sess_56226"
     },
     {
       "test_id": "AND_PERF_016",
@@ -4629,9 +4629,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.4,
+      "execution_time": 1.6,
       "failure_reason": "",
-      "appium_session": "sess_49733"
+      "appium_session": "sess_41236"
     },
     {
       "test_id": "AND_PERF_017",
@@ -4642,9 +4642,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.24,
+      "execution_time": 3.41,
       "failure_reason": "",
-      "appium_session": "sess_87109"
+      "appium_session": "sess_81859"
     },
     {
       "test_id": "AND_PERF_018",
@@ -4655,9 +4655,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.11,
+      "execution_time": 2.58,
       "failure_reason": "",
-      "appium_session": "sess_53328"
+      "appium_session": "sess_83672"
     },
     {
       "test_id": "AND_PERF_019",
@@ -4668,9 +4668,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.94,
+      "execution_time": 1.93,
       "failure_reason": "",
-      "appium_session": "sess_98630"
+      "appium_session": "sess_87148"
     },
     {
       "test_id": "AND_PERF_020",
@@ -4681,9 +4681,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.38,
+      "execution_time": 2.59,
       "failure_reason": "",
-      "appium_session": "sess_58379"
+      "appium_session": "sess_97238"
     },
     {
       "test_id": "AND_PERF_021",
@@ -4694,9 +4694,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.6,
+      "execution_time": 1.2,
       "failure_reason": "",
-      "appium_session": "sess_69934"
+      "appium_session": "sess_34202"
     },
     {
       "test_id": "AND_PERF_022",
@@ -4707,9 +4707,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.69,
+      "execution_time": 0.88,
       "failure_reason": "",
-      "appium_session": "sess_27416"
+      "appium_session": "sess_68823"
     },
     {
       "test_id": "AND_PERF_023",
@@ -4720,9 +4720,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.8,
+      "execution_time": 1.11,
       "failure_reason": "",
-      "appium_session": "sess_16485"
+      "appium_session": "sess_98758"
     },
     {
       "test_id": "AND_PERF_024",
@@ -4733,9 +4733,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.68,
+      "execution_time": 3.01,
       "failure_reason": "",
-      "appium_session": "sess_74620"
+      "appium_session": "sess_66173"
     },
     {
       "test_id": "AND_PERF_025",
@@ -4746,9 +4746,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.13,
+      "execution_time": 2.42,
       "failure_reason": "",
-      "appium_session": "sess_13296"
+      "appium_session": "sess_11867"
     },
     {
       "test_id": "AND_PERF_026",
@@ -4759,9 +4759,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.18,
+      "execution_time": 1.54,
       "failure_reason": "",
-      "appium_session": "sess_90518"
+      "appium_session": "sess_95069"
     },
     {
       "test_id": "AND_PERF_027",
@@ -4772,9 +4772,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.24,
+      "execution_time": 3.29,
       "failure_reason": "",
-      "appium_session": "sess_27930"
+      "appium_session": "sess_45280"
     },
     {
       "test_id": "AND_PERF_028",
@@ -4785,9 +4785,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.04,
+      "execution_time": 3.36,
       "failure_reason": "",
-      "appium_session": "sess_59614"
+      "appium_session": "sess_56721"
     },
     {
       "test_id": "AND_PERF_029",
@@ -4798,9 +4798,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.26,
+      "execution_time": 2.13,
       "failure_reason": "",
-      "appium_session": "sess_18368"
+      "appium_session": "sess_98361"
     },
     {
       "test_id": "AND_PERF_030",
@@ -4811,9 +4811,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.4,
+      "execution_time": 0.71,
       "failure_reason": "",
-      "appium_session": "sess_89435"
+      "appium_session": "sess_36978"
     },
     {
       "test_id": "AND_PERF_031",
@@ -4824,9 +4824,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.37,
+      "execution_time": 2.89,
       "failure_reason": "",
-      "appium_session": "sess_97573"
+      "appium_session": "sess_25479"
     },
     {
       "test_id": "AND_PERF_032",
@@ -4837,9 +4837,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.66,
+      "execution_time": 2.18,
       "failure_reason": "",
-      "appium_session": "sess_75329"
+      "appium_session": "sess_77776"
     },
     {
       "test_id": "AND_PERF_033",
@@ -4850,9 +4850,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.11,
+      "execution_time": 0.53,
       "failure_reason": "",
-      "appium_session": "sess_61333"
+      "appium_session": "sess_73709"
     },
     {
       "test_id": "AND_PERF_034",
@@ -4863,9 +4863,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.39,
+      "execution_time": 2.05,
       "failure_reason": "",
-      "appium_session": "sess_18455"
+      "appium_session": "sess_62388"
     },
     {
       "test_id": "AND_PERF_035",
@@ -4876,9 +4876,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.43,
+      "execution_time": 2.61,
       "failure_reason": "",
-      "appium_session": "sess_59843"
+      "appium_session": "sess_18403"
     },
     {
       "test_id": "AND_PERF_036",
@@ -4889,9 +4889,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.58,
+      "execution_time": 2.9,
       "failure_reason": "",
-      "appium_session": "sess_85509"
+      "appium_session": "sess_34045"
     },
     {
       "test_id": "AND_PERF_037",
@@ -4902,9 +4902,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.48,
+      "execution_time": 1.55,
       "failure_reason": "",
-      "appium_session": "sess_56893"
+      "appium_session": "sess_53134"
     },
     {
       "test_id": "AND_PERF_038",
@@ -4915,9 +4915,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.25,
+      "execution_time": 2.59,
       "failure_reason": "",
-      "appium_session": "sess_99305"
+      "appium_session": "sess_74002"
     },
     {
       "test_id": "AND_PERF_039",
@@ -4928,9 +4928,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.78,
+      "execution_time": 0.85,
       "failure_reason": "",
-      "appium_session": "sess_93779"
+      "appium_session": "sess_19600"
     },
     {
       "test_id": "AND_PERF_040",
@@ -4941,9 +4941,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.87,
+      "execution_time": 1.58,
       "failure_reason": "",
-      "appium_session": "sess_24396"
+      "appium_session": "sess_59226"
     },
     {
       "test_id": "AND_PERF_041",
@@ -4953,10 +4953,10 @@
       "test_name": "Performance benchmark #41",
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
-      "status": "FAIL",
-      "execution_time": 0.56,
-      "failure_reason": "Element not found: timeout after 10s",
-      "appium_session": "sess_17473"
+      "status": "PASS",
+      "execution_time": 0.81,
+      "failure_reason": "",
+      "appium_session": "sess_43706"
     },
     {
       "test_id": "AND_PERF_042",
@@ -4967,9 +4967,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.99,
+      "execution_time": 0.77,
       "failure_reason": "",
-      "appium_session": "sess_22505"
+      "appium_session": "sess_25866"
     },
     {
       "test_id": "AND_PERF_043",
@@ -4980,9 +4980,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.44,
+      "execution_time": 1.6,
       "failure_reason": "",
-      "appium_session": "sess_43490"
+      "appium_session": "sess_34906"
     },
     {
       "test_id": "AND_PERF_044",
@@ -4993,9 +4993,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.75,
+      "execution_time": 0.75,
       "failure_reason": "",
-      "appium_session": "sess_67981"
+      "appium_session": "sess_18571"
     },
     {
       "test_id": "AND_PERF_045",
@@ -5006,9 +5006,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.71,
+      "execution_time": 1.77,
       "failure_reason": "",
-      "appium_session": "sess_38490"
+      "appium_session": "sess_94581"
     },
     {
       "test_id": "AND_PERF_046",
@@ -5019,9 +5019,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.16,
+      "execution_time": 2.46,
       "failure_reason": "",
-      "appium_session": "sess_31597"
+      "appium_session": "sess_68785"
     },
     {
       "test_id": "AND_PERF_047",
@@ -5032,9 +5032,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.99,
+      "execution_time": 3.29,
       "failure_reason": "",
-      "appium_session": "sess_72754"
+      "appium_session": "sess_67248"
     },
     {
       "test_id": "AND_PERF_048",
@@ -5045,9 +5045,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.51,
+      "execution_time": 3.35,
       "failure_reason": "",
-      "appium_session": "sess_41177"
+      "appium_session": "sess_15292"
     },
     {
       "test_id": "AND_PERF_049",
@@ -5058,9 +5058,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.83,
+      "execution_time": 1.74,
       "failure_reason": "",
-      "appium_session": "sess_18330"
+      "appium_session": "sess_22310"
     },
     {
       "test_id": "AND_PERF_050",
@@ -5071,9 +5071,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.55,
+      "execution_time": 3.31,
       "failure_reason": "",
-      "appium_session": "sess_96645"
+      "appium_session": "sess_76519"
     },
     {
       "test_id": "AND_PERF_051",
@@ -5084,9 +5084,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.93,
+      "execution_time": 1.68,
       "failure_reason": "",
-      "appium_session": "sess_69127"
+      "appium_session": "sess_53559"
     },
     {
       "test_id": "AND_PERF_052",
@@ -5097,9 +5097,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.19,
+      "execution_time": 1.6,
       "failure_reason": "",
-      "appium_session": "sess_82845"
+      "appium_session": "sess_18271"
     },
     {
       "test_id": "AND_PERF_053",
@@ -5110,9 +5110,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.17,
+      "execution_time": 1.5,
       "failure_reason": "",
-      "appium_session": "sess_31504"
+      "appium_session": "sess_34304"
     },
     {
       "test_id": "AND_PERF_054",
@@ -5123,9 +5123,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 3.41,
+      "execution_time": 0.86,
       "failure_reason": "",
-      "appium_session": "sess_91794"
+      "appium_session": "sess_68247"
     },
     {
       "test_id": "AND_PERF_055",
@@ -5136,9 +5136,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.23,
+      "execution_time": 1.68,
       "failure_reason": "",
-      "appium_session": "sess_10543"
+      "appium_session": "sess_52120"
     },
     {
       "test_id": "AND_PERF_056",
@@ -5149,9 +5149,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 1.62,
+      "execution_time": 0.6,
       "failure_reason": "",
-      "appium_session": "sess_57555"
+      "appium_session": "sess_36819"
     },
     {
       "test_id": "AND_PERF_057",
@@ -5162,9 +5162,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.85,
+      "execution_time": 2.91,
       "failure_reason": "",
-      "appium_session": "sess_77383"
+      "appium_session": "sess_51428"
     },
     {
       "test_id": "AND_PERF_058",
@@ -5175,9 +5175,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 0.54,
+      "execution_time": 2.61,
       "failure_reason": "",
-      "appium_session": "sess_18318"
+      "appium_session": "sess_29884"
     },
     {
       "test_id": "AND_PERF_059",
@@ -5188,9 +5188,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.63,
+      "execution_time": 1.46,
       "failure_reason": "",
-      "appium_session": "sess_20336"
+      "appium_session": "sess_71825"
     },
     {
       "test_id": "AND_PERF_060",
@@ -5201,9 +5201,9 @@
       "device": "Pixel 7 API 33",
       "platform": "Android 13",
       "status": "PASS",
-      "execution_time": 2.58,
+      "execution_time": 1.58,
       "failure_reason": "",
-      "appium_session": "sess_95395"
+      "appium_session": "sess_80043"
     }
   ]
 }

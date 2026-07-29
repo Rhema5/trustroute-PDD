@@ -12,8 +12,16 @@ const particles = Array.from({ length: 10 }).map((_, i) => ({
 
 export function BackgroundFX() {
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-gradient-to-br from-red-50/80 to-rose-100/50">
-      <div className="absolute inset-0 grid-overlay opacity-30" />
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-rose-950">
+      {/* Real high-tech logistics hub & delivery background image */}
+      <img
+        src="/logistics-bg.png"
+        alt="Logistics & Delivery Hub"
+        className="absolute inset-0 w-full h-full object-cover opacity-40 blur-[3px] scale-105 pointer-events-none"
+      />
+      {/* Gradient wash overlay for optimal readability while showing background details */}
+      <div className="absolute inset-0 bg-gradient-to-b from-red-50/75 via-white/80 to-rose-100/85 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 grid-overlay opacity-20" />
       
       {/* Floating Particles - Reduced count and complexity */}
       {particles.map((p) => (

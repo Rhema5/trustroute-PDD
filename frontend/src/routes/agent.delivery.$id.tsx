@@ -104,14 +104,15 @@ function DeliveryFlow() {
   // Canvas Drawing Pad States & Handlers
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(null);
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = "#FF4D4D";
+    ctx.lineWidth = 3;
     ctx.lineCap = "round";
 
     const rect = canvas.getBoundingClientRect();
@@ -145,6 +146,9 @@ function DeliveryFlow() {
 
   const stopDrawing = () => {
     setIsDrawing(false);
+    if (canvasRef.current) {
+      setSignatureDataUrl(canvasRef.current.toDataURL("image/png"));
+    }
   };
 
   const clearCanvas = () => {
@@ -153,6 +157,7 @@ function DeliveryFlow() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setSignatureDataUrl(null);
   };
 
   // Browser Webcam Sync Effect
@@ -622,6 +627,7 @@ function DeliveryFlow() {
         gps: coords,
         verifiedAt: dateStr,
         hash: signatureHash,
+        customerSignature: signatureDataUrl || offlinePayment?.customerSignature || undefined,
       });
 
       if (sanitizedRemarks) {
@@ -746,7 +752,7 @@ function DeliveryFlow() {
 
         {/* Desktop Split Panels Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-          {/* Left Panel: Attestation Details (Audit log, Customer info, GPS info) */}
+          {/* Left Panel: Verification Details (Audit log, Customer info, GPS info) */}
           <div className="lg:col-span-2 space-y-4">
             {/* Delivery Information Section */}
             <div className="rounded-2xl bg-[#0F1424] border border-zinc-850 p-5 space-y-4">
@@ -817,7 +823,7 @@ function DeliveryFlow() {
                   </span>
                 </div>
                 <div className="bg-zinc-950/40 p-2.5 rounded-xl border border-zinc-850 flex justify-between">
-                  <span className="text-zinc-500">Attestation Timestamp:</span>
+                  <span className="text-zinc-500">Verification Timestamp:</span>
                   <span className="text-white font-bold">
                     {d.proof?.verifiedAt
                       ? new Date(d.proof.verifiedAt).toLocaleTimeString()
@@ -838,10 +844,10 @@ function DeliveryFlow() {
             </div>
           </div>
 
-          {/* Right Panel: White attestation PDF mockup */}
+          {/* Right Panel: White verification PDF mockup */}
           <div className="lg:col-span-3 space-y-4">
             <h2 className="text-sm font-bold uppercase tracking-wider text-zinc-450 flex items-center gap-1.5">
-              <FileText className="h-4 w-4 text-[#FF4D4D]" /> Attestation certificate preview
+              <FileText className="h-4 w-4 text-[#FF4D4D]" /> Verification certificate preview
             </h2>
 
             <div
@@ -856,10 +862,10 @@ function DeliveryFlow() {
                   </div>
                   <div>
                     <span className="text-sm font-extrabold text-slate-950 block">
-                      TrustRoute Attestation
+                      TrustRoute Verification
                     </span>
                     <span className="text-[8px] uppercase tracking-wider text-slate-400 block font-bold">
-                      Delivery attestation receipt
+                      Delivery verification receipt
                     </span>
                   </div>
                 </div>
@@ -869,7 +875,7 @@ function DeliveryFlow() {
                 </div>
               </div>
 
-              {/* Attestation Header Body */}
+              {/* Verification Header Body */}
               <div className="mt-6 text-center">
                 <h2 className="text-lg font-black text-slate-950 tracking-tight">
                   Delivery Verification Receipt
@@ -884,7 +890,7 @@ function DeliveryFlow() {
                 <div className="mt-4 rounded-xl border border-slate-200 overflow-hidden bg-slate-100 relative aspect-video max-h-44">
                   <img
                     src={d.proof.photoUrl}
-                    alt="Attestation Proof"
+                    alt="Verification Proof"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -918,7 +924,7 @@ function DeliveryFlow() {
                   </div>
                   <div className="rounded-lg bg-slate-50 p-2.5">
                     <span className="text-[8px] uppercase tracking-wider text-slate-400 block font-bold">
-                      Attested On
+                      Verified On
                     </span>
                     <span className="text-slate-950 font-semibold">
                       {d.proof?.verifiedAt
@@ -930,11 +936,17 @@ function DeliveryFlow() {
 
                 <div className="rounded-lg bg-slate-50 p-2.5">
                   <span className="text-[8px] uppercase tracking-wider text-slate-400 block font-bold">
-                    Handoff Digital Signature
+                    Recipient Handoff Digital Signature
                   </span>
-                  <span className="font-mono text-[9px] break-all text-slate-700 block leading-tight">
-                    {d.proof?.hash ?? "—"}
-                  </span>
+                  {signatureDataUrl || d.proof?.customerSignature ? (
+                    <div className="mt-1 h-14 w-full bg-white rounded border border-slate-200 p-1 flex items-center justify-center">
+                      <img src={signatureDataUrl || d.proof?.customerSignature} alt="Recipient Signature" className="h-full max-w-full object-contain" />
+                    </div>
+                  ) : (
+                    <span className="font-mono text-[9px] break-all text-slate-700 block leading-tight">
+                      {d.proof?.hash ?? "—"}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -946,9 +958,9 @@ function DeliveryFlow() {
                 </div>
                 <div className="text-right">
                   <div className="border-b border-slate-300 font-[cursive] text-xs italic text-slate-800">
-                    TrustRoute Attest
+                    TrustRoute Verification
                   </div>
-                  <div className="text-[8px] text-slate-400 mt-0.5">Secure attestation attachement</div>
+                  <div className="text-[8px] text-slate-400 mt-0.5">Secure verification attachment</div>
                 </div>
               </div>
             </div>
@@ -1117,7 +1129,7 @@ function DeliveryFlow() {
                   <div className="bg-zinc-950/30 border border-zinc-850 rounded-2xl p-4.5 flex gap-3 text-xs leading-relaxed text-zinc-400">
                     <Info className="h-5 w-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-bold text-white block">Device Attestation Notice</span>
+                      <span className="font-bold text-white block">Device Verification Notice</span>
                       This handoff session uses cryptographic secure auditing. Ensure camera permissions and location services are enabled on this terminal.
                     </div>
                   </div>
@@ -1126,7 +1138,7 @@ function DeliveryFlow() {
                     onClick={() => setStep(1)}
                     className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#B71C1C] to-red-600 hover:opacity-90 py-4 text-sm font-bold text-white shadow-glow transition cursor-pointer"
                   >
-                    Start Attestation Flow <CheckCircle2 className="h-4.5 w-4.5" />
+                    Start Verification Flow <CheckCircle2 className="h-4.5 w-4.5" />
                   </button>
                 </motion.div>
               )}
@@ -1204,10 +1216,13 @@ function DeliveryFlow() {
                     </button>
                     <button
                       disabled={gpsState !== "done"}
-                      onClick={() => setStep(isOnline ? 2 : 3)}
+                      onClick={() => {
+                        const online = navigator.onLine && isOnline;
+                        setStep(online ? 2 : 3);
+                      }}
                       className="flex-1 rounded-2xl bg-[#B71C1C] hover:bg-[#961717] py-3.5 text-xs font-bold text-white shadow-glow disabled:opacity-30 transition cursor-pointer"
                     >
-                      Continue {isOnline ? "(Step 2)" : "(Geotag Photo)"}
+                      Continue {navigator.onLine && isOnline ? "(Step 2)" : "(Geotag Photo)"}
                     </button>
                   </div>
                 </motion.div>
@@ -1228,6 +1243,24 @@ function DeliveryFlow() {
                     </p>
                   </div>
 
+                  {(!isOnline || !navigator.onLine) && (
+                    <div className="rounded-2xl border border-orange-500/30 bg-orange-950/30 p-4 text-center space-y-3">
+                      <div className="flex items-center justify-center gap-2 text-xs font-bold text-orange-400">
+                        <WifiOff className="h-4 w-4" /> Data Turned Off — Offline Mode Active
+                      </div>
+                      <p className="text-xs text-zinc-300">
+                        Network disconnected. SMS OTP verification is unavailable. Proceed with 3-Step Offline Verification (GPS + Photo + Signature).
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setStep(3)}
+                        className="w-full rounded-xl bg-orange-600 hover:bg-orange-700 py-3 text-xs font-bold text-white shadow-glow transition cursor-pointer"
+                      >
+                        Skip OTP & Proceed to Photo Evidence (Step 3) →
+                      </button>
+                    </div>
+                  )}
+
                   <div className="space-y-4">
                     <div className="flex justify-center gap-3.5">
                       {otp.map((v, i) => (
@@ -1243,19 +1276,13 @@ function DeliveryFlow() {
                           className={cn(
                             "h-14 w-12 rounded-xl border bg-zinc-950 font-mono text-2xl font-bold text-center outline-none transition",
                             v ? "border-[#B71C1C] text-[#FF4D4D] shadow-glow" : "border-zinc-800 text-white",
-                            otpFilled.length === 4 && isOnline && !otpValid && "border-rose-500 text-rose-400",
+                            otpFilled.length === 4 && isOnline && navigator.onLine && !otpValid && "border-rose-500 text-rose-400",
                           )}
                         />
                       ))}
                     </div>
 
-                    {!isOnline && (
-                      <div className="rounded-xl border border-orange-500/10 bg-orange-950/10 p-3 text-center text-xs text-orange-400 font-semibold leading-relaxed">
-                        Offline status: code verification runs on next cloud database synchronization.
-                      </div>
-                    )}
-
-                    {isOnline && otpFilled.length === 4 &&
+                    {isOnline && navigator.onLine && otpFilled.length === 4 &&
                       (otpValid ? (
                         <div className="text-center mt-3">
                           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-950/30 border border-emerald-500/20 px-3 py-1.5 text-xs text-emerald-400 font-bold">
@@ -1268,15 +1295,17 @@ function DeliveryFlow() {
                         </div>
                       ))}
 
-                    <div className="text-center pt-2">
-                      <button
-                        type="button"
-                        onClick={() => sendOtpSms(d.phone, d.otp, d.id, d.customer)}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 bg-cyan-950/30 border border-cyan-500/20 px-3.5 py-2 rounded-xl transition cursor-pointer"
-                      >
-                        <RefreshCw className="h-3.5 w-3.5" /> Resend OTP PIN to Customer ({d.phone})
-                      </button>
-                    </div>
+                    {isOnline && navigator.onLine && (
+                      <div className="text-center pt-2">
+                        <button
+                          type="button"
+                          onClick={() => sendOtpSms(d.phone, d.otp, d.id, d.customer)}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 bg-cyan-950/30 border border-cyan-500/20 px-3.5 py-2 rounded-xl transition cursor-pointer"
+                        >
+                          <RefreshCw className="h-3.5 w-3.5" /> Resend OTP PIN to Customer ({d.phone})
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex gap-3 pt-4 border-t border-zinc-850/60">
@@ -1287,11 +1316,11 @@ function DeliveryFlow() {
                       Back
                     </button>
                     <button
-                      disabled={isOnline ? !otpValid : otpFilled.length !== 4}
+                      disabled={isOnline && navigator.onLine ? !otpValid : false}
                       onClick={() => setStep(3)}
                       className="flex-1 rounded-2xl bg-[#B71C1C] hover:bg-[#961717] py-3.5 text-xs font-bold text-white shadow-glow disabled:opacity-30 transition cursor-pointer"
                     >
-                      Continue
+                      {isOnline && navigator.onLine ? "Continue" : "Proceed to Photo (Offline)"}
                     </button>
                   </div>
                 </motion.div>
@@ -1631,7 +1660,41 @@ function DeliveryFlow() {
                             </div>
                           )}
 
-                          <div className="rounded-xl border border-rose-500/10 bg-rose-950/15 p-4 text-xs text-rose-450 font-semibold leading-relaxed space-y-2 text-center">
+                      {/* RECIPIENT DIGITAL HANDOFF SIGNATURE PAD FOR PREPAID / ALL ORDERS */}
+                      <div className="space-y-2 pt-2 border-t border-zinc-850/60">
+                        <label className="text-[10px] uppercase font-bold text-zinc-400 block">
+                          Recipient Digital Handoff Signature (Touch Screen Canvas Pad)
+                        </label>
+                        <div className="relative rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950/70 h-36">
+                          <canvas
+                            ref={canvasRef}
+                            onMouseDown={startDrawing}
+                            onMouseMove={draw}
+                            onMouseUp={stopDrawing}
+                            onMouseLeave={stopDrawing}
+                            onTouchStart={startDrawing}
+                            onTouchMove={draw}
+                            onTouchEnd={stopDrawing}
+                            width={320}
+                            height={144}
+                            className="w-full h-full touch-none cursor-crosshair"
+                          />
+                          <button
+                            type="button"
+                            onClick={clearCanvas}
+                            className="absolute bottom-2.5 right-2.5 rounded bg-zinc-800/85 hover:bg-zinc-800 px-2 py-1 text-[9px] font-bold text-zinc-300 transition cursor-pointer"
+                          >
+                            Clear Pad
+                          </button>
+                        </div>
+                        {signatureDataUrl && (
+                          <div className="text-[10px] font-bold text-emerald-400 text-center">
+                            Recipient Digital Signature Captured ✓
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="rounded-xl border border-rose-500/10 bg-rose-950/15 p-4 text-xs text-rose-450 font-semibold leading-relaxed space-y-2 text-center">
                             <p>
                               Alternative: Customer can also scan parcel barcode on receipt or visit:
                             </p>
@@ -1687,9 +1750,9 @@ function DeliveryFlow() {
                       </span>
                     </div>
                     <div className="flex justify-between p-3 bg-zinc-950/45 rounded-xl border border-zinc-850">
-                      <span className="text-zinc-500 font-bold">SMS Attestation:</span>
+                      <span className="text-zinc-500 font-bold">SMS Verification:</span>
                       <span className="text-zinc-300 font-bold">
-                        {isOnline ? "Verified Verified ✓" : `Offline (Code: ${otpFilled})`}
+                        {isOnline ? "Verified ✓" : `Offline (Code: ${otpFilled})`}
                       </span>
                     </div>
                     <div className="flex justify-between p-3 bg-zinc-950/45 rounded-xl border border-zinc-850">
@@ -1698,6 +1761,23 @@ function DeliveryFlow() {
                         {d.paymentStatus === "paid" || d.paymentStatus === "cod_collected" || codCollected ? "Paid / Collected ✓" : "Pending"}
                       </span>
                     </div>
+
+                    {/* Recipient Digital Signature Preview */}
+                    {(signatureDataUrl || offlinePayment?.customerSignature) && (
+                      <div className="p-3 bg-zinc-950/45 rounded-xl border border-zinc-850 space-y-1">
+                        <span className="text-[10px] uppercase font-bold text-emerald-400 block flex items-center gap-1">
+                          <CheckCircle2 className="h-3 w-3 text-emerald-400" /> Recipient Digital Signature Captured
+                        </span>
+                        <div className="h-16 w-full bg-white rounded-lg p-1 flex items-center justify-center border border-zinc-300">
+                          <img
+                            src={signatureDataUrl || offlinePayment?.customerSignature}
+                            alt="Recipient Signature"
+                            className="h-full max-w-full object-contain"
+                          />
+                        </div>
+                      </div>
+                    )}
+
                     {photoFile && (
                       <div className="rounded-xl border border-zinc-850 overflow-hidden relative aspect-video bg-zinc-950/60 max-h-36">
                         <img
@@ -1709,7 +1789,7 @@ function DeliveryFlow() {
                     )}
                     <div className="space-y-1 text-left pt-2">
                       <label className="text-[10px] uppercase font-bold text-zinc-500 block">
-                        Attestation Notes / Remarks
+                        Verification Notes / Remarks
                       </label>
                       <textarea
                         value={remarks}
@@ -1743,7 +1823,7 @@ function DeliveryFlow() {
                             <Loader2 className="h-4 w-4 animate-spin" /> Finalizing...
                           </span>
                         ) : (
-                          "Attest & Upload"
+                          "Verify & Upload"
                         )}
                       </span>
                     </button>
@@ -1759,7 +1839,7 @@ function DeliveryFlow() {
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/75 backdrop-blur-md">
           <div className="text-center text-white space-y-3">
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-[#B71C1C]" />
-            <p className="text-xs font-bold uppercase tracking-wider">Confirming attestation transactions...</p>
+            <p className="text-xs font-bold uppercase tracking-wider">Confirming verification transactions...</p>
           </div>
         </div>
       )}

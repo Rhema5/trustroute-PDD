@@ -8,6 +8,7 @@ export interface Agent {
   online: boolean;
   rating: number;
   region?: string;
+  hubRegion?: string;
 }
 
 export interface Payment {
@@ -66,6 +67,7 @@ export interface Delivery {
   agentId: string;
   agentName: string;
   enterpriseId: string;
+  hubRegion?: string;
   eta: string;
   status: DeliveryStatus;
   otp: string;

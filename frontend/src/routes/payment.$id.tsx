@@ -437,7 +437,7 @@ function CustomerCheckoutPage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-4"
                 >
-                  {/* Attestation PDF Receipt */}
+                  {/* Verification PDF Receipt */}
                   <div ref={receiptRef} className="border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl bg-white text-zinc-900 p-6 relative">
                     {/* Header */}
                     <div className="flex items-center justify-between border-b border-zinc-200 pb-4">
@@ -448,7 +448,7 @@ function CustomerCheckoutPage() {
                         <div>
                           <p className="text-zinc-950 font-extrabold text-sm block">TrustRoute Receipt</p>
                           <p className="text-zinc-450 text-[8px] uppercase tracking-wider font-bold block">
-                            Official Payment Attestation
+                            Official Payment Verification
                           </p>
                         </div>
                       </div>
@@ -510,7 +510,7 @@ function CustomerCheckoutPage() {
 
                     <div className="border-t border-zinc-200 mt-6 pt-4 flex items-center justify-between text-left">
                       <div>
-                        <p className="text-[8px] uppercase tracking-wider text-zinc-500 font-bold">Attestation Network</p>
+                        <p className="text-[8px] uppercase tracking-wider text-zinc-500 font-bold">Verification Network</p>
                         <p className="text-[10px] font-black text-[#B71C1C]">TrustRoute Secured transaction</p>
                       </div>
                       <div className="h-10 w-10 border-2 border-emerald-500 rounded-full grid place-items-center text-emerald-600 font-black text-[7px] rotate-[-10deg] shadow-sm select-none">
@@ -522,7 +522,7 @@ function CustomerCheckoutPage() {
                   <div className="rounded-2xl border border-emerald-500/10 bg-emerald-950/10 p-4.5 flex gap-3 text-emerald-400 text-xs">
                     <CheckCircle className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-bold text-white block">Payment Attestation Confirmed</span>
+                      <span className="font-bold text-white block">Payment Verification Confirmed</span>
                       Invoice has been settled inside the secure ledger grid. The courier agent will verify receipt details on delivery.
                     </div>
                   </div>

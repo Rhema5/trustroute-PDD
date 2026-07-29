@@ -19,7 +19,6 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { DeliveryStatus } from "@/lib/mock-data";
 import { toast } from "sonner";
-import { sendOtpSms } from "@/lib/sms-service";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -67,14 +66,34 @@ const TRANSITION_LABELS: Record<DeliveryStatus, string> = {
 };
 
 function DashboardHome() {
-  const deliveries = useApp((s) => s.deliveries);
-  const agents = useApp((s) => s.agents);
+  const user = useApp((s) => s.user);
+  const rawDeliveries = useApp((s) => s.deliveries);
+  const rawAgents = useApp((s) => s.agents);
   const acceptCustomerOrder = useApp((s) => s.acceptCustomerOrder);
   const q = useApp((s) => s.searchQuery);
   const setQ = useApp((s) => s.setSearchQuery);
 
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
   const [selectedAgent, setSelectedAgent] = useState<Record<string, string>>({});
+
+  // Detect current Enterprise Region Hub from user email or default to Avadi
+  const currentRegion = user?.email?.includes("koyambedu")
+    ? "Koyambedu"
+    : user?.email?.includes("poonamallee")
+    ? "Poonamallee"
+    : user?.email?.includes("vellore")
+    ? "Vellore"
+    : "Avadi";
+
+  // Filter deliveries matching THIS region hub only
+  const deliveries = rawDeliveries.filter(
+    (d) => d.hubRegion === currentRegion || !d.hubRegion || d.hubRegion === "Default"
+  );
+
+  // Filter active agents assigned to THIS region hub
+  const agents = rawAgents.filter(
+    (a) => (a as any).region === currentRegion || !(a as any).region
+  );
 
   const handleAcceptOrder = async (deliveryId: string) => {
     const agentId = selectedAgent[deliveryId];
@@ -91,12 +110,6 @@ function DashboardHome() {
     try {
       await acceptCustomerOrder(deliveryId, agent.id, agent.name);
       toast.success(`Order ${deliveryId} accepted and assigned to ${agent.name}!`);
-
-      // Trigger Smart SMS OTP Dispatch to recipient phone
-      const targetDelivery = deliveries.find(d => d.id === deliveryId);
-      if (targetDelivery && targetDelivery.phone && targetDelivery.otp) {
-        sendOtpSms(targetDelivery.phone, targetDelivery.otp, deliveryId, targetDelivery.customer);
-      }
     } catch (err: any) {
       toast.error(err.message || "Failed to accept order.");
     } finally {
@@ -174,22 +187,14 @@ function DashboardHome() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight md:text-3xl text-zinc-900 font-['Poppins',sans-serif]">
-              Operations console
-            </h1>
-            <p className="text-sm text-zinc-500 mt-1">
-              Real-time status of every active handoff verification route across your logistics
-              network.
-            </p>
-          </div>
-          <Link
-            to="/dashboard/new"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#7F1D1D] hover:bg-[#6B1414] px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:scale-[1.01] transition-all cursor-pointer"
-          >
-            Deploy New Mission
-          </Link>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight md:text-3xl text-zinc-900 font-['Poppins',sans-serif]">
+            Operations console
+          </h1>
+          <p className="text-sm text-zinc-500 mt-1">
+            Real-time status of every active handoff verification route across your logistics
+            network.
+          </p>
         </div>
       </motion.div>
 

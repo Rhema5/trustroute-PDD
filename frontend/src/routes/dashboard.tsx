@@ -49,7 +49,6 @@ const navItems: {
 }[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/orders", label: "Incoming Orders", icon: ShoppingCart },
-  { to: "/dashboard/new", label: "New Delivery", icon: Plus },
   { to: "/dashboard/history", label: "History", icon: History },
   { to: "/dashboard/proofs", label: "Proof Records", icon: FileCheck2 },
   { to: "/dashboard/payments", label: "Payments", icon: CreditCard },
@@ -155,6 +154,7 @@ function DashboardLayout() {
           onClick={async () => {
             try {
               await auth.signOut();
+              useApp.setState({ user: null, role: null, userName: null, userProfile: null, deliveries: [], agents: [] });
               toast.success("Signed out successfully.");
               navigate({ to: "/login" });
             } catch (err: any) {
@@ -188,8 +188,8 @@ function DashboardLayout() {
             <div className="md:hidden">
               <Logo size="sm" />
             </div>
-            <div className="hidden flex-1 md:block">
-              <div className="relative max-w-md">
+            <div className="hidden flex-1 md:flex items-center gap-3">
+              <div className="relative max-w-md flex-1">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
                 <input
                   value={searchQuery}
@@ -197,6 +197,17 @@ function DashboardLayout() {
                   placeholder="Search deliveries, agents, IDs…"
                   className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pl-9 pr-3 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none focus:border-[#7F1D1D]/45 focus:bg-white transition-all"
                 />
+              </div>
+
+              {/* Regional Enterprise Hub Badge */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 text-xs font-extrabold shadow-xs shrink-0">
+                <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                📍 Hub: {
+                  user?.email?.includes("avadi") ? "Avadi Regional Hub" :
+                  user?.email?.includes("poonamallee") ? "Poonamallee Regional Hub" :
+                  user?.email?.includes("koyambedu") ? "Koyambedu Regional Hub" :
+                  user?.email?.includes("vellore") ? "Vellore Regional Hub" : "Default General Hub"
+                }
               </div>
             </div>
 

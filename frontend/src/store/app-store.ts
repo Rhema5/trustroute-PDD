@@ -1,6 +1,7 @@
- import { create } from "zustand";
- import { type Delivery, type DeliveryStatus, type Agent, type Payment } from "@/lib/mock-data";
- import { db, auth } from "@/lib/firebase";
+import { create } from "zustand";
+import { type Delivery, type DeliveryStatus, type Agent, type Payment } from "@/lib/mock-data";
+import { db, auth } from "@/lib/firebase";
+import { detectHubRegion, type HubRegion } from "@/lib/hub-routing";
  import {
    collection,
    doc,
@@ -118,6 +119,7 @@
     }
   ) => Promise<void>;
   acceptCustomerOrder: (deliveryId: string, agentId: string, agentName: string) => Promise<void>;
+  updateAgentHubRegion: (hubRegion: string) => Promise<void>;
 }export const useApp = create<AppState>((set, get) => ({
    role: null,
    setRole: (r) => set({ role: r }),
@@ -194,54 +196,78 @@
      }
    },
    addDelivery: async (d) => {
-     // Data integrity: validate required fields
-     const fieldErrors = validateDeliveryFields(d);
-     if (fieldErrors.length > 0) {
-       throw new Error(`Delivery validation failed: ${fieldErrors.join(" ")}`);
-     }
- 
-     // Data integrity: prevent duplicate IDs
-     if (isDuplicate(get().deliveries, d.id)) {
-       throw new Error(`Delivery with ID "${d.id}" already exists. Duplicate creation prevented.`);
-     }      try {
-        const docRef = doc(db, "deliveries", d.id);
+      // Auto-detect Hub Region from Pickup Location or Destination if not set
+      const detectedRegion = d.hubRegion || detectHubRegion(`${d.pickupLocation || ""} ${d.destination || ""}`);
+      const deliveryWithHub: Delivery = {
+        ...d,
+        hubRegion: detectedRegion,
+      };
+
+      // Data integrity: validate required fields
+      const fieldErrors = validateDeliveryFields(deliveryWithHub);
+      if (fieldErrors.length > 0) {
+        throw new Error(`Delivery validation failed: ${fieldErrors.join(" ")}`);
+      }
+
+      // Data integrity: prevent duplicate IDs
+      if (isDuplicate(get().deliveries, deliveryWithHub.id)) {
+        throw new Error(`Delivery with ID "${deliveryWithHub.id}" already exists. Duplicate creation prevented.`);
+      }
+
+      try {
+        const docRef = doc(db, "deliveries", deliveryWithHub.id);
         await runTransaction(db, async (transaction) => {
-          // Bypassing read to avoid firestore rules error for non-existent documents
-        
-        const paymentId = `PM-${d.id}`;
-        const paymentRef = doc(db, "payments", paymentId);
+          const paymentId = `PM-${deliveryWithHub.id}`;
+          const paymentRef = doc(db, "payments", paymentId);
 
-        transaction.set(docRef, {
-          ...d,
-          paymentId,
-          version: INITIAL_VERSION,
-          createdAt: serverTimestamp(),
-        });
+          transaction.set(docRef, {
+            ...deliveryWithHub,
+            paymentId,
+            version: INITIAL_VERSION,
+            createdAt: serverTimestamp(),
+          });
 
-        transaction.set(paymentRef, {
-          paymentId,
-          deliveryId: d.id,
-          enterpriseId: d.enterpriseId,
-          agentId: d.agentId,
-          customerId: d.customer,
-          amount: d.paymentAmount ?? 0,
-          currency: "INR",
-          paymentMethod: "none",
-          paymentType: d.paymentType ?? "prepaid",
-          paymentStatus: d.paymentType === "cod" ? "cod_pending" : "pending",
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-          synced: true,
-          networkMode: "online",
+          transaction.set(paymentRef, {
+            paymentId,
+            deliveryId: deliveryWithHub.id,
+            enterpriseId: deliveryWithHub.enterpriseId,
+            hubRegion: deliveryWithHub.hubRegion,
+            agentId: deliveryWithHub.agentId,
+            customerId: deliveryWithHub.customer,
+            amount: deliveryWithHub.paymentAmount ?? 0,
+            currency: "INR",
+            paymentMethod: "none",
+            paymentType: deliveryWithHub.paymentType ?? "prepaid",
+            paymentStatus: deliveryWithHub.paymentType === "cod" ? "cod_pending" : "pending",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            synced: true,
+            networkMode: "online",
+          });
         });
-      });
       } catch (err: any) {
         console.warn("Cloud Firestore addDelivery rule notice (handled locally):", err?.message || err);
       }
       // Ensure delivery is stored in local Zustand state
       const currentDeliveries = get().deliveries;
-      if (!currentDeliveries.some((item) => item.id === d.id)) {
-        set({ deliveries: [d, ...currentDeliveries] });
+      if (!currentDeliveries.some((item) => item.id === deliveryWithHub.id)) {
+        set({ deliveries: [deliveryWithHub, ...currentDeliveries] });
+      }
+    },
+    updateAgentHubRegion: async (hubRegion: string) => {
+      const { user, userProfile } = get();
+      if (!user) return;
+      try {
+        const docRef = doc(db, "users", user.uid);
+        await updateDoc(docRef, {
+          hubRegion,
+          updatedAt: serverTimestamp(),
+        });
+        if (userProfile) {
+          set({ userProfile: { ...userProfile, hubRegion } });
+        }
+      } catch (err) {
+        console.error("Error updating agent hub region:", err);
       }
     },
    updateStatus: async (id, status, proof) => {
@@ -294,124 +320,150 @@
      }
    },
    subscribeToDeliveries: () => {
-     const { user, role } = get();
-     if (!user || !role) {
-      const q = query(collection(db, "deliveries"));
-      const unsubscribe = onSnapshot(
-        q,
-        (snapshot) => {
-          const items: Delivery[] = [];
-          snapshot.forEach((doc) => {
-            const data = doc.data({ serverTimestamps: "estimate" });
-            items.push(convertTimestamps(data) as Delivery);
-          });
-          const processed = processDeliveries(items);
-          set({ deliveries: processed });
-        },
-        (error) => {
-          console.error("Error subscribing to customer deliveries:", error);
-        }
-      );
-      return unsubscribe;
-    }    let q;
-    if (role === "owner") {
-      // Show enterprise's own deliveries AND all pending customer orders
-      q = query(
-        collection(db, "deliveries"),
-        where("enterpriseId", "==", user.uid),
-      );
-      // Also subscribe to pending customer orders (global)
-      const pendingQ = query(
-        collection(db, "deliveries"),
-        where("enterpriseId", "==", "enterprise-customer-portal"),
-        where("status", "==", "pending"),
-      );
-      const enterpriseUnsub = onSnapshot(
-        q,
-        (snapshot) => {
-          const items: Delivery[] = [];
-          snapshot.forEach((doc) => {
-            const data = doc.data({ serverTimestamps: "estimate" });
-            items.push(convertTimestamps(data) as Delivery);
-          });
-          const currentDeliveries = get().deliveries.filter(d => d.enterpriseId === "enterprise-customer-portal" && d.status === "pending");
-          const processed = processDeliveries([...currentDeliveries, ...items]);
-          set({ deliveries: processed });
-        },
-        (error) => { console.error("Error subscribing to deliveries:", error); },
-      );
-      const customerUnsub = onSnapshot(
-        pendingQ,
-        (snapshot) => {
-          const pendingItems: Delivery[] = [];
-          snapshot.forEach((doc) => {
-            const data = doc.data({ serverTimestamps: "estimate" });
-            pendingItems.push(convertTimestamps(data) as Delivery);
-          });
-          const enterpriseDeliveries = get().deliveries.filter(d => d.enterpriseId !== "enterprise-customer-portal");
-          const processed = processDeliveries([...enterpriseDeliveries, ...pendingItems]);
-          set({ deliveries: processed });
-        },
-        (error) => { console.error("Error subscribing to customer orders:", error); },
-      );
-      return () => { enterpriseUnsub(); customerUnsub(); };
-    } else if (role === "agent") {
-      q = query(
-        collection(db, "deliveries"),
-        where("agentId", "==", user.uid),
-      );
-    } else {
-      q = query(collection(db, "deliveries"));
-    }const unsubscribe = onSnapshot(
-       q,
-       (snapshot) => {
-         const items: Delivery[] = [];
-         snapshot.forEach((doc) => {
-           const data = doc.data({ serverTimestamps: "estimate" });
-           items.push(convertTimestamps(data) as Delivery);
-         });
-         // Data integrity: auto-sort by status priority + deduplicate
-         const processed = processDeliveries(items);
-         set({ deliveries: processed });
-       },
-       (error) => {
-         console.error("Error subscribing to deliveries:", error);
-       },
-     );
-     return unsubscribe;
-   },
-   subscribeToAgents: () => {
+      const { user, role, userProfile } = get();
+      if (!user || !role) {
+        const q = query(collection(db, "deliveries"));
+        const unsubscribe = onSnapshot(
+          q,
+          (snapshot) => {
+            const items: Delivery[] = [];
+            snapshot.forEach((doc) => {
+              const data = doc.data({ serverTimestamps: "estimate" });
+              items.push(convertTimestamps(data) as Delivery);
+            });
+            const processed = processDeliveries(items);
+            set({ deliveries: processed });
+          },
+          (error) => {
+            console.error("Error subscribing to customer deliveries:", error);
+          }
+        );
+        return unsubscribe;
+      }
+
+      if (role === "owner") {
+        const ownerHubRegion = userProfile?.hubRegion || (
+          user.email?.includes("avadi") ? "Avadi" :
+          user.email?.includes("poonamallee") ? "Poonamallee" :
+          user.email?.includes("koyambedu") ? "Koyambedu" :
+          user.email?.includes("vellore") ? "Vellore" : "Default"
+        );
+
+        const q = query(collection(db, "deliveries"));
+        const unsubscribe = onSnapshot(
+          q,
+          (snapshot) => {
+            const items: Delivery[] = [];
+            snapshot.forEach((doc) => {
+              const data = doc.data({ serverTimestamps: "estimate" });
+              const item = convertTimestamps(data) as Delivery;
+              const orderRegion = item.hubRegion || detectHubRegion(`${item.pickupLocation || ""} ${item.destination || ""}`);
+              
+              if (
+                item.enterpriseId === user.uid ||
+                orderRegion === ownerHubRegion ||
+                (ownerHubRegion === "Default" && (orderRegion === "Default" || !orderRegion))
+              ) {
+                items.push(item);
+              }
+            });
+            const processed = processDeliveries(items);
+            set({ deliveries: processed });
+          },
+          (error) => {
+            console.error("Error subscribing to enterprise deliveries:", error);
+          }
+        );
+        return unsubscribe;
+      } else if (role === "agent") {
+        const q = query(
+          collection(db, "deliveries"),
+          where("agentId", "==", user.uid)
+        );
+        const unsubscribe = onSnapshot(
+          q,
+          (snapshot) => {
+            const items: Delivery[] = [];
+            snapshot.forEach((doc) => {
+              const data = doc.data({ serverTimestamps: "estimate" });
+              items.push(convertTimestamps(data) as Delivery);
+            });
+            const processed = processDeliveries(items);
+            set({ deliveries: processed });
+          },
+          (error) => {
+            console.error("Error subscribing to agent deliveries:", error);
+          }
+        );
+        return unsubscribe;
+      } else {
+        const q = query(collection(db, "deliveries"));
+        const unsubscribe = onSnapshot(
+          q,
+          (snapshot) => {
+            const items: Delivery[] = [];
+            snapshot.forEach((doc) => {
+              const data = doc.data({ serverTimestamps: "estimate" });
+              items.push(convertTimestamps(data) as Delivery);
+            });
+            const processed = processDeliveries(items);
+            set({ deliveries: processed });
+          },
+          (error) => {
+            console.error("Error subscribing to deliveries:", error);
+          }
+        );
+        return unsubscribe;
+      }
+    },
+    subscribeToAgents: () => {
       const { user, role, userProfile } = get();
       if (!user || role !== "owner") return () => {};
 
-      const enterpriseId = userProfile?.enterpriseId || user.uid;
+      const ownerHubRegion = userProfile?.hubRegion || (
+        user.email?.includes("avadi") ? "Avadi" :
+        user.email?.includes("poonamallee") ? "Poonamallee" :
+        user.email?.includes("koyambedu") ? "Koyambedu" :
+        user.email?.includes("vellore") ? "Vellore" : "Default"
+      );
+
       const q = query(
         collection(db, "users"),
         where("role", "==", "agent"),
-        where("enterpriseId", "==", enterpriseId),
         where("active", "==", true)
       );
       const unsubscribe = onSnapshot(
         q,
         (snapshot) => {
           const list: Agent[] = [];
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            list.push({
-              id: doc.id,
-              name: data.name || data.displayName || "Agent",
-              email: data.email || "",
-              avatarColor: data.avatarColor || "from-violet-500 to-blue-500",
-              online: data.online ?? true,
-              rating: data.rating ?? 5.0,
-              region: data.region || "",
-            });
+          snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const agentHub = data.hubRegion || data.region || "All";
+            
+            if (
+              agentHub === ownerHubRegion ||
+              agentHub === "All" ||
+              agentHub === "All Regions" ||
+              ownerHubRegion === "Default" ||
+              data.enterpriseId === user.uid
+            ) {
+              list.push({
+                id: docSnap.id,
+                name: data.name || data.displayName || "Agent",
+                email: data.email || "",
+                avatarColor: data.avatarColor || "from-violet-500 to-blue-500",
+                online: data.online ?? true,
+                rating: data.rating ?? 5.0,
+                region: data.region || "",
+                hubRegion: agentHub,
+              });
+            }
           });
           set({ agents: list });
         },
         (error) => {
           console.error("Error subscribing to agents:", error);
-        },
+        }
       );
       return unsubscribe;
     },
@@ -419,30 +471,58 @@
       const { user, role, userProfile } = get();
       if (role !== "owner" || !user) return;
       try {
-        const enterpriseId = userProfile?.enterpriseId || user.uid;
+        const ownerHubRegion = userProfile?.hubRegion || (
+          user.email?.includes("avadi") ? "Avadi" :
+          user.email?.includes("poonamallee") ? "Poonamallee" :
+          user.email?.includes("koyambedu") ? "Koyambedu" :
+          user.email?.includes("vellore") ? "Vellore" : "Default"
+        );
+
         const q = query(
           collection(db, "users"),
           where("role", "==", "agent"),
-          where("enterpriseId", "==", enterpriseId),
           where("active", "==", true)
         );
         const snapshot = await getDocs(q);
         const list: Agent[] = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          list.push({
-            id: doc.id,
-            name: data.name || data.displayName || "Agent",
-            email: data.email || "",
-            avatarColor: data.avatarColor || "from-violet-500 to-blue-500",
-            online: data.online ?? true,
-            rating: data.rating ?? 5.0,
-            region: data.region || "",
-          });
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const agentHub = data.hubRegion || data.region || "All";
+          if (
+            agentHub === ownerHubRegion ||
+            agentHub === "All" ||
+            agentHub === "All Regions" ||
+            ownerHubRegion === "Default" ||
+            data.enterpriseId === user.uid
+          ) {
+            list.push({
+              id: docSnap.id,
+              name: data.name || data.displayName || "Agent",
+              email: data.email || "",
+              avatarColor: data.avatarColor || "from-violet-500 to-blue-500",
+              online: data.online ?? true,
+              rating: data.rating ?? 5.0,
+              region: data.region || "",
+              hubRegion: agentHub,
+            });
+          }
         });
         set({ agents: list });
       } catch (err) {
         console.error("Error fetching agents:", err);
+      }
+    },
+    updateAgentHubRegion: async (hubRegion: string) => {
+      const user = get().user;
+      if (!user) return;
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, { region: hubRegion, hubRegion });
+        set((state) => ({
+          userProfile: state.userProfile ? { ...state.userProfile, region: hubRegion, hubRegion } : null,
+        }));
+      } catch (err) {
+        console.error("Failed to update agent hub region:", err);
       }
     },
    fetchPendingUsers: async () => {

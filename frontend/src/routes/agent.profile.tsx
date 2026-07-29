@@ -37,7 +37,8 @@ function Profile() {
     setRegionUpdating(true);
     try {
       const userRef = doc(db, "users", currentUser.uid);
-      await updateDoc(userRef, { region: newRegion });
+      await updateDoc(userRef, { region: newRegion, hubRegion: newRegion });
+      useApp.getState().updateAgentHubRegion(newRegion);
       toast.success(`Operating hub successfully changed to ${newRegion}`);
     } catch (err) {
       console.error(err);
@@ -179,11 +180,11 @@ function Profile() {
                     disabled={regionUpdating}
                     className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white font-semibold focus:outline-none focus:border-[#FF4D4D]/50 transition appearance-none cursor-pointer disabled:opacity-50"
                   >
-                    <option value="Chennai">Chennai</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Avadi">Avadi Hub</option>
+                    <option value="Poonamallee">Poonamallee Hub</option>
+                    <option value="Koyambedu">Koyambedu Hub</option>
+                    <option value="Vellore">Vellore Hub</option>
+                    <option value="All">All Regions (Floating Agent)</option>
                   </select>
                   <MapPin className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 pointer-events-none" />
                 </div>

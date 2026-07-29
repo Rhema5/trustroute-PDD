@@ -84,54 +84,8 @@ function Landing() {
           </div>
         </motion.div>
 
-        {/* Hero card preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.2 }}
-          className="relative mx-auto mt-20 max-w-5xl"
-        >
-          <div className="absolute inset-0 -z-10 rounded-[2rem] gradient-primary opacity-30 blur-3xl" />
-          <div className="glass-strong rounded-[2rem] p-2 shadow-elevated">
-            <div className="rounded-[1.5rem] bg-background/60 p-8">
-              <div className="grid gap-6 md:grid-cols-3">
-                {[
-                  {
-                    icon: ShieldCheck,
-                    label: "Verified today",
-                    value: "1,147",
-                    tone: "from-emerald-500 to-cyan-500",
-                  },
-                  {
-                    icon: Truck,
-                    label: "Active routes",
-                    value: "94",
-                    tone: "from-violet-500 to-blue-500",
-                  },
-                  {
-                    icon: Package,
-                    label: "Avg verify time",
-                    value: "38s",
-                    tone: "from-orange-400 to-pink-500",
-                  },
-                ].map((s) => (
-                  <div key={s.label} className="glass rounded-2xl p-5">
-                    <div
-                      className={`mb-4 grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br ${s.tone}`}
-                    >
-                      <s.icon className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="text-3xl font-bold">{s.value}</div>
-                    <div className="text-xs text-muted-foreground">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Features */}
-        <section id="features" className="mt-32 grid gap-6 md:grid-cols-3">
+        <section id="features" className="mt-24 grid gap-6 md:grid-cols-3">
           {[
             {
               icon: ShieldCheck,

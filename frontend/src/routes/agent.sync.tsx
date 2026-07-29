@@ -249,7 +249,7 @@ function SyncStatus() {
               <CheckCircle className="mx-auto h-10 w-10 text-emerald-500 mb-3" />
               <p className="text-sm font-semibold text-zinc-300">All local items synced</p>
               <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
-                IndexedDB is empty. All deliveries attested while offline have been successfully synced to the cloud databases.
+                IndexedDB is empty. All deliveries verified while offline have been successfully synced to the cloud databases.
               </p>
             </div>
           ) : (

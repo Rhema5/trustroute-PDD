@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, CheckCircle2, Loader2, ShoppingCart, Clock, User, Phone, Navigation } from "lucide-react";
 import { toast } from "sonner";
-import { sendOtpSms } from "@/lib/sms-service";
 
 export const Route = createFileRoute("/dashboard/orders")({
   head: () => ({ meta: [{ title: "Incoming Marketplace Orders — TrustRoute" }] }),
@@ -12,6 +11,7 @@ export const Route = createFileRoute("/dashboard/orders")({
 });
 
 function IncomingOrdersPage() {
+  const user = useApp((s) => s.user);
   const deliveries = useApp((s) => s.deliveries);
   const agents = useApp((s) => s.agents);
   const acceptCustomerOrder = useApp((s) => s.acceptCustomerOrder);
@@ -19,8 +19,24 @@ function IncomingOrdersPage() {
   const [acceptingId, setAcceptingId] = useState<string | null>(null);
   const [selectedAgent, setSelectedAgent] = useState<Record<string, string>>({});
 
-  // Filter pending customer orders
-  const pendingOrders = deliveries.filter((d) => d.status === "pending");
+  // Detect current Enterprise Region Hub from user email or default to Avadi
+  const currentRegion = user?.email?.includes("koyambedu")
+    ? "Koyambedu"
+    : user?.email?.includes("poonamallee")
+    ? "Poonamallee"
+    : user?.email?.includes("vellore")
+    ? "Vellore"
+    : "Avadi";
+
+  // Filter pending orders matching THIS region hub only
+  const pendingOrders = deliveries.filter(
+    (d) => d.status === "pending" && (d.hubRegion === currentRegion || !d.hubRegion || d.hubRegion === "Default")
+  );
+
+  // Filter active agents assigned to THIS region hub
+  const regionalAgents = agents.filter(
+    (a) => (a as any).region === currentRegion || !(a as any).region
+  );
 
   const handleAcceptOrder = async (deliveryId: string) => {
     const agentId = selectedAgent[deliveryId];
@@ -37,12 +53,6 @@ function IncomingOrdersPage() {
     try {
       await acceptCustomerOrder(deliveryId, agent.id, agent.name);
       toast.success(`Order ${deliveryId} accepted and assigned to ${agent.name}!`);
-
-      // Trigger Smart SMS Dispatch to recipient
-      const target = pendingOrders.find((d) => d.id === deliveryId);
-      if (target && target.phone && target.otp) {
-        sendOtpSms(target.phone, target.otp, deliveryId, target.customer);
-      }
     } catch (err: any) {
       toast.error(err.message || "Failed to accept order.");
     } finally {
@@ -135,8 +145,8 @@ function IncomingOrdersPage() {
                     }
                     className="rounded-2xl border border-zinc-200 bg-zinc-50/80 px-4 py-2.5 text-xs text-zinc-700 font-semibold outline-none focus:border-emerald-500 focus:bg-white transition cursor-pointer min-w-[170px]"
                   >
-                    <option value="">Select Agent (Optional)</option>
-                    {agents.map((a) => (
+                    <option value="">Select Agent</option>
+                    {regionalAgents.map((a) => (
                       <option key={a.id} value={a.id}>
                         {a.name}
                       </option>
