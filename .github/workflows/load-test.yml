@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Setup k6
         uses: grafana/setup-k6-action@v1
@@ -73,7 +73,7 @@ jobs:
           git push origin master || true
 
       - name: Upload Load Test Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
           name: k6-load-test-${{ github.run_number }}

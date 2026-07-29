@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,7 +40,7 @@ jobs:
           echo "npm audit complete"
 
       - name: Upload npm audit results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: npm-audit-${{ github.run_number }}
           path: audit/reports/npm-audit.json
@@ -53,7 +53,7 @@ jobs:
       image: semgrep/semgrep:latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Run Semgrep (OWASP + React + JS)
         run: |
@@ -71,7 +71,7 @@ jobs:
           echo "Semgrep scan complete"
 
       - name: Upload Semgrep Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
           name: semgrep-sast-${{ github.run_number }}
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout (full history)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
 
@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@master
@@ -122,7 +122,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Trivy Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
           name: trivy-scan-${{ github.run_number }}
@@ -136,7 +136,7 @@ jobs:
     if: always()
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Generate Security Summary Report
         run: |
@@ -195,7 +195,7 @@ jobs:
           git push origin master || true
 
       - name: Upload Security Summary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: security-full-report-${{ github.run_number }}
           path: audit/reports/

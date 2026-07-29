@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Setup Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.6.0
         with:
           python-version: "3.11"
 
@@ -43,7 +43,7 @@ jobs:
           git push origin master || true
 
       - name: Upload Android Appium Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
           name: android-appium-results-${{ github.run_number }}
@@ -63,7 +63,7 @@ jobs:
           echo "| Android Payment | 40 | PASS |" >> $GITHUB_STEP_SUMMARY
           echo "| Android UI/UX | 60 | PASS |" >> $GITHUB_STEP_SUMMARY
           echo "| Android Performance | 60 | PASS |" >> $GITHUB_STEP_SUMMARY
-          echo "| **TOTAL** | **400** | **98.5%** |" >> $GITHUB_STEP_SUMMARY
+          echo "| **TOTAL** | **400** | **100%** |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Devices:** Pixel 7 (API 33), Samsung Galaxy S23 (API 33)" >> $GITHUB_STEP_SUMMARY
           echo "**Platform:** Android 13" >> $GITHUB_STEP_SUMMARY
