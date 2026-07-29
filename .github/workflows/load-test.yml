@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup k6
-        uses: grafana/setup-k6-action@v2
+        uses: grafana/setup-k6-action@v1
 
       - name: Create Reports Directory
         run: mkdir -p testing/reports
@@ -36,6 +36,8 @@ jobs:
       - name: Generate Load Test Report
         if: always()
         run: |
+          pip install openpyxl --quiet || true
+          python3 automation/generate_load_test_excel_report.py || true
           echo "# k6 Load Test Summary" > testing/reports/load-test-report.md
           echo "**Date:** $(date -u)" >> testing/reports/load-test-report.md
           echo "**Target:** https://rhema5.github.io/trustroute-PDD/" >> testing/reports/load-test-report.md
@@ -68,16 +70,18 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git pull --rebase origin master || true
-          git add testing/reports/ || true
+          git add testing/reports/ "Test Results/Excel/k6_Load_Test_Report*" || true
           git diff --staged --quiet || git commit -m "ci: k6 load test report [skip ci]"
           git push origin master || true
 
       - name: Upload Load Test Artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: k6-load-test-${{ github.run_number }}
-          path: testing/reports/
+          path: |
+            testing/reports/
+            Test Results/Excel/k6_Load_Test_Report_LATEST.xlsx
           retention-days: 30
 
       - name: Summary
