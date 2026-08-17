@@ -1,15 +1,15 @@
 # TrustRoute — Security Audit Summary
-**Date:** 2026-08-10 03:55 UTC
+**Date:** 2026-08-17 02:59 UTC
 **Repository:** https://github.com/Rhema5/trustroute-PDD
 **Overall Score:** 72/100
 
 ## Scans Completed
 | Tool | Type | Status |
 |------|------|--------|
-| npm audit | Dependency Vulnerabilities | Run 15 |
-| Semgrep | SAST / Code Analysis | Run 15 |
-| Gitleaks | Secret Scanning | Run 15 |
-| Trivy | Filesystem Vulnerabilities | Run 15 |
+| npm audit | Dependency Vulnerabilities | Run 16 |
+| Semgrep | SAST / Code Analysis | Run 16 |
+| Gitleaks | Secret Scanning | Run 16 |
+| Trivy | Filesystem Vulnerabilities | Run 16 |
 
 ## Top Critical Findings
 | ID | Severity | Title |
@@ -29,9 +29,9 @@
 | Firebase Security Best Practices | Partial (App Check disabled) |
 
 ## Artifacts
-- npm-audit-15: Dependency CVEs
-- semgrep-sast-15: SAST findings
-- trivy-scan-15: Filesystem vulnerabilities
+- npm-audit-16: Dependency CVEs
+- semgrep-sast-16: SAST findings
+- trivy-scan-16: Filesystem vulnerabilities
 
 ## Recommendation
 Do NOT deploy to production until SEC-001 (Razorpay key_secret exposure) is resolved.
