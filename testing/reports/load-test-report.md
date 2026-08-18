@@ -1,10 +1,10 @@
 # k6 Load Test Summary
-**Date:** Mon Aug 17 04:11:48 UTC 2026
+**Date:** Tue Aug 18 04:07:09 UTC 2026
 **Target:** https://rhema5.github.io/trustroute-PDD/
 
 | Metric | Value |
 |--------|-------|
-| Requests/sec | 102.5 req/s |
-| Avg Response | 7ms |
-| P95 Response | 9ms |
+| Requests/sec | 103.5 req/s |
+| Avg Response | 2ms |
+| P95 Response | 3ms |
 | Error Rate | 0.00% |
